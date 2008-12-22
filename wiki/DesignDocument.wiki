@@ -2,7 +2,13 @@
 =Game Description=
 A Carting Race Game based in the Mario Kart style. The player will be able to collect power ups from the circuit and use them to win the race. The player will be able to earn experience points to get new Challenges and improve their cars.
 
-=Game Modes=
+=Connectivity=
+The game will be multiplayer both dividing the screen up to 4 screens and through internet. This means we will need a Server side.
+
+=Graphic style=
+The graphics will be cartoon.
+
+=Game Types=
 The game will provide few game modes, all with the same objective : win the race.
 
 ==Individual Mode==
@@ -11,14 +17,19 @@ The player will race individually vs other players.
 ==Multiplayer Mode==
 The player will be in a team and will compete together to get the first position.
 
+=Game Modes=
+The game modes will exists for both Game Modes (some of them maybe not) and some examples are:
+- Speed race (no power ups)
+- Normal mode (with power ups)
+- ¿Capture the flag?
+- Etc.
+
 =Modifiers=
 The modifiers will be applied over the game modes. For instance we can have races without any power ups. If we are playing in a team to win the race only one of your team has to be first or we can do the average, etc. We have to think more about this one.
 
 =Challenges=
-Similar to the COD5 system. The player can modify their cars depending on its experience points.
+Similar to the COD5 system. The player can modify their cars depending on its experience points. Every level will have new Challenges and new powers for the player.
 
-=Graphic style=
-The graphics will be cartoon.
 
-=Connectivity=
-The game will be multiplayer both dividing the screen up to 4 screens and through internet. This means we will need a Server side.
+
+
