@@ -1,2 +1,10 @@
 #labels Phase-Design
-This will be the design document!
+=Game Description=
+A Carting Race Game based in the Mario Kart style. The player will be able to collect power ups from the circuit and use them to win the race.
+
+
+=Graphic style=
+The graphics will be cartoon.
+
+=Connectivity=
+The game will be multiplayer both dividing the screen up to 4 screens and through internet. This means we will need a Server side.
