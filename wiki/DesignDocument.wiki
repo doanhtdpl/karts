@@ -18,7 +18,8 @@ The player will race individually vs other players.
 The player will be in a team and will compete together to get the first position.
 
 =Game Modes=
-The game modes will exists for both Game Modes (some of them maybe not)
+A Game Mode defines the way we can compete on the race. some Game Modes will be available in Single player or/and multiplayer mode.
+
 ==Speed Race==
 This mode is a classic one with no power ups.
 ==Normal Mode==
