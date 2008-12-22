@@ -33,3 +33,12 @@ The modifiers will be applied over the game modes. For instance we can have race
 
 =Challenges=
 Similar to the COD5 system. The player can modify their cars depending on its experience points. Every level will have new Challenges and new powers for the player.
+
+
+=Power ups=
+This is a brainstorming. We need to define what we really want on the game.
+- Turbo
+- Bomb (parabolic)
+- Target Magnet
+- Banana
+- Helmet
