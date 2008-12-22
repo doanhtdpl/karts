@@ -18,18 +18,19 @@ The player will race individually vs other players.
 The player will be in a team and will compete together to get the first position.
 
 =Game Modes=
-The game modes will exists for both Game Modes (some of them maybe not) and some examples are:
-- Speed race (no power ups)
-- Normal mode (with power ups)
-- ¿Capture the flag?
-- Etc.
+The game modes will exists for both Game Modes (some of them maybe not)
+==Speed Race==
+This mode is a classic one with no power ups.
+==Normal Mode==
+The normal mode has to be defined however in this case will be with power ups.
+==Capture The Flag==
+I have no idea from where to take this but we can think about something
+==Etc.==
 
 =Modifiers=
 The modifiers will be applied over the game modes. For instance we can have races without any power ups. If we are playing in a team to win the race only one of your team has to be first or we can do the average, etc. We have to think more about this one.
 
 =Challenges=
 Similar to the COD5 system. The player can modify their cars depending on its experience points. Every level will have new Challenges and new powers for the player.
-
-
 
 
