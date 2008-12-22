@@ -6,7 +6,7 @@ A Carting Race Game based in the Mario Kart style. The player will be able to co
 The game will be multiplayer both dividing the screen up to 4 screens and through internet. This means we will need a Server side.
 
 =Graphic style=
-The graphics will be cartoon.
+The graphics will be cartoon or at least non realistic.
 
 =Game Types=
 The game will provide few game modes, all with the same objective : win the race.
@@ -32,5 +32,3 @@ The modifiers will be applied over the game modes. For instance we can have race
 
 =Challenges=
 Similar to the COD5 system. The player can modify their cars depending on its experience points. Every level will have new Challenges and new powers for the player.
-
-
