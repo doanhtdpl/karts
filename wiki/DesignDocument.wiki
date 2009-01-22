@@ -3,10 +3,13 @@ Index
 <wiki:toc max_depth="3" />
 
 =Game Description=
-A Carting Race Game based in the Mario Kart style. The player will be able to collect power ups from the circuit and use them to win the race. The player will be able to earn experience points to get new Challenges and improve their cars.
+A Karting Race Game based in the Mario Kart style. The player will be able to collect power ups from the circuit and use them to win the race. The player will be able to earn experience points to get new Challenges and improve their cars.
 
 =Connectivity=
 The game will be multiplayer both dividing the screen up to 4 screens and through internet. This means we will need a Server side.
+
+=Platforms=
+The idea is to develop the game both for XBOX 360 and PC, allowing players from different platforms to play together. 
 
 =Graphic style=
 The graphics will be cartoon or at least non realistic.
@@ -17,7 +20,7 @@ The game will provide few game modes, all with the same objective : win the race
 ==Individual Mode==
 The player will race individually vs other players.
 
-==Multiplayer Mode==
+==Team Mode==
 The player will be in a team and will compete together to get the first position.
 
 =Game Modes=
