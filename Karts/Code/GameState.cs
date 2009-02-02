@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Xna.Framework;
+
+namespace Karts.Code
+{
+    enum EGameStateType
+    {
+        EGM_INVALID     = 0,
+        EGM_MAIN_MENU   = 1,
+        EGM_GAME        = 2
+    }
+
+    class GameState
+    {
+        private bool            m_bActive;
+        private EGameStateType  m_eType;
+
+        public GameState() 
+        {
+            m_bActive = false;
+            m_eType = EGameStateType.EGM_INVALID;
+        }
+
+        ~GameState() { }
+
+        public bool IsActive()  { return m_bActive; }
+        public EGameStateType GetType()   { return m_eType; }
+
+        public void Update(GameTime GameTime)
+        {
+        }
+
+        public void Draw(GameTime GameTime)
+        {
+        }
+    }
+}

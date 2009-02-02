@@ -70,6 +70,7 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -83,9 +84,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Circuit.cs" />
+    <Compile Include="Code\GameState.cs" />
+    <Compile Include="Code\GameStateManager.cs" />
+    <Compile Include="Code\PlayerManager.cs" />
+    <Compile Include="Code\Player.cs" />
+    <Compile Include="Code\Driver.cs" />
+    <Compile Include="Code\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\Program.cs" />
-    <Compile Include="Code\Game1.cs" />
+    <Compile Include="Code\Karts.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
