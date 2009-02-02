@@ -8,7 +8,7 @@ namespace Karts.Code
 {
     class GameStateManager
     {
-        private List<GameState> m_GameStates;
+        private List<GameState> m_GameStates = new List<GameState>();
         private GameState m_CurrentGamestate;
 
         public GameStateManager() 
