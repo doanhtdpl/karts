@@ -8,7 +8,7 @@ namespace Karts.Code
 {
     class PlayerManager
     {
-        private List<Player> m_PlayerList;
+        private List<Player> m_PlayerList = new List<Player>();
 
         public PlayerManager() { }
         ~PlayerManager()
