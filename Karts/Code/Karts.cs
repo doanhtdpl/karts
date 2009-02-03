@@ -20,11 +20,14 @@ namespace Karts
         GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
         public static SpriteFont spriteFont;
+        public static Karts karts;
 
         public Karts()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            karts = this;
         }
 
         /// <summary>
@@ -36,6 +39,7 @@ namespace Karts
         protected override void Initialize()
         {
             Components.Add(new GamerServicesComponent(this));
+
             base.Initialize();
 
             ResourcesManager resources = ResourcesManager.GetInstance();
