@@ -22,6 +22,7 @@ namespace Karts
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        public static NetworkManager m_NetworkManager;
         GameStateManager m_StateManager;
 
         public Karts()
@@ -38,7 +39,9 @@ namespace Karts
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            Components.Add(new GamerServicesComponent(this));
+
+            m_NetworkManager = new NetworkManager();
             m_StateManager = new GameStateManager();
 
             base.Initialize();
@@ -80,6 +83,7 @@ namespace Karts
             }
 
             // TODO: Add your update logic here
+            m_NetworkManager.Update();
             m_StateManager.Update(gameTime);
 
             base.Update(gameTime);
@@ -98,5 +102,15 @@ namespace Karts
 
             base.Draw(gameTime);
         }
+
+        // Entry point
+        static void Main(string[] args)
+        {
+            using (Karts game = new Karts())
+            {
+                game.Run();
+            }
+        }
+
     }
 }
