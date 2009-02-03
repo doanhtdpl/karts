@@ -23,10 +23,13 @@ namespace Karts.Code
 
         public override void Update(GameTime GameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Down)){
+            KeyboardState state = Keyboard.GetState();
+            if (state.IsKeyDown(Keys.Down)){
                 selected = (selected + OPTIONS.Length + 1) % OPTIONS.Length;
-            }else if (Keyboard.GetState().IsKeyDown(Keys.Up)){
+            }else if (state.IsKeyDown(Keys.Up)){
                 selected = (selected + OPTIONS.Length - 1) % OPTIONS.Length;
+            }else if (state.IsKeyDown(Keys.Enter){
+
             }
 
             base.Update(GameTime);
