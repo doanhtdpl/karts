@@ -5,12 +5,14 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.GamerServices;
 
 namespace Karts.Code
 {
     class MainMenu : GameState
     {
         private String[] OPTIONS = { "CREATE LOCAL GAME", "CREATE MULTIPLAYER GAME", "FIND MULTIPLAYER GAME", "EXIT GAME" };
+        private EGameStateType[] ENTER = { EGameStateType.EGM_GAME, EGameStateType.EGM_CREATE_MULTIPLAYER_GAME, EGameStateType.EGM_FIND_MULTIPLAYER_GAME, EGameStateType.EGM_INVALID};
 
         private int selected = 0;
 
@@ -18,6 +20,8 @@ namespace Karts.Code
 
         public override void Enter()
         {
+            Guide.ShowSignIn(1, false);
+
             base.Enter();
         }
 
@@ -29,7 +33,12 @@ namespace Karts.Code
             }else if (state.IsKeyDown(Keys.Up)){
                 selected = (selected + OPTIONS.Length - 1) % OPTIONS.Length;
             }else if (state.IsKeyDown(Keys.Enter)){
-
+                EGameStateType nextState = ENTER[selected];
+                if(nextState == EGameStateType.EGM_INVALID){
+                    Karts.karts.Exit();
+                }else{
+                    GameStateManager.GetInstance().ChangeState(nextState);
+                }
             }
 
             base.Update(GameTime);
