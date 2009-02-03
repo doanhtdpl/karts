@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Karts.Code
 {
@@ -11,7 +13,7 @@ namespace Karts.Code
         // ------------------------------------------------
         // Class members
         // ------------------------------------------------
-
+        private Object3D m_Object3D;
 
         // ------------------------------------------------
         // Class methods
@@ -19,9 +21,19 @@ namespace Karts.Code
         public Driver() { }
         ~Driver() { }
 
-        public bool Init(String resource_name)
+        public bool Init(string resource_name)
         {
-            return true;
+            bool bInitOk = false;
+
+            m_Object3D = new Object3D();
+            bInitOk = m_Object3D.Load(resource_name);
+
+            return bInitOk;
+        }
+
+        public Object3D GetObject3D()
+        {
+            return m_Object3D;
         }
 
         public void Update(GameTime GameTime)
@@ -30,6 +42,7 @@ namespace Karts.Code
 
         public void Draw(GameTime GameTime)
         {
+            m_Object3D.Draw();
         }
     }
 }
