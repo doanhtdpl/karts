@@ -12,7 +12,6 @@ namespace Karts.Code
     class MainMenu : GameState
     {
         private String[] OPTIONS = { "CREATE LOCAL GAME", "CREATE MULTIPLAYER GAME", "FIND MULTIPLAYER GAME", "EXIT GAME" };
-        private GameState[] ENTER = { new MainMenu(), new CreateMultiplayerGame(), new FindMultiplayerGame()};
 
         private int selected = 0;
 
@@ -31,10 +30,20 @@ namespace Karts.Code
             }else if (state.IsKeyDown(Keys.Up)){
                 selected = (selected + OPTIONS.Length - 1) % OPTIONS.Length;
             }else if (state.IsKeyDown(Keys.Enter)){
-                if(selected == OPTIONS.Length-1){
+                if(selected == 3){
                     Karts.karts.Exit();
-                }else{
-                    GameStateManager.GetInstance().ChangeState(ENTER[selected]);
+                }
+                else if (selected == 0)
+                {
+                    GameStateManager.GetInstance().ChangeState(new CreateMultiplayerGame());
+                }
+                else if (selected == 1)
+                {
+                    GameStateManager.GetInstance().ChangeState(new FindMultiplayerGame());
+                }
+                else if (selected == 2)
+                {
+                    GameStateManager.GetInstance().ChangeState(new GameplayState());
                 }
             }
 
