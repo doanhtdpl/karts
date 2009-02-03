@@ -10,11 +10,18 @@ namespace Karts.Code
 {
     class Player
     {
+        // ------------------------------------------------
+        // Class members
+        // ------------------------------------------------
         private Vehicle m_Vehicle;
         private Driver m_Driver;
         private UInt32 m_uID;
         private String m_sName;
 
+
+        // ------------------------------------------------
+        // Class methods
+        // ------------------------------------------------
         public Player ()
         {
             m_uID = 0;
