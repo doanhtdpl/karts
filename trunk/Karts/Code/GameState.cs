@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework;
 
 namespace Karts.Code
 {
+    // ------------------------------------------------
+    // Types
+    // ------------------------------------------------
     enum EGameStateType
     {
         EGM_INVALID     = 0,
@@ -15,9 +18,16 @@ namespace Karts.Code
 
     class GameState
     {
+        // ------------------------------------------------
+        // Class members
+        // ------------------------------------------------
         private bool            m_bActive;
         private EGameStateType  m_eType;
 
+
+        // ------------------------------------------------
+        // Class methods
+        // ------------------------------------------------
         public GameState() 
         {
             m_bActive = false;
