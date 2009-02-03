@@ -11,6 +11,7 @@ namespace Karts.Code
         EGM_INVALID     = 0,
         EGM_MAIN_MENU = 1,
         EGM_CREATE_MULTIPLAYER_GAME = 3,
+        EGM_FIND_MULTIPLAYER_GAME = 4,
         EGM_GAME = 2
     }
 

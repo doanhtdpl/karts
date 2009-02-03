@@ -14,13 +14,12 @@ using Karts.Code;
 
 namespace Karts
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
-    public class Karts : Microsoft.Xna.Framework.Game
+
+    public class Karts : Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        public static SpriteBatch spriteBatch;
+        public static SpriteFont spriteFont;
 
         public Karts()
         {
@@ -41,6 +40,8 @@ namespace Karts
 
             ResourcesManager resources = ResourcesManager.GetInstance();
             resources.Init(this.Content);
+
+            GameStateManager.GetInstance().ChangeState(EGameStateType.EGM_MAIN_MENU);
         }
 
         /// <summary>
@@ -51,6 +52,7 @@ namespace Karts
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteFont = Content.Load<SpriteFont>("KartsFont");
 
             // TODO: use this.Content to load your game content here
         }

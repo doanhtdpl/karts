@@ -12,6 +12,7 @@ namespace Karts.Code
         public static int MAX_TOTAL_PLAYERS = 31;
 
         private NetworkSession session = null;
+        private AvailableNetworkSessionCollection availableSessions = null;
 
         public static NetworkManager m_NetworkManager = null;
 
@@ -23,7 +24,7 @@ namespace Karts.Code
             return m_NetworkManager;
         }
 
-        public void CreateSession()
+        public NetworkSession CreateSession()
         {
             session = NetworkSession.Create(NetworkSessionType.SystemLink, MAX_LOCAL_PLAYERS, MAX_TOTAL_PLAYERS);
 
@@ -35,6 +36,23 @@ namespace Karts.Code
             session.GameStarted += new EventHandler<GameStartedEventArgs>(session_GameStarted);
             session.GameEnded += new EventHandler<GameEndedEventArgs>(session_GameEnded);
             session.SessionEnded += new EventHandler<NetworkSessionEndedEventArgs>(session_SessionEnded);
+
+            return session;
+        }
+
+        public AvailableNetworkSessionCollection FindSessions()
+        {
+            availableSessions = NetworkSession.Find(NetworkSessionType.SystemLink, MAX_LOCAL_PLAYERS, null);
+            return availableSessions;
+        }
+
+        public AvailableNetworkSessionCollection GetAvailableSessions()
+        {
+            if (availableSessions == null)
+            {
+                availableSessions = FindSessions();
+            }
+            return availableSessions;
         }
 
         public void DestroySession()
