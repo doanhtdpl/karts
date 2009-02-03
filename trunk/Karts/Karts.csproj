@@ -84,6 +84,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Camera\Camera.cs" />
     <Compile Include="Code\Graphics\Object3D.cs" />
     <Compile Include="Code\GameLogic\Circuit.cs" />
     <Compile Include="Code\Managers\ResourcesManager.cs" />

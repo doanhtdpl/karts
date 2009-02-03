@@ -40,9 +40,9 @@ namespace Karts.Code
         {
         }
 
-        public void Draw(GameTime GameTime)
+        public void Draw(GameTime gameTime, Matrix camProjMatrix, Matrix camViewMatrix)
         {
-            m_Object3D.Draw();
+            m_Object3D.Draw(camProjMatrix, camViewMatrix);
         }
     }
 }

@@ -46,6 +46,8 @@ namespace Karts
             resources.Init(this.Content);
 
             GameStateManager.GetInstance().ChangeState(new MainMenu());
+
+            PlayerManager.GetInstance().CreatePlayer("Barbur", "Ship", "Ship");
         }
 
         /// <summary>
