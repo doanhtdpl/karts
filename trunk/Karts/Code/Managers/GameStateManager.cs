@@ -8,8 +8,8 @@ namespace Karts.Code
 {
     class GameStateManager
     {
-        private List<GameState> m_GameStates = new List<GameState>();
         private GameState m_CurrentGamestate;
+        public static GameStateManager m_GameStateManager = null;
 
         public GameStateManager() 
         {
@@ -18,8 +18,28 @@ namespace Karts.Code
 
         ~GameStateManager()
         {
-            if (m_GameStates.Count > 0)
-                m_GameStates.Clear();
+            m_CurrentGamestate = null;
+        }
+
+        public static GameStateManager GetInstance()
+        {
+            if (m_GameStateManager == null)
+                m_GameStateManager = new GameStateManager();
+
+            return m_GameStateManager;
+        }
+
+        public void ChangeState(EGameStateType type)
+        {
+            if (m_CurrentGamestate != null)
+                m_CurrentGamestate.Exit();
+
+            m_CurrentGamestate = CreateState(type);
+
+            if (m_CurrentGamestate != null)
+            {
+                m_CurrentGamestate.Enter();
+            }
         }
 
         public void Update (GameTime GameTime)
@@ -32,6 +52,14 @@ namespace Karts.Code
         {
             if (m_CurrentGamestate != null)
                 m_CurrentGamestate.Draw(GameTime);
+        }
+
+        private GameState CreateState(EGameStateType type)
+        {
+            if (type == EGameStateType.EGM_CREATE_MULTIPLAYER_GAME)
+                return new CreateMultiplayerGame();
+            else
+                return null;
         }
     }
 }
