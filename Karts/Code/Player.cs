@@ -27,6 +27,7 @@ namespace Karts.Code
             m_uID = 0;
             m_Vehicle = null;
             m_Driver = null;
+            m_sName = null;
         }
 
         ~Player (){}

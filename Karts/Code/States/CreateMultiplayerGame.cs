@@ -11,12 +11,12 @@ namespace Karts.Code
         
         public override void Enter()
         {
-            Karts.m_NetworkManager.CreateSession();
+            NetworkManager.GetInstance().CreateSession();
         }
 
         public override void Exit()
         {
-            Karts.m_NetworkManager.DestroySession();
+            NetworkManager.GetInstance().DestroySession();
         }
     }
 }

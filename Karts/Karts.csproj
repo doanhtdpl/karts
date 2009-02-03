@@ -71,6 +71,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -86,6 +88,7 @@
   <ItemGroup>
     <Compile Include="Code\Circuit.cs" />
     <Compile Include="Code\States\CreateMultiplayerGame.cs" />
+    <Compile Include="Code\States\GameplayState.cs" />
     <Compile Include="Code\States\GameState.cs" />
     <Compile Include="Code\Managers\GameStateManager.cs" />
     <Compile Include="Code\Managers\NetworkManager.cs" />

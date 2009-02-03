@@ -13,6 +13,16 @@ namespace Karts.Code
 
         private NetworkSession session = null;
 
+        public static NetworkManager m_NetworkManager = null;
+
+        public static NetworkManager GetInstance()
+        {
+            if (m_NetworkManager == null)
+                m_NetworkManager = new NetworkManager();
+
+            return m_NetworkManager;
+        }
+
         public void CreateSession()
         {
             session = NetworkSession.Create(NetworkSessionType.SystemLink, MAX_LOCAL_PLAYERS, MAX_TOTAL_PLAYERS);

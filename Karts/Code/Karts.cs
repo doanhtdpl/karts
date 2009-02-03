@@ -22,9 +22,6 @@ namespace Karts
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public static NetworkManager m_NetworkManager;
-        GameStateManager m_StateManager;
-
         public Karts()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -40,9 +37,6 @@ namespace Karts
         protected override void Initialize()
         {
             Components.Add(new GamerServicesComponent(this));
-
-            m_NetworkManager = new NetworkManager();
-            m_StateManager = new GameStateManager();
 
             base.Initialize();
         }
@@ -83,8 +77,8 @@ namespace Karts
             }
 
             // TODO: Add your update logic here
-            m_NetworkManager.Update();
-            m_StateManager.Update(gameTime);
+            NetworkManager.GetInstance().Update();
+            GameStateManager.GetInstance().Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -98,7 +92,7 @@ namespace Karts
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            m_StateManager.Draw(gameTime);
+            GameStateManager.GetInstance().Draw(gameTime);
 
             base.Draw(gameTime);
         }
