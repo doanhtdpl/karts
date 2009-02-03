@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Karts.Code
 {
-    class GameplayState
+    class GameplayState : GameState
     {
         //------------------------------------
         // Class members
