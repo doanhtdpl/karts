@@ -97,6 +97,7 @@
     <Compile Include="Code\GameLogic\Player.cs" />
     <Compile Include="Code\GameLogic\Driver.cs" />
     <Compile Include="Code\GameLogic\Vehicle.cs" />
+    <Compile Include="Code\States\WaitForOtherPlayers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\Karts.cs" />
   </ItemGroup>

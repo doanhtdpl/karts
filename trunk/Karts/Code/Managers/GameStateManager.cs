@@ -29,12 +29,12 @@ namespace Karts.Code
             return m_GameStateManager;
         }
 
-        public void ChangeState(EGameStateType type)
+        public void ChangeState(GameState state)
         {
             if (m_CurrentGamestate != null)
                 m_CurrentGamestate.Exit();
 
-            m_CurrentGamestate = CreateState(type);
+            m_CurrentGamestate = state;
 
             if (m_CurrentGamestate != null)
             {
@@ -52,18 +52,6 @@ namespace Karts.Code
         {
             if (m_CurrentGamestate != null)
                 m_CurrentGamestate.Draw(GameTime);
-        }
-
-        private GameState CreateState(EGameStateType type)
-        {
-            if (type == EGameStateType.EGM_CREATE_MULTIPLAYER_GAME)
-                return new CreateMultiplayerGame();
-            else if (type == EGameStateType.EGM_MAIN_MENU)
-                return new MainMenu();
-            else if (type == EGameStateType.EGM_FIND_MULTIPLAYER_GAME)
-                return new FindMultiplayerGame();
-            else
-                return null;
         }
     }
 }

@@ -4,17 +4,18 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Karts.Code
 {
     class FindMultiplayerGame : GameState
     {
-        public override EGameStateType GetStateType() { return EGameStateType.EGM_FIND_MULTIPLAYER_GAME; }
-
         private AvailableNetworkSessionCollection availableSessions;
         private SpriteBatch spriteBatch;
         private SpriteFont spriteFont;
+
+        private int selected = 0;
 
         public override void Enter()
         {
@@ -25,6 +26,19 @@ namespace Karts.Code
 
         public override void Update(GameTime GameTime)
         {
+            KeyboardState state = Keyboard.GetState();
+            if(state.IsKeyDown(Keys.F5)){
+                selected = 0;
+                availableSessions = NetworkManager.GetInstance().GetAvailableSessions();
+            }else if(state.IsKeyDown(Keys.Down)){
+                selected = (selected + availableSessions.Count + 1) % availableSessions.Count;
+            }else if(state.IsKeyDown(Keys.Up)){
+                selected = (selected + availableSessions.Count - 1) % availableSessions.Count;
+            }else if (state.IsKeyDown(Keys.Enter)){
+                NetworkManager.GetInstance().JoinSession(availableSessions[selected]);
+                GameStateManager.GetInstance().ChangeState(new WaitForOtherPlayers());
+            }
+
             base.Update(GameTime);
         }
 
@@ -41,8 +55,8 @@ namespace Karts.Code
                 int OpenPrivateGamerSlots = availableSession.OpenPrivateGamerSlots;
                 int OpenPublicGamerSlots = availableSession.OpenPublicGamerSlots;
                 string sessionInformation = "Session available from gamertag " + HostGamerTag +
-                    "\n" + GamersInSession + " players already in this session. \n" +
-                    +OpenPrivateGamerSlots + " open private player slots available. \n" +
+                    "\n\t" + GamersInSession + " players already in this session. \n\t" +
+                    +OpenPrivateGamerSlots + " open private player slots available. \n\t" +
                     +OpenPublicGamerSlots + " public player slots available.";
 
                 spriteBatch.DrawString(spriteFont, sessionInformation, new Vector2(100, 100 + i*100), Color.Black);

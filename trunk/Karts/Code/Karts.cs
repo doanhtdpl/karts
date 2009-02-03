@@ -45,7 +45,7 @@ namespace Karts
             ResourcesManager resources = ResourcesManager.GetInstance();
             resources.Init(this.Content);
 
-            GameStateManager.GetInstance().ChangeState(EGameStateType.EGM_MAIN_MENU);
+            GameStateManager.GetInstance().ChangeState(new MainMenu());
         }
 
         /// <summary>

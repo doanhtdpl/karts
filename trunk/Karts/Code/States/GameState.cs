@@ -6,15 +6,6 @@ using Microsoft.Xna.Framework;
 
 namespace Karts.Code
 {
-    enum EGameStateType
-    {
-        EGM_INVALID     = 0,
-        EGM_MAIN_MENU = 1,
-        EGM_CREATE_MULTIPLAYER_GAME = 3,
-        EGM_FIND_MULTIPLAYER_GAME = 4,
-        EGM_GAME = 2
-    }
-
     class GameState
     {
         private bool            m_bActive;
@@ -27,7 +18,6 @@ namespace Karts.Code
         ~GameState() { }
 
         public bool IsActive()  { return m_bActive; }
-        public virtual EGameStateType GetStateType() { return EGameStateType.EGM_INVALID; }
 
         public virtual void Enter()
         {

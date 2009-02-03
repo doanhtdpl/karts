@@ -10,7 +10,7 @@ namespace Karts.Code
     public class NetworkManager
     {
         public static int MAX_LOCAL_PLAYERS = 4;
-        public static int MAX_TOTAL_PLAYERS = 31;
+        public static int MAX_TOTAL_PLAYERS = 16;
 
         private NetworkSession session = null;
         private AvailableNetworkSessionCollection availableSessions = null;
@@ -39,6 +39,16 @@ namespace Karts.Code
             session.SessionEnded += new EventHandler<NetworkSessionEndedEventArgs>(session_SessionEnded);
 
             return session;
+        }
+
+        public NetworkSession GetSession()
+        {
+            return session;
+        }
+
+        public void JoinSession(AvailableNetworkSession hostSession)
+        {
+            session = NetworkSession.Join(hostSession);
         }
 
         public AvailableNetworkSessionCollection FindSessions()
@@ -75,10 +85,19 @@ namespace Karts.Code
             }
         }
 
-        void session_GamerJoined(object sender, GamerJoinedEventArgs p) { }
-        void session_GamerLeft(object sender, GamerLeftEventArgs p) { }
-        void session_GameStarted(object sender, GameStartedEventArgs p) { }
-        void session_GameEnded(object sender, GameEndedEventArgs p) { }
-        void session_SessionEnded(object sender, NetworkSessionEndedEventArgs p) { }
+        void session_GamerJoined(object sender, GamerJoinedEventArgs p) { 
+        }
+
+        void session_GamerLeft(object sender, GamerLeftEventArgs p) { 
+        }
+
+        void session_GameStarted(object sender, GameStartedEventArgs p) { 
+        }
+
+        void session_GameEnded(object sender, GameEndedEventArgs p) { 
+        }
+
+        void session_SessionEnded(object sender, NetworkSessionEndedEventArgs p) { 
+        }
     }
 }
