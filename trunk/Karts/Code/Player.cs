@@ -30,10 +30,43 @@ namespace Karts.Code
             m_sName = null;
         }
 
-        ~Player (){}
+        ~Player ()
+        {
+            m_uID = 0;
+            m_Vehicle = null;
+            m_Driver = null;
+            m_sName = null;
+        }
 
         public UInt32 GetID() { return m_uID; }
         public String GetName() { return m_sName; }
+
+        public bool Init(String Name, String vehicle_name, String driver_name)
+        {
+            bool bInitOk = false;
+
+            // Generate the unique ID
+            m_uID = 1;
+            m_sName = Name;
+
+            // Load and init the vehicle model
+            m_Vehicle = new Vehicle();
+            bInitOk = m_Vehicle.Init(vehicle_name);
+
+            if (bInitOk)
+            {
+                // Load and init the driver model
+                m_Driver = new Driver();
+                bInitOk = m_Driver.Init(driver_name);
+            }
+
+            if (!bInitOk)
+            {
+                // Print a message error
+            }
+
+            return bInitOk;
+        }
 
         public void Update(GameTime GameTime)
         {

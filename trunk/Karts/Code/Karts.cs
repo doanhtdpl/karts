@@ -37,8 +37,10 @@ namespace Karts
         protected override void Initialize()
         {
             Components.Add(new GamerServicesComponent(this));
-
             base.Initialize();
+
+            ResourcesManager resources = ResourcesManager.GetInstance();
+            resources.Init(this.Content);
         }
 
         /// <summary>
