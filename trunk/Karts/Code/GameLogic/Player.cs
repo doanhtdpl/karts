@@ -16,7 +16,7 @@ namespace Karts.Code
         private Vehicle m_Vehicle;
         private Driver m_Driver;
         private UInt32 m_uID;
-        private String m_sName;
+        private string m_sName;
 
 
         // ------------------------------------------------
@@ -39,9 +39,9 @@ namespace Karts.Code
         }
 
         public UInt32 GetID() { return m_uID; }
-        public String GetName() { return m_sName; }
+        public string GetName() { return m_sName; }
 
-        public bool Init(String Name, String vehicle_name, String driver_name)
+        public bool Init(string Name, string vehicle_name, string driver_name)
         {
             bool bInitOk = false;
 
