@@ -19,6 +19,11 @@ namespace Karts.Code
         public Driver() { }
         ~Driver() { }
 
+        public bool Init(String resource_name)
+        {
+            return true;
+        }
+
         public void Update(GameTime GameTime)
         {
         }

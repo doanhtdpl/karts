@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\Circuit.cs" />
+    <Compile Include="Code\Managers\ResourcesManager.cs" />
     <Compile Include="Code\States\CreateMultiplayerGame.cs" />
     <Compile Include="Code\States\GameplayState.cs" />
     <Compile Include="Code\States\GameState.cs" />
