@@ -8,15 +8,9 @@ namespace Karts.Code
 {
     class GameStateManager
     {
-        // ------------------------------------------------
-        // Class members
-        // ------------------------------------------------
         private List<GameState> m_GameStates = new List<GameState>();
         private GameState m_CurrentGamestate;
 
-        // ------------------------------------------------
-        // Class methods
-        // ------------------------------------------------
         public GameStateManager() 
         {
             m_CurrentGamestate = null;

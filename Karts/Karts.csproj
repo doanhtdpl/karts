@@ -85,14 +85,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\Circuit.cs" />
-    <Compile Include="Code\GameState.cs" />
-    <Compile Include="Code\GameStateManager.cs" />
-    <Compile Include="Code\PlayerManager.cs" />
+    <Compile Include="Code\States\CreateMultiplayerGame.cs" />
+    <Compile Include="Code\States\GameState.cs" />
+    <Compile Include="Code\Managers\GameStateManager.cs" />
+    <Compile Include="Code\Managers\NetworkManager.cs" />
+    <Compile Include="Code\Managers\PlayerManager.cs" />
     <Compile Include="Code\Player.cs" />
     <Compile Include="Code\Driver.cs" />
     <Compile Include="Code\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Code\Program.cs" />
     <Compile Include="Code\Karts.cs" />
   </ItemGroup>
   <ItemGroup>
