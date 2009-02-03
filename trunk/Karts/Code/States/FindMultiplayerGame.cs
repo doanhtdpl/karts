@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Karts.Code.States
+namespace Karts.Code
 {
     class FindMultiplayerGame : GameState
     {

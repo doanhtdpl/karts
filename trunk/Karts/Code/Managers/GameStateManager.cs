@@ -60,6 +60,8 @@ namespace Karts.Code
                 return new CreateMultiplayerGame();
             else if (type == EGameStateType.EGM_MAIN_MENU)
                 return new MainMenu();
+            else if (type == EGameStateType.EGM_FIND_MULTIPLAYER_GAME)
+                return new FindMultiplayerGame();
             else
                 return null;
         }
