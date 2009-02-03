@@ -28,7 +28,7 @@ namespace Karts.Code
                 selected = (selected + OPTIONS.Length + 1) % OPTIONS.Length;
             }else if (state.IsKeyDown(Keys.Up)){
                 selected = (selected + OPTIONS.Length - 1) % OPTIONS.Length;
-            }else if (state.IsKeyDown(Keys.Enter){
+            }else if (state.IsKeyDown(Keys.Enter)){
 
             }
 
