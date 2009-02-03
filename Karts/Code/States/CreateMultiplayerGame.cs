@@ -9,8 +9,6 @@ namespace Karts.Code
 {
     class CreateMultiplayerGame : GameState
     {
-        public override EGameStateType GetStateType() { return EGameStateType.EGM_CREATE_MULTIPLAYER_GAME; }
-
         private NetworkSession session = null;
 
         public override void Enter()
@@ -25,6 +23,7 @@ namespace Karts.Code
 
         public override void Draw(GameTime GameTime)
         {
+
             base.Draw(GameTime);
         }
 
