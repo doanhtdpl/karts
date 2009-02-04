@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+//using Microsoft.Xna.Framework.Graphics;
 
 namespace Karts.Code
 {
@@ -14,6 +16,7 @@ namespace Karts.Code
         public static ResourcesManager m_ResourcesManager = null;
 
         private ContentManager m_ContentManager;
+        private GraphicsDeviceManager m_GraphicsDevice;
 
         //--------------------------------------------
         // Class methods
@@ -34,13 +37,19 @@ namespace Karts.Code
             return m_ContentManager;
         }
 
-        public bool Init(ContentManager content)
+        public GraphicsDeviceManager GetGraphicsDeviceManager()
         {
-            bool bInitOk = content != null;
+            return m_GraphicsDevice;
+        }
+
+        public bool Init(ContentManager content, GraphicsDeviceManager graphics)
+        {
+            bool bInitOk = content != null && graphics != null;
 
             if (bInitOk)
             {
                 m_ContentManager = content;
+                m_GraphicsDevice = graphics;
             }
 
             return bInitOk;
