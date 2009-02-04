@@ -24,12 +24,14 @@ namespace Karts.Code
 
         public override void Update(GameTime GameTime)
         {
-            KeyboardState state = Keyboard.GetState();
-            if (state.IsKeyDown(Keys.Down)){
+            if (InputManager.GetInstance().isInputPressed(0, Buttons.DPadDown) || InputManager.GetInstance().getAxisY(0, true) < 0){
                 selected = (selected + OPTIONS.Length + 1) % OPTIONS.Length;
-            }else if (state.IsKeyDown(Keys.Up)){
+            }
+            else if (InputManager.GetInstance().isInputPressed(0, Buttons.DPadUp) || InputManager.GetInstance().getAxisY(0, true) > 0){
                 selected = (selected + OPTIONS.Length - 1) % OPTIONS.Length;
-            }else if (state.IsKeyDown(Keys.Enter)){
+            }
+            else if (InputManager.GetInstance().isInputPressed(0, Buttons.A))
+            {
                 if(selected == 3){
                     Karts.karts.Exit();
                 }
