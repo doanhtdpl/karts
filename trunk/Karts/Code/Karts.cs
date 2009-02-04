@@ -41,13 +41,7 @@ namespace Karts
             Components.Add(new GamerServicesComponent(this));
 
             base.Initialize();
-
-            ResourcesManager resources = ResourcesManager.GetInstance();
-            resources.Init(this.Content);
-
             GameStateManager.GetInstance().ChangeState(new MainMenu());
-
-            PlayerManager.GetInstance().CreatePlayer("Barbur", "Ship", "Ship");
         }
 
         /// <summary>
@@ -56,11 +50,15 @@ namespace Karts
         /// </summary>
         protected override void LoadContent()
         {
+            ResourcesManager resources = ResourcesManager.GetInstance();
+            resources.Init(this.Content);
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             spriteFont = Content.Load<SpriteFont>("KartsFont");
 
             // TODO: use this.Content to load your game content here
+            PlayerManager.GetInstance().CreatePlayer("Barbur", "Ship", "Ship");
         }
 
         /// <summary>

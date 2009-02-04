@@ -58,11 +58,11 @@ namespace Karts.Code
             if (bInitOk)
             {
                 m_Vehicle.GetObject3D().SetPosition(0, 0, 0);
-
+                /*
                 // Load and init the driver model
                 m_Driver = new Driver();
                 bInitOk = m_Driver.Init(driver_name);
-
+                */
                 if (bInitOk)
                 {
                     m_Camera = new Camera();
@@ -82,13 +82,13 @@ namespace Karts.Code
         {
             m_Camera.Update(gameTime);
             m_Vehicle.Update(gameTime);
-            m_Driver.Update(gameTime);
+            //m_Driver.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime)
         {
             m_Vehicle.Draw(gameTime, m_Camera.GetProjectionMatrix(), m_Camera.GetViewMatrix());
-            m_Driver.Draw(gameTime, m_Camera.GetProjectionMatrix(), m_Camera.GetViewMatrix());
+            //m_Driver.Draw(gameTime, m_Camera.GetProjectionMatrix(), m_Camera.GetViewMatrix());
         }
     }
 }
