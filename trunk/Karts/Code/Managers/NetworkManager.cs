@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.GamerServices;
 
 namespace Karts.Code
 {
-    public class NetworkManager
+    public class NetworkManager : GameComponent
     {
         public static int MAX_LOCAL_PLAYERS = 4;
         public static int MAX_TOTAL_PLAYERS = 16;
@@ -19,10 +20,20 @@ namespace Karts.Code
 
         public static NetworkManager GetInstance()
         {
+            return m_NetworkManager;
+        }
+
+        public static NetworkManager Init(Game game)
+        {
             if (m_NetworkManager == null)
-                m_NetworkManager = new NetworkManager();
+                m_NetworkManager = new NetworkManager(game);
 
             return m_NetworkManager;
+        }
+
+        private NetworkManager(Game game)
+            : base(game)
+        {
         }
 
         public NetworkSession CreateSession()

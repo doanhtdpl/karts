@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 using Karts.Code;
+using Karts.Code.SceneManager;
 
 namespace Karts
 {
@@ -40,8 +41,15 @@ namespace Karts
         {
             Components.Add(new GamerServicesComponent(this));
 
+            Components.Add(InputManager.Init(this, 0));
+            Components.Add(GameStateManager.Init(this));
+            Components.Add(NetworkManager.Init(this));
+            Components.Add(PlayerManager.Init(this));
+            Components.Add(CameraManager.Init(this));
+            Components.Add(SceneManager.Init(this));
+
             base.Initialize();
-            //GameStateManager.GetInstance().ChangeState(new MainMenu());
+            GameStateManager.GetInstance().ChangeState(new MainMenu());
         }
 
         /// <summary>
@@ -77,19 +85,11 @@ namespace Karts
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            InputManager.GetInstance().Update();
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 this.Exit();
             }
-
-            // TODO: Add your update logic here
-            //NetworkManager.GetInstance().Update();
-            //GameStateManager.GetInstance().Update(gameTime);
-            PlayerManager.GetInstance().Update(gameTime);
-            CameraManager.GetInstance().Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -101,10 +101,6 @@ namespace Karts
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-            PlayerManager.GetInstance().Draw(gameTime);
-            //GameStateManager.GetInstance().Draw(gameTime);
 
             base.Draw(gameTime);
         }

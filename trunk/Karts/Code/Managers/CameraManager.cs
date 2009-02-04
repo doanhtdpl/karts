@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace Karts.Code
 {
-    class CameraManager
+    class CameraManager : GameComponent
     {
         //-------------------------------------------------
         // Class members
@@ -18,7 +18,7 @@ namespace Karts.Code
         //-------------------------------------------------
         // Class methods
         //-------------------------------------------------
-        public CameraManager() 
+        public CameraManager(Game game) : base(game)
         {
             iActiveCameraID = -1;
         }
@@ -27,10 +27,13 @@ namespace Karts.Code
 
         public static CameraManager GetInstance()
         {
+            return m_CameraManager;
+        }
+
+        public static CameraManager Init(Game game)
+        {
             if (m_CameraManager == null)
-            {
-                m_CameraManager = new CameraManager();
-            }
+                m_CameraManager = new CameraManager(game);
 
             return m_CameraManager;
         }
@@ -78,7 +81,7 @@ namespace Karts.Code
                 return null;
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             foreach (Camera c in m_CameraList)
 	        {

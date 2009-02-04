@@ -6,12 +6,12 @@ using Microsoft.Xna.Framework;
 
 namespace Karts.Code
 {
-    class GameStateManager
+    class GameStateManager : DrawableGameComponent
     {
         private GameState m_CurrentGamestate;
         public static GameStateManager m_GameStateManager = null;
 
-        public GameStateManager() 
+        public GameStateManager(Game game) : base(game)
         {
             m_CurrentGamestate = null;
         }
@@ -21,11 +21,15 @@ namespace Karts.Code
             m_CurrentGamestate = null;
         }
 
-        public static GameStateManager GetInstance()
+        public static GameStateManager Init(Game game)
         {
             if (m_GameStateManager == null)
-                m_GameStateManager = new GameStateManager();
+                m_GameStateManager = new GameStateManager(game);
+            return m_GameStateManager;
+        }
 
+        public static GameStateManager GetInstance()
+        {
             return m_GameStateManager;
         }
 
@@ -42,13 +46,13 @@ namespace Karts.Code
             }
         }
 
-        public void Update (GameTime GameTime)
+        public override void Update (GameTime GameTime)
         {
             if (m_CurrentGamestate != null)
                 m_CurrentGamestate.Update(GameTime);
         }
 
-        public void Draw(GameTime GameTime)
+        public override void Draw(GameTime GameTime)
         {
             if (m_CurrentGamestate != null)
                 m_CurrentGamestate.Draw(GameTime);
