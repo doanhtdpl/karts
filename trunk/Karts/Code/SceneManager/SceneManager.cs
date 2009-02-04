@@ -3,29 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Karts.Code.SceneManager.Components;
 
 namespace Karts.Code.SceneManager
 {
-    class SceneManager : DrawableGameComponent
+    class Gui : DrawableGameComponent
     {
-        private static SceneManager sceneManager;
+        # region Singleton 
 
-        public static SceneManager Init(Game game)
+        private static Gui sceneManager;
+
+        public static Gui Init(Game game)
         {
             if (sceneManager == null)
-                sceneManager = new SceneManager(game);
+                sceneManager = new Gui(game);
+
             return sceneManager;
         }
 
-        public static SceneManager GetInstance()
+        public static Gui GetInstance()
         {
             return sceneManager;
         }
 
-        private SceneManager(Game game) : base(game)
+        # endregion
+
+        private Gui(Game game)
+            : base(game)
         {
-            this.DrawOrder = 100;
+            screens = new List<Screen>();
+            spriteBatch = new SpriteBatch(ResourcesManager.GetInstance().GetGraphicsDeviceManager().GraphicsDevice);
         }
+
+        private List<Screen> screens;
+        private SpriteBatch spriteBatch;
 
         public override void Update(GameTime gameTime)
         {
@@ -34,7 +46,26 @@ namespace Karts.Code.SceneManager
 
         public override void Draw(GameTime gameTime)
         {
+            spriteBatch.Begin();
+
+            foreach (Screen screen in screens)
+                screen.Draw();
+
+            spriteBatch.End();
+
             base.Draw(gameTime);
         }
+
+        public void AddComponent(Screen comp)
+        {
+            screens.Add(comp);
+        }
+
+        public void RemoveComponent(Screen comp)
+        {
+            screens.Remove(comp);
+        }
+
+        public SpriteBatch GetSpriteBatch() { return spriteBatch; }
     }
 }
