@@ -57,7 +57,6 @@ namespace Karts
             spriteBatch = new SpriteBatch(GraphicsDevice);
             spriteFont = Content.Load<SpriteFont>("KartsFont");
 
-            // TODO: use this.Content to load your game content here
             PlayerManager.GetInstance().CreatePlayer("Barbur", "Ship", "Ship");
         }
 
@@ -78,6 +77,8 @@ namespace Karts
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
+            InputManager.GetInstance().Update();
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
