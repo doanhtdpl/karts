@@ -7,16 +7,22 @@ using Microsoft.Xna.Framework;
 
 namespace Karts.Code
 {
-    class InputManager
+    class InputManager : GameComponent
     {
         private static InputManager inputManager;
 
         public static InputManager GetInstance()
         {
+            return inputManager;
+        }
+
+        public static InputManager Init(Game game, int updateOrder)
+        {
             if (inputManager == null)
-            {
-                inputManager = new InputManager();
-            }
+                inputManager = new InputManager(game);
+
+            inputManager.UpdateOrder = updateOrder;
+
             return inputManager;
         }
 
@@ -24,7 +30,7 @@ namespace Karts.Code
         private Hashtable[] inputReleased;
         private GamePadState[] gamePadStates;
 
-        private InputManager()
+        private InputManager(Game game) : base(game)
         {
             inputPressed = new Hashtable[4];
             inputReleased = new Hashtable[4];

@@ -35,15 +35,15 @@ namespace Karts.Code
                 if(selected == 3){
                     Karts.karts.Exit();
                 }
-                else if (selected == 0)
+                else if (selected == 1)
                 {
                     GameStateManager.GetInstance().ChangeState(new CreateMultiplayerGame());
                 }
-                else if (selected == 1)
+                else if (selected == 2)
                 {
                     GameStateManager.GetInstance().ChangeState(new FindMultiplayerGame());
                 }
-                else if (selected == 2)
+                else if (selected == 0)
                 {
                     GameStateManager.GetInstance().ChangeState(new GameplayState());
                 }
