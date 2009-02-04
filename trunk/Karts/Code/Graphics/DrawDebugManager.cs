@@ -68,10 +68,13 @@ namespace Karts.Code
             v[0] = new VertexPositionColor(or, c);
 
             gdm.GraphicsDevice.RenderState.PointSize = fSize;
+            
+            
 
             effect = new BasicEffect(gdm.GraphicsDevice, null);
-            //effect.View = Matrix.CreateLookAt(new Vector3(0, 0, 3), Vector3.Zero, Vector3.Up);
-            //effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)gdm.GraphicsDevice.Viewport.Width / (float)gdm.GraphicsDevice.Viewport.Height, 1.0f, 100.0f);
+            Camera cam = CameraManager.GetInstance().GetActiveCamera();
+            effect.View = cam.GetViewMatrix();
+            effect.Projection = cam.GetProjectionMatrix();
             effect.VertexColorEnabled = true;
 
             effect.Begin();
@@ -83,6 +86,14 @@ namespace Karts.Code
                 pass.End();
             }
             effect.End();
+        }
+
+        public void DrawText(String text, float x, float y, Color c)
+        {
+            ResourcesManager rm = ResourcesManager.GetInstance();
+            Karts.spriteBatch.Begin();
+            Karts.spriteBatch.DrawString(Karts.spriteFont, text, new Vector2(x, y), c);
+            Karts.spriteBatch.End();
         }
 
         public void DrawSphere(Vector3 center, float fRad, Color c)

@@ -111,6 +111,11 @@ namespace Karts.Code
             m_vRotation.X = fPitch;
             m_vRotation.X = fRoll;
         }
+        
+        public void SetRotation(Vector3 rotation)
+        {
+            m_vRotation = rotation;
+        }
 
         public void Draw(Matrix camProjMatrix, Matrix camViewMatrix)
         {

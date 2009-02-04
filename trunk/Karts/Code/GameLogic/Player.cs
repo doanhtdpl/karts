@@ -18,6 +18,8 @@ namespace Karts.Code
         private UInt32 m_uID;
         private string m_sName;
         private int m_IDCamera;
+        private Vector3 m_vPosition;
+        private Vector3 m_vRotation;
 
 
         // ------------------------------------------------
@@ -29,6 +31,8 @@ namespace Karts.Code
             m_Vehicle = null;
             m_Driver = null;
             m_sName = null;
+            m_vPosition = Vector3.Zero;
+            m_vRotation = Vector3.Zero;
             m_IDCamera = -1;
         }
 
@@ -38,18 +42,22 @@ namespace Karts.Code
             m_Vehicle = null;
             m_Driver = null;
             m_sName = null;
+            m_vPosition = Vector3.Zero;
+            m_vRotation = Vector3.Zero;
             m_IDCamera = -1;
         }
 
         public UInt32 GetID() { return m_uID; }
         public string GetName() { return m_sName; }
 
-        public bool Init(string Name, UInt32 uID, string vehicle_name, string driver_name)
+        public bool Init(Vector3 position, Vector3 rotation, string Name, UInt32 uID, string vehicle_name, string driver_name)
         {
             bool bInitOk = false;
 
             m_uID = uID;
             m_sName = Name;
+            m_vPosition = position;
+            m_vRotation = rotation;
 
             // Load and init the vehicle model
             m_Vehicle = new Vehicle();
@@ -57,7 +65,8 @@ namespace Karts.Code
 
             if (bInitOk)
             {
-                m_Vehicle.GetObject3D().SetPosition(0, 0, 0);
+                m_Vehicle.GetObject3D().SetPosition(m_vPosition);
+                m_Vehicle.GetObject3D().SetRotation(m_vRotation);
                 /*
                 // Load and init the driver model
                 m_Driver = new Driver();

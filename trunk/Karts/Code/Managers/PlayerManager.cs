@@ -36,7 +36,7 @@ namespace Karts.Code
             return m_PlayerList.Find(new FindPlayerID(uID).CompareID);
         }
 
-        public bool CreatePlayer(string Name, string vehicle_name, string driver_name)
+        public bool CreatePlayer(Vector3 position, Vector3 rotation, string Name, string vehicle_name, string driver_name)
         {
             // Generate ID
             UInt32 uID = 1;
@@ -50,7 +50,7 @@ namespace Karts.Code
             }
 
             newPlayer = new Player();
-            if (newPlayer.Init(Name, uID, vehicle_name, driver_name))
+            if (newPlayer.Init(position, rotation, Name, uID, vehicle_name, driver_name))
             {
                 m_PlayerList.Add(newPlayer);
             }

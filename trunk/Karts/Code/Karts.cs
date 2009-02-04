@@ -57,7 +57,7 @@ namespace Karts
             spriteBatch = new SpriteBatch(GraphicsDevice);
             spriteFont = Content.Load<SpriteFont>("KartsFont");
 
-            PlayerManager.GetInstance().CreatePlayer("Barbur", "Ship", "Ship");
+            PlayerManager.GetInstance().CreatePlayer(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), "Barbur", "Ship", "Ship");
         }
 
         /// <summary>

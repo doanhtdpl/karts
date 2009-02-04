@@ -54,13 +54,10 @@ namespace Karts.Code
 
         public override void Draw(GameTime GameTime)
         {
-            Karts.spriteBatch.Begin();
             for (int i = 0; i < OPTIONS.Length; ++i)
             {
-                Karts.spriteBatch.DrawString(Karts.spriteFont, OPTIONS[i], new Vector2(100, 100 + i * 100), i == selected?Color.Red:Color.Black);
+                DrawDebugManager.GetInstance().DrawText(OPTIONS[i], 100, 100 + i * 100, i == selected ? Color.Red : Color.Black);
             }
-            Karts.spriteBatch.End();
-
             base.Draw(GameTime);
         }
 
