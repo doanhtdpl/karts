@@ -91,10 +91,11 @@
     <Compile Include="Code\Managers\InputManager.cs" />
     <Compile Include="Code\Managers\CameraManager.cs" />
     <Compile Include="Code\Managers\ResourcesManager.cs" />
-    <Compile Include="Code\SceneManager\Component\Component.cs" />
-    <Compile Include="Code\SceneManager\Component\Container.cs" />
-    <Compile Include="Code\SceneManager\Component\Screen.cs" />
-    <Compile Include="Code\SceneManager\Effect\Effect.cs" />
+    <Compile Include="Code\SceneManager\Components\Component.cs" />
+    <Compile Include="Code\SceneManager\Components\Container.cs" />
+    <Compile Include="Code\SceneManager\Components\TextComponent.cs" />
+    <Compile Include="Code\SceneManager\Components\Screen.cs" />
+    <Compile Include="Code\SceneManager\Effects\Effect.cs" />
     <Compile Include="Code\SceneManager\SceneManager.cs" />
     <Compile Include="Code\States\CreateMultiplayerGame.cs" />
     <Compile Include="Code\States\FindMultiplayerGame.cs" />

@@ -41,15 +41,7 @@ namespace Karts
         {
             Components.Add(new GamerServicesComponent(this));
 
-            Components.Add(InputManager.Init(this, 0));
-            Components.Add(GameStateManager.Init(this));
-            Components.Add(NetworkManager.Init(this));
-            Components.Add(PlayerManager.Init(this));
-            Components.Add(CameraManager.Init(this));
-            Components.Add(SceneManager.Init(this));
-
             base.Initialize();
-            GameStateManager.GetInstance().ChangeState(new MainMenu());
         }
 
         /// <summary>
@@ -61,10 +53,26 @@ namespace Karts
             ResourcesManager resources = ResourcesManager.GetInstance();
             resources.Init(this.Content, this.graphics);
 
+            //Initialize components
+            Components.Add(InputManager.Init(this));
+            Components.Add(GameStateManager.Init(this));
+            Components.Add(NetworkManager.Init(this));
+            Components.Add(PlayerManager.Init(this));
+            Components.Add(CameraManager.Init(this));
+            Components.Add(Gui.Init(this));
+
+            InputManager.GetInstance().UpdateOrder = 0;
+            GameStateManager.GetInstance().UpdateOrder = 1;
+            NetworkManager.GetInstance().UpdateOrder = 2;
+            PlayerManager.GetInstance().UpdateOrder = 3;
+            CameraManager.GetInstance().UpdateOrder = 4;
+            Gui.GetInstance().UpdateOrder = 5;
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             spriteFont = Content.Load<SpriteFont>("KartsFont");
 
+            GameStateManager.GetInstance().ChangeState(new MainMenu());
             PlayerManager.GetInstance().CreatePlayer(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), "Barbur", "Ship", "Ship");
         }
 

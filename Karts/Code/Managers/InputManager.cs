@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 namespace Karts.Code
 {
@@ -16,64 +17,109 @@ namespace Karts.Code
             return inputManager;
         }
 
-        public static InputManager Init(Game game, int updateOrder)
+        public static InputManager Init(Game game)
         {
             if (inputManager == null)
                 inputManager = new InputManager(game);
 
-            inputManager.UpdateOrder = updateOrder;
-
             return inputManager;
         }
 
-        private Hashtable[] inputPressed;
-        private Hashtable[] inputReleased;
+        //Gamepads
+        private Hashtable[] buttonPressed;
+        private Hashtable[] buttonReleased;
         private GamePadState[] gamePadStates;
+
+        //Keyboard
+        private Hashtable keyPressed;
+        private Hashtable keyReleased;
+        private KeyboardState keyboardState;
 
         private InputManager(Game game) : base(game)
         {
-            inputPressed = new Hashtable[4];
-            inputReleased = new Hashtable[4];
+            //Gamepad
+            buttonPressed = new Hashtable[4];
+            buttonReleased = new Hashtable[4];
             for (int i = 0; i < 4; ++i)
             {
-                inputPressed[i] = new Hashtable();
-                inputReleased[i] = new Hashtable();
+                buttonPressed[i] = new Hashtable();
+                buttonReleased[i] = new Hashtable();
             }
             gamePadStates = new GamePadState[4];
+
+            //Keyboard
+            keyPressed = new Hashtable();
+            keyReleased = new Hashtable();
         }
 
-        public void Update()
+        public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+
+            //GamePads
             for (int i = 0; i < 4; ++i)
             {
                 gamePadStates[i] = GamePad.GetState((PlayerIndex)i);
-                inputPressed[i].Clear();
+                buttonPressed[i].Clear();
 
                 foreach (Buttons button in Enum.GetValues(typeof(Buttons)))
                 {
-                    if (gamePadStates[i].IsButtonUp(button) && !inputReleased[i].ContainsKey(button))
+                    if (gamePadStates[i].IsButtonUp(button) && !buttonReleased[i].ContainsKey(button))
                     {
-                        inputReleased[i].Add(button, true);
+                        buttonReleased[i].Add(button, true);
                     }
                 }
 
                 foreach (Buttons button in Enum.GetValues(typeof(Buttons)))
                 {
-                    if (gamePadStates[i].IsButtonDown(button) && inputReleased[i].ContainsKey(button))
+                    if (gamePadStates[i].IsButtonDown(button) && buttonReleased[i].ContainsKey(button))
                     {
-                        inputPressed[i].Add(button, true);
-                        inputReleased[i].Remove(button);
+                        buttonPressed[i].Add(button, true);
+                        buttonReleased[i].Remove(button);
                     }
+                }
+            }
+
+            //Keyboard
+            keyboardState = Keyboard.GetState();
+            keyPressed.Clear();
+
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))
+            {
+                if (keyboardState.IsKeyUp(key) && !keyReleased.ContainsKey(key))
+                {
+                    keyReleased.Add(key, true);
+                }
+            }
+
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))
+            {
+                if (keyboardState.IsKeyDown(key) && keyReleased.ContainsKey(key))
+                {
+                    keyPressed.Add(key, true);
+                    keyReleased.Remove(key);
                 }
             }
         }
 
-        public bool isInputPressed(int index, Buttons btn)
+        //Keyboard
+        public bool isKeyPressed(Keys key)
         {
-            return inputPressed[index].ContainsKey(btn);
+            return keyPressed.ContainsKey(key);
         }
 
-        public bool isInputDown(int index, Buttons btn)
+        public bool isKeyDown(Keys key)
+        {
+            return keyboardState.IsKeyDown(key);
+        }
+
+        //Gamepads
+        public bool isButtonPressed(int index, Buttons btn)
+        {
+            return buttonPressed[index].ContainsKey(btn);
+        }
+
+        public bool isButtonDown(int index, Buttons btn)
         {
             return gamePadStates[index].IsButtonDown(btn);
         }
@@ -85,7 +131,6 @@ namespace Karts.Code
             }else{
                 return gamePadStates[index].ThumbSticks.Right.X;
             }
-            //return 0;
         }
 
         public float getAxisY(int index, bool left)
@@ -98,7 +143,6 @@ namespace Karts.Code
             {
                 return gamePadStates[index].ThumbSticks.Right.Y;
             }
-            //return 0;
         }
     }
 }
