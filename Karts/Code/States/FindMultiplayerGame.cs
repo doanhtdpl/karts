@@ -45,7 +45,6 @@ namespace Karts.Code
         public override void Draw(GameTime GameTime)
         {
             AvailableNetworkSession availableSession;
-            spriteBatch.Begin();
             for (int i = 0; i < availableSessions.Count; ++i)
             {
                 availableSession = availableSessions[i];
@@ -59,9 +58,8 @@ namespace Karts.Code
                     +OpenPrivateGamerSlots + " open private player slots available. \n\t" +
                     +OpenPublicGamerSlots + " public player slots available.";
 
-                spriteBatch.DrawString(spriteFont, sessionInformation, new Vector2(100, 100 + i*100), Color.Black);
+                DrawDebugManager.GetInstance().DrawText(sessionInformation, 100, 100 + i * 100, Color.Black);
             }
-            spriteBatch.End();
 
             base.Draw(GameTime);
         }

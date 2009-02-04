@@ -33,12 +33,11 @@ namespace Karts.Code
 
         public override void Draw(GameTime GameTime)
         {
-            Karts.spriteBatch.Begin();
             for (int i = 0; i < session.AllGamers.Count; ++i)
             {
-                Karts.spriteBatch.DrawString(Karts.spriteFont, session.AllGamers[i].Gamertag, new Vector2(100, 100 + i * 100), Color.Black);
+                DrawDebugManager.GetInstance().DrawText(session.AllGamers[i].Gamertag, 100, 100 + i * 100, Color.Black);
             }
-            Karts.spriteBatch.End();
+
             base.Draw(GameTime);
         }
 
