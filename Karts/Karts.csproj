@@ -85,9 +85,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\Camera\Camera.cs" />
+    <Compile Include="Code\Graphics\DrawDebugManager.cs" />
     <Compile Include="Code\Graphics\Object3D.cs" />
     <Compile Include="Code\GameLogic\Circuit.cs" />
     <Compile Include="Code\Managers\InputManager.cs" />
+    <Compile Include="Code\Managers\CameraManager.cs" />
     <Compile Include="Code\Managers\ResourcesManager.cs" />
     <Compile Include="Code\States\CreateMultiplayerGame.cs" />
     <Compile Include="Code\States\FindMultiplayerGame.cs" />

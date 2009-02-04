@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
-
+using Microsoft.Xna.Framework.Input;
 
 
 namespace Karts.Code
@@ -17,7 +17,7 @@ namespace Karts.Code
         private Driver m_Driver;
         private UInt32 m_uID;
         private string m_sName;
-        private Camera m_Camera;
+        private int m_IDCamera;
 
 
         // ------------------------------------------------
@@ -29,7 +29,7 @@ namespace Karts.Code
             m_Vehicle = null;
             m_Driver = null;
             m_sName = null;
-            m_Camera = null;
+            m_IDCamera = -1;
         }
 
         ~Player ()
@@ -38,7 +38,7 @@ namespace Karts.Code
             m_Vehicle = null;
             m_Driver = null;
             m_sName = null;
-            m_Camera = null;
+            m_IDCamera = -1;
         }
 
         public UInt32 GetID() { return m_uID; }
@@ -65,8 +65,7 @@ namespace Karts.Code
                 */
                 if (bInitOk)
                 {
-                    m_Camera = new Camera();
-                    m_Camera.SetTarget(this.m_Vehicle.GetObject3D());
+                    m_IDCamera = CameraManager.GetInstance().CreateCamera(m_Vehicle.GetObject3D());
                 }
             }
 
@@ -80,14 +79,34 @@ namespace Karts.Code
 
         public void Update(GameTime gameTime)
         {
-            m_Camera.Update(gameTime);
+            Vector3 newPos = new Vector3(0, 0, 0);
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                newPos.Z = 10.0f;
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                newPos.Z = -10.0f;
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                newPos.X = 10.0f;
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                newPos.X = -10.0f;
+            }
+
+            m_Vehicle.GetObject3D().AddPosition(newPos);
+
             m_Vehicle.Update(gameTime);
             //m_Driver.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime)
         {
-            m_Vehicle.Draw(gameTime, m_Camera.GetProjectionMatrix(), m_Camera.GetViewMatrix());
+            Camera cam = CameraManager.GetInstance().GetCamera(m_IDCamera);
+            m_Vehicle.Draw(gameTime, cam.GetProjectionMatrix(), cam.GetViewMatrix());
             //m_Driver.Draw(gameTime, m_Camera.GetProjectionMatrix(), m_Camera.GetViewMatrix());
         }
     }

@@ -47,7 +47,7 @@ namespace Karts.Code
             m_vLookAt = Vector3.Zero;
             m_vLookAtOffset = new Vector3(0, 2.8f, 0);
             m_vPosition = Vector3.Zero;
-            m_vDesiredPositionOffset = new Vector3(0, 2.0f, 2.0f);
+            m_vDesiredPositionOffset = new Vector3(0, 2000.0f, 3300.0f);
             m_vUp = Vector3.Up;
             m_vVelocity = Vector3.Zero;
 

@@ -41,7 +41,7 @@ namespace Karts
             Components.Add(new GamerServicesComponent(this));
 
             base.Initialize();
-            GameStateManager.GetInstance().ChangeState(new MainMenu());
+            //GameStateManager.GetInstance().ChangeState(new MainMenu());
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Karts
         protected override void LoadContent()
         {
             ResourcesManager resources = ResourcesManager.GetInstance();
-            resources.Init(this.Content);
+            resources.Init(this.Content, this.graphics);
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -86,9 +86,10 @@ namespace Karts
             }
 
             // TODO: Add your update logic here
-            NetworkManager.GetInstance().Update();
-            GameStateManager.GetInstance().Update(gameTime);
+            //NetworkManager.GetInstance().Update();
+            //GameStateManager.GetInstance().Update(gameTime);
             PlayerManager.GetInstance().Update(gameTime);
+            CameraManager.GetInstance().Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -103,7 +104,7 @@ namespace Karts
 
             // TODO: Add your drawing code here
             PlayerManager.GetInstance().Draw(gameTime);
-            GameStateManager.GetInstance().Draw(gameTime);
+            //GameStateManager.GetInstance().Draw(gameTime);
 
             base.Draw(gameTime);
         }

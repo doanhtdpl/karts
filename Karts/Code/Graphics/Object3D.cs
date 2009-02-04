@@ -19,6 +19,9 @@ namespace Karts.Code
         private Vector3 m_vPosition;
         private Vector3 m_vRotation;
 
+        // debug
+        private bool m_bDrawAxis;
+
 
         //--------------------------------------------
         // Class methods
@@ -29,6 +32,7 @@ namespace Karts.Code
             m_Model = null;
             m_vPosition = Vector3.Zero;
             m_vRotation = Vector3.Zero;
+            m_bDrawAxis = true;
         }
 
         ~Object3D() { }
@@ -64,6 +68,16 @@ namespace Karts.Code
         public void SetPosition(Vector3 pos)
         {
             m_vPosition = pos;
+        }
+
+        public void AddPosition(Vector3 pos)
+        {
+            m_vPosition = m_vPosition + pos;
+        }
+
+        public void AddPosition(float x, float y, float z)
+        {
+            m_vPosition = m_vPosition + new Vector3(x, y, z);
         }
 
         public Vector3 GetForward()
@@ -119,6 +133,25 @@ namespace Karts.Code
                     mesh.Draw();
                 }
             }
+
+            if (m_bDrawAxis)
+            {
+                Vector3 fwd = GetForward();
+                Vector3 up = GetUp();
+                Vector3 right = GetRight();
+
+                DrawDebugManager.GetInstance().DrawLine(m_vPosition, m_vPosition + fwd * 5000, Color.Blue);
+                DrawDebugManager.GetInstance().DrawLine(m_vPosition, m_vPosition + up* 5000, Color.Green);
+                DrawDebugManager.GetInstance().DrawLine(m_vPosition, m_vPosition + right * 5000, Color.Red);
+            }
+        }
+
+        //--------------------------------------------------------
+        // Debug functions
+        //--------------------------------------------------------
+        public void DrawAxis(bool draw)
+        {
+            m_bDrawAxis = draw;
         }
     }
 }
