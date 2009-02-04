@@ -89,6 +89,7 @@ namespace Karts
             // TODO: Add your update logic here
             NetworkManager.GetInstance().Update();
             GameStateManager.GetInstance().Update(gameTime);
+            PlayerManager.GetInstance().Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -102,6 +103,7 @@ namespace Karts
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            PlayerManager.GetInstance().Draw(gameTime);
             GameStateManager.GetInstance().Draw(gameTime);
 
             base.Draw(gameTime);
