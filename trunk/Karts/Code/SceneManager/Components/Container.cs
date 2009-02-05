@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace Karts.Code.SceneManager.Components
 {
@@ -9,12 +11,17 @@ namespace Karts.Code.SceneManager.Components
     {
         private List<Component> components = new List<Component>();
 
-        public override void Draw(float x, float y)
+        public Container(float x, float y)
+            : base(x, y)
         {
-            base.Draw(x + Position.X, y + Position.Y);
+        }
+
+        public override void Draw(Vector2 parentPos, Vector2 parentScale)
+        {
+            base.Draw(Position + parentPos, Scale * parentScale);
 
             foreach (Component component in components)
-                component.Draw(x + Position.X, y + Position.Y);
+                component.Draw(Position + parentPos, Scale * parentScale);
         }
 
         public void AddComponent(Component comp)

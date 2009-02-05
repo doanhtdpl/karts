@@ -20,11 +20,11 @@ namespace Karts.Code.SceneManager.Components
             font = ResourcesManager.GetInstance().GetContentManager().Load<SpriteFont>(fontName);
         }
 
-        public override void Draw(float x, float y)
+        public override void Draw(Vector2 parentPos, Vector2 parentScale)
         {
             if (Visible)
             {
-                spriteBatch.DrawString(font, text, Position, Color, Angle, Origin, Scale, Effects, depth);
+                spriteBatch.DrawString(font, text, Position + parentPos, Color, Angle, Origin, Scale * parentScale, Effects, depth);
             }
         }
     }

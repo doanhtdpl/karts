@@ -24,7 +24,7 @@ namespace Karts.Code
         {
             Guide.ShowSignIn(1, false);
 
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i < options.Length; ++i)
             {
                 options[i] = new TextComponent(100, 100 * (i + 1), OPTIONS[i], "KartsFont");
                 menu.AddComponent(options[i]);
@@ -49,7 +49,7 @@ namespace Karts.Code
                 selected = (selected + OPTIONS.Length - 1) % OPTIONS.Length;
                 UpdateSelected();
             }
-            else if (InputManager.GetInstance().isButtonPressed(0, Buttons.A))
+            else if (InputManager.GetInstance().isButtonPressed(0, Buttons.A) || InputManager.GetInstance().isKeyPressed(Keys.Enter))
             {
                 if (selected == 1)
                 {

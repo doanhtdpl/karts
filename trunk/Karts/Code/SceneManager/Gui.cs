@@ -49,7 +49,7 @@ namespace Karts.Code.SceneManager
             spriteBatch.Begin();
 
             foreach (Screen screen in screens)
-                screen.Draw(0, 0);
+                screen.Draw(Vector2.Zero, Vector2.One);
 
             spriteBatch.End();
 
