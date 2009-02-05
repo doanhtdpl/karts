@@ -9,12 +9,12 @@ namespace Karts.Code.SceneManager.Components
     {
         private List<Component> components = new List<Component>();
 
-        public override void Draw()
+        public override void Draw(float x, float y)
         {
-            base.Draw();
+            base.Draw(x + Position.X, y + Position.Y);
 
             foreach (Component component in components)
-                component.Draw();
+                component.Draw(x + Position.X, y + Position.Y);
         }
 
         public void AddComponent(Component comp)
@@ -25,6 +25,11 @@ namespace Karts.Code.SceneManager.Components
         public void RemoveComponent(Component comp)
         {
             components.Remove(comp);
+        }
+
+        public void RemoveAll()
+        {
+            components.Clear();
         }
 
     }

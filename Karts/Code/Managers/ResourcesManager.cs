@@ -13,7 +13,7 @@ namespace Karts.Code
         //--------------------------------------------
         // Class members
         //--------------------------------------------
-        public static ResourcesManager m_ResourcesManager = null;
+        private static ResourcesManager m_ResourcesManager = null;
 
         private ContentManager m_ContentManager;
         private GraphicsDeviceManager m_GraphicsDevice;

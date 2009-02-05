@@ -11,34 +11,44 @@ namespace Karts.Code.SceneManager.Components
     {
         protected SpriteBatch spriteBatch;
 
-        protected Vector2 position = new Vector2();
-        protected float angle = 0;
-        protected Vector2 origin = new Vector2();
-        protected Vector2 scale = new Vector2(1, 1);
-        protected bool visible = true;
-        protected Color color = Color.Black;
+        public float Angle { set; get; }
+        public bool Visible { set; get; }
+        public Vector2 Position { set; get; }
+        public Vector2 Origin { set; get; }
+        public Vector2 Scale { set; get; }
+        public Color Color { set; get; }
+        public Texture2D Texture { set; get; }
+        public SpriteEffects Effects { set; get; }
+        public int Depth { set; get; }
+        public Rectangle Source { set; get; }
 
         public Component() { this.spriteBatch = Gui.GetInstance().GetSpriteBatch(); }
 
-        public Component(float x, float y) : this() {
-            position.X = x;
-            position.Y = y;
+        public Component(float x, float y)
+            : this()
+        {
+            Position = new Vector2(x, y);
+            Visible = true;
+            Origin = new Vector2();
+            Scale = new Vector2(1, 1);
+            Color = Color.Black;
+            Effects = SpriteEffects.None;
+            Depth = 0;
         }
 
-        public virtual void Draw()
+        public Component(float x, float y, String textureName)
+            : this(x,y)
         {
-            Draw(0, 0);
+            Texture = ResourcesManager.GetInstance().GetContentManager().Load<Texture2D>(textureName);
         }
 
         public virtual void Draw(float x, float y)
         {
-            if (visible)
+            if (Visible)
             {
+                spriteBatch.Draw(Texture, Position, Source, Color, Angle, Origin, Scale, Effects, Depth);
             }
         }
 
-        public bool IsVisible() { return visible; }
-
-        public void setColor(Color color) { this.color = color; }
     }
 }

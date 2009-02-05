@@ -88,14 +88,6 @@ namespace Karts.Code
             effect.End();
         }
 
-        public void DrawText(String text, float x, float y, Color c)
-        {
-            ResourcesManager rm = ResourcesManager.GetInstance();
-            Karts.spriteBatch.Begin();
-            Karts.spriteBatch.DrawString(Karts.spriteFont, text, new Vector2(x, y), c);
-            Karts.spriteBatch.End();
-        }
-
         public void DrawSphere(Vector3 center, float fRad, Color c)
         {
         }

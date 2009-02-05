@@ -19,16 +19,11 @@ namespace Karts
     public class Karts : Game
     {
         GraphicsDeviceManager graphics;
-        public static SpriteBatch spriteBatch;
-        public static SpriteFont spriteFont;
-        public static Karts karts;
 
         public Karts()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-            karts = this;
         }
 
         /// <summary>
@@ -67,10 +62,6 @@ namespace Karts
             PlayerManager.GetInstance().UpdateOrder = 3;
             CameraManager.GetInstance().UpdateOrder = 4;
             Gui.GetInstance().UpdateOrder = 5;
-
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            spriteFont = Content.Load<SpriteFont>("KartsFont");
 
             GameStateManager.GetInstance().ChangeState(new MainMenu());
             PlayerManager.GetInstance().CreatePlayer(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), "Barbur", "Ship", "Ship");

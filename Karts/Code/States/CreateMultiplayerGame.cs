@@ -6,16 +6,24 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Karts.Code.SceneManager;
+using Karts.Code.SceneManager.Components;
 
 namespace Karts.Code
 {
     class CreateMultiplayerGame : GameState
     {
         private NetworkSession session = null;
+        private Screen menu;
 
         public override void Enter()
         {
             session = NetworkManager.GetInstance().CreateSession();
+            session.GamerJoined += new EventHandler<GamerJoinedEventArgs>(session_GamerJoined);
+            session.GamerLeft += new EventHandler<GamerLeftEventArgs>(session_GamerLeft);
+
+            menu = new Screen();
+            Gui.GetInstance().AddComponent(menu);
         }
 
         public override void Update(GameTime GameTime)
@@ -33,16 +41,27 @@ namespace Karts.Code
 
         public override void Draw(GameTime GameTime)
         {
-            for (int i = 0; i < session.AllGamers.Count; ++i)
-            {
-                DrawDebugManager.GetInstance().DrawText(session.AllGamers[i].Gamertag, 100, 100 + i * 100, Color.Black);
-            }
-
             base.Draw(GameTime);
         }
 
         public override void Exit()
         {
+            Gui.GetInstance().RemoveComponent(menu);
         }
+
+        void session_GamerJoined(object sender, GamerJoinedEventArgs p)
+        {
+            menu.AddComponent(new TextComponent(100, 100 * (session.AllGamers.Count + 1), p.Gamer.Gamertag, "KartsFont"));
+        }
+
+        void session_GamerLeft(object sender, GamerLeftEventArgs p)
+        {
+            menu.RemoveAll();
+            for (int i = 0; i < session.AllGamers.Count; ++i)
+            {
+                menu.AddComponent(new TextComponent(100, 100 * (i + 1), session.AllGamers[i].Gamertag, "KartsFont"));
+            }
+        }
+
     }
 }

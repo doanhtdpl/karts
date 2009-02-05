@@ -14,8 +14,8 @@ namespace Karts.Code
 {
     class MainMenu : GameState
     {
-        private String[] OPTIONS = { "CREATE LOCAL GAME", "CREATE MULTIPLAYER GAME", "FIND MULTIPLAYER GAME", "EXIT GAME" };
-        private Component[] options = new Component[4];
+        private String[] OPTIONS = { "CREATE LOCAL GAME", "CREATE MULTIPLAYER GAME", "FIND MULTIPLAYER GAME" };
+        private Component[] options = new Component[3];
         private Screen menu = new Screen();
 
         private int selected = 0;
@@ -51,10 +51,7 @@ namespace Karts.Code
             }
             else if (InputManager.GetInstance().isButtonPressed(0, Buttons.A))
             {
-                if(selected == 3){
-                    Karts.karts.Exit();
-                }
-                else if (selected == 1)
+                if (selected == 1)
                 {
                     GameStateManager.GetInstance().ChangeState(new CreateMultiplayerGame());
                 }
@@ -73,10 +70,9 @@ namespace Karts.Code
 
         private void UpdateSelected()
         {
-            Debug.Print("selected: " + selected);
             for (int i = 0; i < options.Length; ++i)
             {
-                options[i].setColor(i == selected ? Color.Red : Color.Black);
+                options[i].Color = i == selected ? Color.Red : Color.Black;
             }
         }
 
@@ -87,6 +83,7 @@ namespace Karts.Code
 
         public override void Exit()
         {
+            Gui.GetInstance().RemoveComponent(menu);
             base.Exit();
         }
     }
