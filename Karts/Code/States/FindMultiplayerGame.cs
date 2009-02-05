@@ -36,9 +36,15 @@ namespace Karts.Code
                 selected = (selected + availableSessions.Count + 1) % availableSessions.Count;
             }else if(state.IsKeyDown(Keys.Up)){
                 selected = (selected + availableSessions.Count - 1) % availableSessions.Count;
-            }else if (state.IsKeyDown(Keys.Enter)){
+            }
+            else if (state.IsKeyDown(Keys.Enter))
+            {
                 NetworkManager.GetInstance().JoinSession(availableSessions[selected]);
                 GameStateManager.GetInstance().ChangeState(new WaitForOtherPlayers());
+            }
+            else if (state.IsKeyDown(Keys.Back))
+            {
+                GameStateManager.GetInstance().ChangeState(new MainMenu());
             }
 
             base.Update(GameTime);

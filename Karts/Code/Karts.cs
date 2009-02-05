@@ -64,7 +64,6 @@ namespace Karts
             Gui.GetInstance().UpdateOrder = 5;
 
             GameStateManager.GetInstance().ChangeState(new MainMenu());
-            PlayerManager.GetInstance().CreatePlayer(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), "Barbur", "Ship", "Ship");
         }
 
         /// <summary>

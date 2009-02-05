@@ -63,6 +63,9 @@ namespace Karts.Code
             return true;
         }
 
+        public void RemovePlayers() { m_PlayerList.Clear(); }
+
+
         public override void Update(GameTime GameTime)
         {
             foreach (Player p in m_PlayerList)

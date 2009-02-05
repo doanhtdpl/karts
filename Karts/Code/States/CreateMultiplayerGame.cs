@@ -18,12 +18,12 @@ namespace Karts.Code
 
         public override void Enter()
         {
+            menu = new Screen();
+            Gui.GetInstance().AddComponent(menu);
+
             session = NetworkManager.GetInstance().CreateSession();
             session.GamerJoined += new EventHandler<GamerJoinedEventArgs>(session_GamerJoined);
             session.GamerLeft += new EventHandler<GamerLeftEventArgs>(session_GamerLeft);
-
-            menu = new Screen();
-            Gui.GetInstance().AddComponent(menu);
         }
 
         public override void Update(GameTime GameTime)
@@ -32,7 +32,7 @@ namespace Karts.Code
             if (state.IsKeyDown(Keys.Enter) && session.AllGamers.Count > 1){
                 session.StartGame();
                 GameStateManager.GetInstance().ChangeState(new GameplayState());
-            }else if (state.IsKeyDown(Keys.Escape)){
+            }else if (state.IsKeyDown(Keys.Back)){
                 session.Dispose();
                 GameStateManager.GetInstance().ChangeState(new MainMenu());
             }
@@ -62,6 +62,5 @@ namespace Karts.Code
                 menu.AddComponent(new TextComponent(100, 100 * (i + 1), session.AllGamers[i].Gamertag, "KartsFont"));
             }
         }
-
     }
 }
