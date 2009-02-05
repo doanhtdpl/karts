@@ -19,18 +19,17 @@ namespace Karts.Code.SceneManager.Components
         public Color Color { set; get; }
         public Texture2D Texture { set; get; }
         public SpriteEffects Effects { set; get; }
-        public int Depth { set; get; }
+        public float Depth { set; get; }
         public Rectangle Source { set; get; }
 
-        public Component() { this.spriteBatch = Gui.GetInstance().GetSpriteBatch(); }
-
         public Component(float x, float y)
-            : this()
         {
+            spriteBatch = Gui.GetInstance().GetSpriteBatch();
+
             Position = new Vector2(x, y);
             Visible = true;
             Origin = new Vector2();
-            Scale = new Vector2(1, 1);
+            Scale = Vector2.One;
             Color = Color.Black;
             Effects = SpriteEffects.None;
             Depth = 0;
@@ -42,11 +41,11 @@ namespace Karts.Code.SceneManager.Components
             Texture = ResourcesManager.GetInstance().GetContentManager().Load<Texture2D>(textureName);
         }
 
-        public virtual void Draw(float x, float y)
+        public virtual void Draw(Vector2 parentPos, Vector2 parentScale)
         {
-            if (Visible)
+            if (Visible && Texture != null)
             {
-                spriteBatch.Draw(Texture, Position, Source, Color, Angle, Origin, Scale, Effects, Depth);
+                spriteBatch.Draw(Texture, Position + parentPos, Source, Color, Angle, Origin, Scale * parentScale, Effects, Depth);
             }
         }
 
