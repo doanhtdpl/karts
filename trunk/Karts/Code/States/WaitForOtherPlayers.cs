@@ -5,11 +5,22 @@ using System.Text;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Karts.Code.SceneManager;
+using Karts.Code.SceneManager.Components;
 
 namespace Karts.Code
 {
     class WaitForOtherPlayers : GameState
     {
+        private Screen menu;
+
+        public override void Enter()
+        {
+            menu = new Screen();
+            Gui.GetInstance().AddComponent(menu);
+            base.Enter();
+        }
+
         public override void Update(Microsoft.Xna.Framework.GameTime GameTime)
         {
             if (NetworkManager.GetInstance().GetSession().SessionState == NetworkSessionState.Playing)
@@ -21,11 +32,19 @@ namespace Karts.Code
 
         public override void Draw(GameTime GameTime)
         {
-            for (int i = 0; i < NetworkManager.GetInstance().GetSession().AllGamers.Count; ++i)
+            menu.RemoveAll();
+            NetworkSession session = NetworkManager.GetInstance().GetSession();
+            for (int i = 0; i < session.AllGamers.Count; ++i)
             {
-                DrawDebugManager.GetInstance().DrawText(NetworkManager.GetInstance().GetSession().AllGamers[i].Gamertag, 100, 100 + i * 100, Color.Black);
+                menu.AddComponent(new TextComponent(100, 100 * (i + 1), session.AllGamers[i].Gamertag, "KartsFont"));
             }
             base.Draw(GameTime);
+        }
+
+        public override void Exit()
+        {
+            Gui.GetInstance().RemoveComponent(menu);
+            base.Exit();
         }
     }
 }

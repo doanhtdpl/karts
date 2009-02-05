@@ -22,9 +22,9 @@ namespace Karts.Code.SceneManager.Components
 
         public override void Draw(float x, float y)
         {
-            if (IsVisible())
+            if (Visible)
             {
-                spriteBatch.DrawString(font, text, position, color, angle, origin, scale, SpriteEffects.None, depth);
+                spriteBatch.DrawString(font, text, Position, Color, Angle, Origin, Scale, Effects, depth);
             }
         }
     }

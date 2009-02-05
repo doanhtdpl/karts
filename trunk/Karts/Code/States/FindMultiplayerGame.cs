@@ -6,30 +6,32 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Karts.Code.SceneManager;
+using Karts.Code.SceneManager.Components;
 
 namespace Karts.Code
 {
     class FindMultiplayerGame : GameState
     {
         private AvailableNetworkSessionCollection availableSessions;
-        private SpriteBatch spriteBatch;
-        private SpriteFont spriteFont;
 
         private int selected = 0;
 
+        private Screen menu;
+
         public override void Enter()
         {
-            availableSessions = NetworkManager.GetInstance().GetAvailableSessions();
-            spriteBatch = Karts.spriteBatch;
-            spriteFont = ResourcesManager.GetInstance().GetContentManager().Load<SpriteFont>("KartsFont");
+            menu = new Screen();
+            Gui.GetInstance().AddComponent(menu);
+
+            UpdateSessions();
         }
 
         public override void Update(GameTime GameTime)
         {
             KeyboardState state = Keyboard.GetState();
             if(state.IsKeyDown(Keys.F5)){
-                selected = 0;
-                availableSessions = NetworkManager.GetInstance().GetAvailableSessions();
+                UpdateSessions();
             }else if(state.IsKeyDown(Keys.Down)){
                 selected = (selected + availableSessions.Count + 1) % availableSessions.Count;
             }else if(state.IsKeyDown(Keys.Up)){
@@ -44,6 +46,20 @@ namespace Karts.Code
 
         public override void Draw(GameTime GameTime)
         {
+            base.Draw(GameTime);
+        }
+
+        public override void Exit()
+        {
+            Gui.GetInstance().RemoveComponent(menu);
+        }
+
+        private void UpdateSessions()
+        {
+            menu.RemoveAll();
+
+            availableSessions = NetworkManager.GetInstance().GetAvailableSessions();
+
             AvailableNetworkSession availableSession;
             for (int i = 0; i < availableSessions.Count; ++i)
             {
@@ -53,19 +69,10 @@ namespace Karts.Code
                 int GamersInSession = availableSession.CurrentGamerCount;
                 int OpenPrivateGamerSlots = availableSession.OpenPrivateGamerSlots;
                 int OpenPublicGamerSlots = availableSession.OpenPublicGamerSlots;
-                string sessionInformation = "Session available from gamertag " + HostGamerTag +
-                    "\n\t" + GamersInSession + " players already in this session. \n\t" +
-                    +OpenPrivateGamerSlots + " open private player slots available. \n\t" +
-                    +OpenPublicGamerSlots + " public player slots available.";
+                string sessionInformation = HostGamerTag + "("+ GamersInSession + "/" + OpenPrivateGamerSlots + "/" + OpenPublicGamerSlots + ")";
 
-                DrawDebugManager.GetInstance().DrawText(sessionInformation, 100, 100 + i * 100, Color.Black);
+                menu.AddComponent(new TextComponent(100, 100 * (i+1), sessionInformation, "KartsFont"));
             }
-
-            base.Draw(GameTime);
-        }
-
-        public override void Exit()
-        {
         }
     }
 }
