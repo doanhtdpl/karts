@@ -62,6 +62,11 @@ namespace Karts.Code
             session = NetworkSession.Join(hostSession);
         }
 
+        public void LeaveSession()
+        {
+            session.Dispose();
+        }
+
         public AvailableNetworkSessionCollection FindSessions()
         {
             availableSessions = NetworkSession.Find(NetworkSessionType.SystemLink, MAX_LOCAL_PLAYERS, null);

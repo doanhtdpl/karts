@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Karts.Code.SceneManager;
 using Karts.Code.SceneManager.Components;
@@ -23,7 +24,11 @@ namespace Karts.Code
 
         public override void Update(Microsoft.Xna.Framework.GameTime GameTime)
         {
-            if (NetworkManager.GetInstance().GetSession().SessionState == NetworkSessionState.Playing)
+            if (InputManager.GetInstance().isKeyPressed(Keys.Back))
+            {
+                NetworkManager.GetInstance().LeaveSession();
+                GameStateManager.GetInstance().ChangeState(new FindMultiplayerGame());
+            }else if (NetworkManager.GetInstance().GetSession().SessionState == NetworkSessionState.Playing)
             {
                 GameStateManager.GetInstance().ChangeState(new GameplayState());
             }
