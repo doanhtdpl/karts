@@ -1,4 +1,3 @@
-
 = Introduction =
 
 This document contains all the information about the prototype for karts.
@@ -6,10 +5,12 @@ This document contains all the information about the prototype for karts.
 
 = Game Modes =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Available modes for the prototype:
+* Single Player
+The player can explore the circuit or try to improve his times. 
+* Multiplayer
+The player can choose to create a game or join an existing one. 
+
 
 = Characters/Vehicles =
 
