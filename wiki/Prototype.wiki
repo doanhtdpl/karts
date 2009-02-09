@@ -6,9 +6,10 @@ This document contains all the information about the prototype for karts.
 = Game Modes =
 
 Available modes for the prototype:
-* Single Player
+
+  * Single Player
 The player can explore the circuit or try to improve his times. 
-* Multiplayer
+  * Multiplayer
 The player can choose to create a game or join an existing one. 
 
 
