@@ -36,6 +36,8 @@ The items will be collected through "?" boxes in the circuit.
 Available items:
 
  * Boost
- * 
-
-
+ * Forward attack
+ * Homing attack
+ * Jump
+ * Shield
+ 
