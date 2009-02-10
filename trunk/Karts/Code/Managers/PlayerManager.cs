@@ -8,16 +8,24 @@ namespace Karts.Code
 {
     class PlayerManager : DrawableGameComponent
     {
+        // Constants
+        public const int INVALID_PLAYER_ID = 0;
+
         //---------------------------------------------------
         // Class members
         //---------------------------------------------------
         private List<Player> m_PlayerList = new List<Player>();
         public static PlayerManager m_PlayerManager = null;
+        UInt32 m_uIDPlayerCounter;
 
         //---------------------------------------------------
         // Class methods
         //---------------------------------------------------
-        public PlayerManager(Game game) : base(game) { }
+       public PlayerManager(Game game) : base(game) 
+        {
+            m_uIDPlayerCounter = 0;
+        }
+
         ~PlayerManager()
         {
             m_PlayerList.Clear();
@@ -36,15 +44,25 @@ namespace Karts.Code
             return m_PlayerManager;
         }
 
+        public List<Player> GetPlayers()
+        {
+            return m_PlayerList;
+        }
+
+        public int GetNumPlayers()
+        {
+            return m_PlayerList.Count;
+        }
+
         public Player GetPlayerByID(UInt32 uID)
         {
             return m_PlayerList.Find(new FindPlayerID(uID).CompareID);
         }
 
-        public bool CreatePlayer(Vector3 position, Vector3 rotation, string Name, string vehicle_name, string driver_name)
+        public bool CreatePlayer(Vector3 position, Vector3 rotation, float fScale, string Name, string vehicle_name, string driver_name, bool bCamera)
         {
             // Generate ID
-            UInt32 uID = 1;
+            UInt32 uID = ++m_uIDPlayerCounter;
 
             Player newPlayer = GetPlayerByID(uID);
 
@@ -55,7 +73,7 @@ namespace Karts.Code
             }
 
             newPlayer = new Player();
-            if (newPlayer.Init(position, rotation, Name, uID, vehicle_name, driver_name))
+            if (newPlayer.Init(position, rotation, fScale, Name, uID, vehicle_name, driver_name, bCamera))
             {
                 m_PlayerList.Add(newPlayer);
             }

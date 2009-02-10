@@ -68,8 +68,6 @@ namespace Karts.Code
             v[0] = new VertexPositionColor(or, c);
 
             gdm.GraphicsDevice.RenderState.PointSize = fSize;
-            
-            
 
             effect = new BasicEffect(gdm.GraphicsDevice, null);
             Camera cam = CameraManager.GetInstance().GetActiveCamera();
