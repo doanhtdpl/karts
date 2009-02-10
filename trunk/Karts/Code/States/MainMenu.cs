@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.GamerServices;
 using Karts.Code.SceneManager.Components;
+using Karts.Code.SceneManager.Effects;
 using Karts.Code.SceneManager;
 
 namespace Karts.Code
@@ -22,12 +23,15 @@ namespace Karts.Code
 
         public override void Enter()
         {
-            Guide.ShowSignIn(1, false);
+            //Guide.ShowSignIn(1, false);
 
             for (int i = 0; i < options.Length; ++i)
             {
                 options[i] = new TextComponent(100, 100 * (i + 1), OPTIONS[i], "KartsFont");
                 menu.AddComponent(options[i]);
+                FaderEffect fader = new FaderEffect(options[i], 2000, false, 0, 255);
+                Gui.GetInstance().AddEffect(fader);
+                fader.setEnabled(true);
             }
 
             Gui.GetInstance().AddComponent(menu);

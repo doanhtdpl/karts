@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Karts.Code.SceneManager.Components;
+using Karts.Code.SceneManager.Effects;
 
 namespace Karts.Code.SceneManager
 {
@@ -32,21 +33,27 @@ namespace Karts.Code.SceneManager
         private Gui(Game game)
             : base(game)
         {
+            effects = new List<GuiEffect>();
             screens = new List<Screen>();
             spriteBatch = new SpriteBatch(ResourcesManager.GetInstance().GetGraphicsDeviceManager().GraphicsDevice);
         }
 
+        private List<GuiEffect> effects;
         private List<Screen> screens;
         private SpriteBatch spriteBatch;
 
         public override void Update(GameTime gameTime)
         {
+            foreach (GuiEffect effect in effects)
+                effect.Update(gameTime);
+
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred,
+                SaveStateMode.SaveState);
 
             foreach (Screen screen in screens)
                 screen.Draw(Vector2.Zero, Vector2.One);
@@ -64,6 +71,16 @@ namespace Karts.Code.SceneManager
         public void RemoveComponent(Screen comp)
         {
             screens.Remove(comp);
+        }
+
+        public void AddEffect(GuiEffect effect)
+        {
+            effects.Add(effect);
+        }
+
+        public void RemoveEffect(GuiEffect effect)
+        {
+            effects.Remove(effect);
         }
 
         public SpriteBatch GetSpriteBatch() { return spriteBatch; }
