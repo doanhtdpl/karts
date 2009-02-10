@@ -95,7 +95,11 @@
     <Compile Include="Code\SceneManager\Components\Container.cs" />
     <Compile Include="Code\SceneManager\Components\TextComponent.cs" />
     <Compile Include="Code\SceneManager\Components\Screen.cs" />
-    <Compile Include="Code\SceneManager\Effects\Effect.cs" />
+    <Compile Include="Code\SceneManager\Effects\FaderEffect.cs" />
+    <Compile Include="Code\SceneManager\Effects\GuiEffect.cs" />
+    <Compile Include="Code\SceneManager\Effects\Script\Script.cs" />
+    <Compile Include="Code\SceneManager\Effects\Script\ScriptEffect.cs" />
+    <Compile Include="Code\SceneManager\Effects\Script\ScriptEntry.cs" />
     <Compile Include="Code\SceneManager\Gui.cs" />
     <Compile Include="Code\States\CreateMultiplayerGame.cs" />
     <Compile Include="Code\States\FindMultiplayerGame.cs" />
