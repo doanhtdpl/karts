@@ -84,28 +84,28 @@ namespace Karts.Code
         }
 
         public void Update(GameTime gameTime)
-        {/*
+        {
             Vector3 newPos = new Vector3(0, 0, 0);
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                newPos.Z = -10.0f;
+                newPos.Z = -100.0f;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                newPos.Z = 10.0f;
+                newPos.Z = 100.0f;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                newPos.X = -10.0f;
+                newPos.X = -100.0f;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                newPos.X = 10.0f;
+                newPos.X = 100.0f;
             }
 
             m_vPosition = m_vPosition + newPos;
             m_Vehicle.GetObject3D().SetPosition(m_vPosition);
-            */
+            
             m_Vehicle.Update(gameTime);
             //m_Driver.Update(gameTime);
         }

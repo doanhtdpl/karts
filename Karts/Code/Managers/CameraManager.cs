@@ -43,7 +43,7 @@ namespace Karts.Code
                 m_CameraManager = new CameraManager(game);
 
             // By default we create a free camera
-            m_CameraManager.CreateCamera(Camera.ECamType.ECAMERA_TYPE_FREE, null);
+            //m_CameraManager.CreateCamera(Camera.ECamType.ECAMERA_TYPE_FREE, null);
 
             return m_CameraManager;
         }
