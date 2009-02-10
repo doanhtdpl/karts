@@ -62,13 +62,7 @@ namespace Karts
             PlayerManager.Init(this);
             CircuitManager.Init(this);
 
-
-            Grid g = new Grid(this);
-            Components.Add(g);
-
             //PlayerManager.GetInstance().DrawOrder = 1;
-            g.DrawOrder = 2;
-            g.Start();
 
             InputManager.GetInstance().UpdateOrder = 0;
             GameStateManager.GetInstance().UpdateOrder = 10;

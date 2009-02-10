@@ -12,8 +12,8 @@ namespace Karts.Code
 
         public override void Enter()
         {
-            PlayerManager.GetInstance().CreatePlayer(new Vector3(0.0f, 0.0f, 10000.0f), new Vector3(0.0f, 0.0f, 0.0f), 0.5f, "Barbur", "Ship", "Ship", false);
-            //CircuitManager.GetInstance().CreateCircuit(new Vector3(0.0f, 0.0f, 1000.0f), new Vector3(0.0f, 0.0f, 0.0f), "Ground");
+            PlayerManager.GetInstance().CreatePlayer(new Vector3(0.0f, 200.0f, 10000.0f), new Vector3(0.0f, 0.0f, 0.0f), 0.5f, "Barbur", "Ship", "Ship", true);
+            CircuitManager.GetInstance().CreateCircuit(new Vector3(0.0f, 0.0f, 1000.0f), new Vector3(0.0f, 0.0f, 0.0f), "Ground");
 
             base.Enter();
         }
@@ -26,7 +26,7 @@ namespace Karts.Code
             }
 
             PlayerManager.GetInstance().Update(gameTime);
-            //CircuitManager.GetInstance().Update(gameTime);
+            CircuitManager.GetInstance().Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -34,7 +34,7 @@ namespace Karts.Code
         public override void Draw(GameTime gameTime)
         {
             PlayerManager.GetInstance().Draw(gameTime);
-            //CircuitManager.GetInstance().Draw(gameTime);
+            CircuitManager.GetInstance().Draw(gameTime);
         }
 
         public override void Exit()
