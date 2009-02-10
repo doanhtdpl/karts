@@ -17,7 +17,7 @@ namespace Karts.Code
         // ------------------------------------------------
         // Class members
         // ------------------------------------------------
-        private Object3D m_Object3D;
+        private Mesh m_Mesh;
 
         // ------------------------------------------------
         // Class methods
@@ -29,14 +29,14 @@ namespace Karts.Code
         {
             bool bInitOk = false;
 
-            m_Object3D = new Object3D();
-            bInitOk = m_Object3D.Load(resource_name);
+            m_Mesh = new Mesh();
+            bInitOk = m_Mesh.Load(resource_name);
 
             if (bInitOk)
             {
-                m_Object3D.SetPosition(position);
-                m_Object3D.SetRotation(rotation);
-                m_Object3D.SetScale(fScale);
+                m_Mesh.SetPosition(position);
+                m_Mesh.SetRotation(rotation);
+                m_Mesh.SetScale(fScale);
             }
 
             return bInitOk;
@@ -44,7 +44,7 @@ namespace Karts.Code
 
         public Object3D GetObject3D()
         {
-            return m_Object3D;
+            return m_Mesh;
         }
 
         public void Update(GameTime GameTime)
@@ -53,7 +53,7 @@ namespace Karts.Code
 
         public void Draw(GameTime gameTime, Matrix camProjMatrix, Matrix camViewMatrix)
         {
-            m_Object3D.Draw(camProjMatrix, camViewMatrix);
+            m_Mesh.Draw(camProjMatrix, camViewMatrix);
         }
     }
 }

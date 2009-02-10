@@ -15,7 +15,7 @@ namespace Karts.Code
         // Class members
         // ------------------------------------------------
         private UInt32 m_uID;           // Unique identifier
-        private Object3D m_Object3D;    // 3D Mesh
+        private Mesh m_Mesh;    // 3D Mesh
 
         // Powerups of the level
         // Type of level
@@ -30,11 +30,11 @@ namespace Karts.Code
 
         public bool Init(Vector3 position, Vector3 rotation, string model_name)
         {
-            m_Object3D = new Object3D();
-            m_Object3D.SetPosition(position);
-            m_Object3D.SetRotation(rotation);
+            m_Mesh = new Mesh();
+            m_Mesh.SetPosition(position);
+            m_Mesh.SetRotation(rotation);
 
-            return m_Object3D.Load(model_name);
+            return m_Mesh.Load(model_name);
         }
 
         public UInt32 GetID()
@@ -52,7 +52,7 @@ namespace Karts.Code
         public void Draw(GameTime gameTime)
         {
             Camera ActiveCam = CameraManager.GetInstance().GetActiveCamera();
-            m_Object3D.Draw(ActiveCam.GetProjectionMatrix(), ActiveCam.GetViewMatrix());
+            m_Mesh.Draw(ActiveCam.GetProjectionMatrix(), ActiveCam.GetViewMatrix());
         }
     }
 }

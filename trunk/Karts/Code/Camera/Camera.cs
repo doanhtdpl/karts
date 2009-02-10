@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace Karts.Code
 {
-    class Camera
+    class Camera : Object3D
     {
         //---------------------------------------
         // Class types
@@ -26,7 +26,6 @@ namespace Karts.Code
         protected int m_iIDCamera;
 
         protected Vector3 m_vLookAt;
-        protected Vector3 m_vPosition;
         protected Vector3 m_vUp;
 
         // Perspective
@@ -62,10 +61,12 @@ namespace Karts.Code
             m_iIDCamera = ID;
 
             m_vPosition = new Vector3(0.0f, 100.0f, -100.0f);
+            m_vRotation = Vector3.Zero;
+
             m_vLookAt = new Vector3(0.0f, 0.0f, 100.0f);            
 
             // Set camera perspective
-            m_fNearPlaneDistance = 1.0f;
+            m_fNearPlaneDistance = 10.0f;
             m_fFarPlaneDistance = 100000.0f;
 
             GraphicsDeviceManager gdm = ResourcesManager.GetInstance().GetGraphicsDeviceManager();
@@ -92,26 +93,6 @@ namespace Karts.Code
         public Vector3 GetLookAt()
         {
             return m_vLookAt;
-        }
-
-        public Vector3 GetForward()
-        {
-            return m_ViewMatrix.Forward;
-        }
-
-        public Vector3 GetUp()
-        {
-            return m_ViewMatrix.Up;
-        }
-
-        public Vector3 GetRight()
-        {
-            return m_ViewMatrix.Right;
-        }
-
-        public Vector3 GetPosition()
-        {
-            return m_vPosition;
         }
 
         public Matrix GetProjectionMatrix()
