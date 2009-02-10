@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Karts.Code
 {
-    class Player
+    class Player : Object3D
     {
         // ------------------------------------------------
         // Class members
@@ -18,9 +18,6 @@ namespace Karts.Code
         private UInt32 m_uID;
         private string m_sName;
         private int m_IDCamera;
-
-        private Vector3 m_vPosition;
-        private Vector3 m_vRotation;
 
 
         // ------------------------------------------------

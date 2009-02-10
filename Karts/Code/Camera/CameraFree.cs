@@ -29,33 +29,36 @@ namespace Karts.Code
 
         public override void Update(GameTime gameTime)
         {
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             // Free camera (it is moved by the input controls)
             bool bMoveUp = InputManager.GetInstance().isKeyDown(Keys.W);
             bool bMoveDown = InputManager.GetInstance().isKeyDown(Keys.S);
             bool bMoveLeft = InputManager.GetInstance().isKeyDown(Keys.A);
             bool bMoveRight = InputManager.GetInstance().isKeyDown(Keys.D);
 
-            float fValue = 0.0f;
-            float fRightV = 0.0f;
+            Vector3 newRotation = Vector3.Zero;
+            float fValueZ = 0.0f;
+            float fValueX = 0.0f;
 
             if (bMoveUp)
             {
-                fValue = 50.0f;
+                fValueZ = fValueZ + 5000.0f * elapsed;
             }
 
             if (bMoveDown)
             {
-                fValue = -50.0f;
+                fValueZ = fValueZ - 5000.0f * elapsed;
             }
 
             if (bMoveLeft)
             {
-                fRightV = -50.0f;
+                fValueX = fValueX + 5000.0f * elapsed;
             }
 
             if (bMoveRight)
             {
-                fRightV = 50.0f;
+                fValueX = fValueX - 5000.0f * elapsed;
             }
 
             bool bTurnLeft = InputManager.GetInstance().isKeyDown(Keys.Left);
@@ -63,42 +66,35 @@ namespace Karts.Code
             bool bTurnUp = InputManager.GetInstance().isKeyDown(Keys.Up);
             bool bTurnDown = InputManager.GetInstance().isKeyDown(Keys.Down);
 
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Vector3 fwd = m_ViewMatrix.Forward;
-
             if (bTurnUp)
             {
-                fwd = Vector3.TransformNormal(fwd, Matrix.CreateFromAxisAngle(m_ViewMatrix.Right, 0.5f * elapsed));
+                m_vRotation.Y -= 0.5f * elapsed;
             }
 
             if (bTurnDown)
             {
-                fwd = Vector3.TransformNormal(fwd, Matrix.CreateFromAxisAngle(m_ViewMatrix.Right, -0.5f * elapsed));
+                m_vRotation.Y += 0.5f * elapsed;
             }
 
             if (bTurnLeft)
             {
-                fwd = Vector3.TransformNormal(fwd, Matrix.CreateFromAxisAngle(m_ViewMatrix.Up, 0.5f * elapsed));
+                m_vRotation.X += 0.5f * elapsed;
             }
 
             if (bTurnRight)
             {
-                fwd = Vector3.TransformNormal(fwd, Matrix.CreateFromAxisAngle(m_ViewMatrix.Up, -0.5f * elapsed));
+                m_vRotation.X -= 0.5f * elapsed;
             }
 
-            //m_vPosition = m_vPosition + m_ViewMatrix.Forward * fValue + m_ViewMatrix.Right * fRightV;
+            // We first calculate the rotation and then translate
+            Vector3 fwd = GetForward();
+            m_vPosition = m_vPosition + fValueZ * -fwd + fValueX * GetRight();
+            m_vLookAt = m_vPosition - fwd;
 
-            m_vLookAt = m_vPosition + fwd; // LookAt is a position, not a direction
-
-            //m_vUp = m_ViewMatrix.Up;
-
-            Debug.Print("look_at: " + m_vLookAt);
-            Debug.Print("fwd: " + fwd);
-            Debug.Print("position: " + m_vPosition.ToString() + " lookat: " + m_vLookAt.ToString());
+            // We keep the up vector with the default value
+            //m_vUp = GetUp();
 
             m_ViewMatrix = Matrix.CreateLookAt(m_vPosition, m_vLookAt, m_vUp);
-            Debug.Print("fwd after: " + m_ViewMatrix.Forward);
-            Debug.Print("");
         }
     }
 }
