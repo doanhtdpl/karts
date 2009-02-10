@@ -23,6 +23,9 @@ namespace Karts
         public Karts()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 600;
+
             Content.RootDirectory = "Content";
         }
 
@@ -35,7 +38,14 @@ namespace Karts
         protected override void Initialize()
         {
             Components.Add(new GamerServicesComponent(this));
+            //Initialize components
+            Components.Add(InputManager.Init(this));
+            Components.Add(GameStateManager.Init(this));
+            Components.Add(NetworkManager.Init(this));
+            //Components.Add(PlayerManager.Init(this));
+            //Components.Add(CircuitManager.Init(this));
 
+            
             base.Initialize();
         }
 
@@ -47,23 +57,29 @@ namespace Karts
         {
             ResourcesManager resources = ResourcesManager.GetInstance();
             resources.Init(this.Content, this.graphics);
-
-            //Initialize components
-            Components.Add(InputManager.Init(this));
-            Components.Add(GameStateManager.Init(this));
-            Components.Add(NetworkManager.Init(this));
-            Components.Add(PlayerManager.Init(this));
-            Components.Add(CameraManager.Init(this));
             Components.Add(Gui.Init(this));
+            Components.Add(CameraManager.Init(this));
+            PlayerManager.Init(this);
+            CircuitManager.Init(this);
+
+
+            Grid g = new Grid(this);
+            Components.Add(g);
+
+            //PlayerManager.GetInstance().DrawOrder = 1;
+            g.DrawOrder = 2;
+            g.Start();
 
             InputManager.GetInstance().UpdateOrder = 0;
-            GameStateManager.GetInstance().UpdateOrder = 1;
-            NetworkManager.GetInstance().UpdateOrder = 2;
-            PlayerManager.GetInstance().UpdateOrder = 3;
-            CameraManager.GetInstance().UpdateOrder = 4;
-            Gui.GetInstance().UpdateOrder = 5;
+            GameStateManager.GetInstance().UpdateOrder = 10;
+            NetworkManager.GetInstance().UpdateOrder = 20;
+            //PlayerManager.GetInstance().UpdateOrder = 30;
+            //CircuitManager.GetInstance().UpdateOrder = 35;
+            CameraManager.GetInstance().UpdateOrder = 40;
+            Gui.GetInstance().UpdateOrder = 50;
 
-            GameStateManager.GetInstance().ChangeState(new MainMenu());
+            //GameStateManager.GetInstance().ChangeState(new MainMenu());
+            GameStateManager.GetInstance().ChangeState(new GameplayState());
         }
 
         /// <summary>

@@ -21,12 +21,19 @@ namespace Karts.Code
         public Driver() { }
         ~Driver() { }
 
-        public bool Init(string resource_name)
+        public bool Init(Vector3 position, Vector3 rotation, float fScale, string resource_name)
         {
             bool bInitOk = false;
 
             m_Object3D = new Object3D();
             bInitOk = m_Object3D.Load(resource_name);
+
+            if (bInitOk)
+            {
+                m_Object3D.SetPosition(position);
+                m_Object3D.SetRotation(rotation);
+                m_Object3D.SetScale(fScale);
+            }
 
             return bInitOk;
         }

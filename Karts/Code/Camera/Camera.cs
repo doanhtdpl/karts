@@ -9,33 +9,33 @@ namespace Karts.Code
     class Camera
     {
         //---------------------------------------
+        // Class types
+        //---------------------------------------
+        public enum ECamType
+        {
+            ECAMERA_TYPE_INVALID = 0,
+            ECAMERA_TYPE_TARGET = 1,
+            ECAMERA_TYPE_FPS = 2,
+            ECAMERA_TYPE_FREE = 3
+        };
+
+        //---------------------------------------
         // Class members
         //---------------------------------------
         // Camera properties
-        private Object3D m_Target;
-        
-        private Vector3 m_vLookAt;
-        private Vector3 m_vLookAtOffset;
-        
-        private Vector3 m_vPosition;
-        private Vector3 m_vDesiredPosition;
-        private Vector3 m_vDesiredPositionOffset;
+        protected int m_iIDCamera;
 
-        private Vector3 m_vUp;
-        private Vector3 m_vVelocity;
-
-        // Physics
-        private float m_fStiffness = 1800.0f;
-        private float m_fDamping = 600.0f;
-        private float m_fMass = 50.0f;
+        protected Vector3 m_vLookAt;
+        protected Vector3 m_vPosition;
+        protected Vector3 m_vUp;
 
         // Perspective
-        private float m_fAspectRatio;
-        private float m_fFieldOfView;
-        private float m_fNearPlaneDistance;
-        private float m_fFarPlaneDistance;
-        private Matrix m_ViewMatrix;
-        private Matrix m_ProjMatrix;
+        protected float m_fAspectRatio;
+        protected float m_fFieldOfView;
+        protected float m_fNearPlaneDistance;
+        protected float m_fFarPlaneDistance;
+        protected Matrix m_ViewMatrix;
+        protected Matrix m_ProjMatrix;
 
 
         //---------------------------------------
@@ -43,14 +43,11 @@ namespace Karts.Code
         //---------------------------------------
         public Camera()
         {
-            m_Target = null;
             m_vLookAt = Vector3.Zero;
-            m_vLookAtOffset = new Vector3(0, 2.8f, 0);
             m_vPosition = Vector3.Zero;
-            m_vDesiredPositionOffset = new Vector3(0, 2000.0f, 3300.0f);
             m_vUp = Vector3.Up;
-            m_vVelocity = Vector3.Zero;
-
+            
+            m_iIDCamera = -1;
 
             m_fAspectRatio = 4.0f / 3.0f;
             m_fFieldOfView = MathHelper.ToRadians(45.0f);
@@ -60,33 +57,61 @@ namespace Karts.Code
 
         ~Camera() { }
 
-        public void SetTarget(Object3D target)
+        public bool Init(int ID)
         {
-            m_Target = target;
-            UpdateWorldPositions();
-            m_vPosition = m_vDesiredPosition;
+            m_iIDCamera = ID;
+
+            m_vPosition = new Vector3(0.0f, 100.0f, -100.0f);
+            m_vLookAt = new Vector3(0.0f, 0.0f, 100.0f);            
+
+            // Set camera perspective
+            m_fNearPlaneDistance = 1.0f;
+            m_fFarPlaneDistance = 100000.0f;
+
+            GraphicsDeviceManager gdm = ResourcesManager.GetInstance().GetGraphicsDeviceManager();
+            m_fAspectRatio = (float)gdm.GraphicsDevice.Viewport.Width / gdm.GraphicsDevice.Viewport.Height;
+
+            return true;
         }
 
-        public Object3D GetTarget()
+        public new ECamType GetType() { return ECamType.ECAMERA_TYPE_INVALID; }
+
+        public void SetID(int id)
         {
-            return m_Target;
+            if (id < 0) return;
+
+            m_iIDCamera = id;
         }
+
+        public int GetID()
+        {
+            return m_iIDCamera;
+        }
+
 
         public Vector3 GetLookAt()
         {
-            UpdateWorldPositions();
             return m_vLookAt;
+        }
+
+        public Vector3 GetForward()
+        {
+            return m_ViewMatrix.Forward;
+        }
+
+        public Vector3 GetUp()
+        {
+            return m_ViewMatrix.Up;
+        }
+
+        public Vector3 GetRight()
+        {
+            return m_ViewMatrix.Right;
         }
 
         public Vector3 GetPosition()
         {
             return m_vPosition;
-        }
-
-        public Vector3 GetDesiredPosition()
-        {
-            UpdateWorldPositions();
-            return m_vDesiredPosition;
         }
 
         public Matrix GetProjectionMatrix()
@@ -99,51 +124,12 @@ namespace Karts.Code
             return m_ViewMatrix;
         }
 
-        private void UpdateWorldPositions()
-        {
-            // Construct a matrix to transform from object space to worldspace
-            Matrix transform = Matrix.Identity;
-            transform.Forward = m_Target.GetForward();
-            transform.Up = m_vUp;
-            transform.Right = Vector3.Cross(m_vUp, m_Target.GetForward());
-
-            // Calculate desired camera properties in world space
-            m_vDesiredPosition = m_Target.GetPosition() + Vector3.TransformNormal(m_vDesiredPositionOffset, transform);
-            m_vLookAt = m_Target.GetPosition() + Vector3.TransformNormal(m_vLookAtOffset, transform);
-        }
-
-        private void UpdateMatrices()
+        protected void UpdateMatrices()
         {
             m_ViewMatrix = Matrix.CreateLookAt(m_vPosition, m_vLookAt, m_vUp);
             m_ProjMatrix = Matrix.CreatePerspectiveFieldOfView(m_fFieldOfView, m_fAspectRatio, m_fNearPlaneDistance, m_fFarPlaneDistance);
         }
 
-        public void Update(GameTime gameTime)
-        {
-            if (m_Target != null)
-            {
-                // Target Camera
-                UpdateWorldPositions();
-
-                float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                // Calculate spring force
-                Vector3 stretch = m_vPosition - m_vDesiredPosition;
-                Vector3 force = -m_fStiffness * stretch - m_fDamping * m_vVelocity;
-
-                // Apply acceleration
-                Vector3 acceleration = force / m_fMass;
-                m_vVelocity += acceleration * elapsed;
-
-                // Apply velocity
-                m_vPosition += m_vVelocity * elapsed;
-
-                UpdateMatrices();
-            }
-            else
-            {
-                // Free camera (it is moved by the input controls)
-            }
-        }
+        public virtual void Update(GameTime gameTime) { }
     }
 }

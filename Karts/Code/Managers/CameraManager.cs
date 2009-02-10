@@ -6,24 +6,31 @@ using Microsoft.Xna.Framework;
 
 namespace Karts.Code
 {
+    
+
     class CameraManager : GameComponent
     {
+        // Constants
+        public const int INVALID_CAMERA_ID = -1;
+
         //-------------------------------------------------
         // Class members
         //-------------------------------------------------
         private List<Camera> m_CameraList = new List<Camera>();
         public static CameraManager m_CameraManager = null;
-        int iActiveCameraID;
+        int m_iActiveCameraID;
+        int m_iIDCameraCounter;
 
         //-------------------------------------------------
         // Class methods
         //-------------------------------------------------
         public CameraManager(Game game) : base(game)
         {
-            iActiveCameraID = -1;
+            m_iActiveCameraID = INVALID_CAMERA_ID;
+            m_iIDCameraCounter = INVALID_CAMERA_ID;
         }
 
-        ~CameraManager() { }
+        ~CameraManager(){ }
 
         public static CameraManager GetInstance()
         {
@@ -35,21 +42,36 @@ namespace Karts.Code
             if (m_CameraManager == null)
                 m_CameraManager = new CameraManager(game);
 
+            // By default we create a free camera
+            m_CameraManager.CreateCamera(Camera.ECamType.ECAMERA_TYPE_FREE, null);
+
             return m_CameraManager;
         }
 
-        public int CreateCamera(Object3D target)
+        public int CreateCamera(Camera.ECamType type, Object3D target)
         {
-            int iCameraID = m_CameraList.Count;
-            Camera newCam = new Camera();
+            int iCameraID = ++m_iIDCameraCounter;
 
-            newCam.SetTarget(target);
-            m_CameraList.Add(newCam);
+            if (GetCamera(iCameraID) != null)
+                return INVALID_CAMERA_ID;
 
-            if (iActiveCameraID < 0)
+            if (type == Camera.ECamType.ECAMERA_TYPE_TARGET)
+            {
+                CameraTarget newCamera = new CameraTarget();
+                newCamera.Init(iCameraID, target);
+                m_CameraList.Add(newCamera);
+            }
+            else if (type == Camera.ECamType.ECAMERA_TYPE_FREE)
+            {
+                CameraFree newCamera = new CameraFree();
+                newCamera.Init(iCameraID);
+                m_CameraList.Add(newCamera);
+            }
+
+            if (m_iActiveCameraID < 0)
             {
                 // we set as active camera by default the first created one
-                iActiveCameraID = iCameraID;
+                m_iActiveCameraID = iCameraID;
             }
 
             return iCameraID;
@@ -57,28 +79,20 @@ namespace Karts.Code
 
         public Camera GetActiveCamera()
         {
-            if (iActiveCameraID < 0 || iActiveCameraID >= m_CameraList.Count)
-                return null;
-
-            return m_CameraList[iActiveCameraID];
+            return m_CameraList.Find(new FindCameraID(m_iActiveCameraID).CompareID);
         }
 
         public void SetActiveCamera(int id)
         {
             if (id < m_CameraList.Count)
             {
-                iActiveCameraID = id;
+                m_iActiveCameraID = id;
             }
         }
 
         public Camera GetCamera(int id)
         {
-            if (id < m_CameraList.Count)
-            {
-                return m_CameraList[id];
-            }
-
-                return null;
+            return m_CameraList.Find(new FindCameraID(id).CompareID);
         }
 
         public override void Update(GameTime gameTime)
@@ -87,6 +101,20 @@ namespace Karts.Code
 	        {
     		    c.Update(gameTime);
 	        }
+        }
+
+        //-------------------------------------------------
+        // Class predicates
+        //-------------------------------------------------
+        private struct FindCameraID
+        {
+            int iID;
+
+            public FindCameraID(int _id) { iID = _id; }
+            public bool CompareID(Camera c)
+            {
+                return c.GetID() == iID;
+            }
         }
     }
 }

@@ -80,6 +80,11 @@ namespace Karts.Code
             m_vPosition = m_vPosition + new Vector3(x, y, z);
         }
 
+        public void SetScale(float fScale)
+        {
+            m_fScale = fScale;
+        }
+
         public Vector3 GetForward()
         {
             Matrix m = Matrix.CreateFromYawPitchRoll(m_vRotation.Y, m_vRotation.X, m_vRotation.Z);
@@ -121,12 +126,36 @@ namespace Karts.Code
         {
             if (m_Model != null)
             {
+
+                Matrix[] transforms = new Matrix[m_Model.Bones.Count];
+                m_Model.CopyAbsoluteBoneTransformsTo(transforms);
+
                 foreach (ModelMesh mesh in m_Model.Meshes)
                 {
                     foreach (BasicEffect effect in mesh.Effects)
                     {
                         effect.EnableDefaultLighting();
                         effect.PreferPerPixelLighting = true;
+
+                        effect.World = transforms[mesh.ParentBone.Index] * 
+                                       Matrix.CreateFromYawPitchRoll(m_vRotation.Y, m_vRotation.X, m_vRotation.Z) * // Rotation matrix
+                                       Matrix.CreateScale(m_fScale) * Matrix.CreateTranslation(m_vPosition); // Translation and scale matrix
+
+                        // Use the matrices provided by the chase camera
+                        effect.View = camViewMatrix;
+                        effect.Projection = camProjMatrix;
+                    }
+                    mesh.Draw();
+                }
+
+
+                /*
+                foreach (ModelMesh mesh in m_Model.Meshes)
+                {
+                    foreach (BasicEffect effect in mesh.Effects)
+                    {
+                        //effect.EnableDefaultLighting();
+                        //effect.PreferPerPixelLighting = true;
 
                         effect.World = Matrix.CreateFromYawPitchRoll(m_vRotation.Y, m_vRotation.X, m_vRotation.Z) *
                                        Matrix.CreateScale(m_fScale) * Matrix.CreateTranslation(m_vPosition);
@@ -136,7 +165,7 @@ namespace Karts.Code
                     }
 
                     mesh.Draw();
-                }
+                }*/
             }
 
             if (m_bDrawAxis)
