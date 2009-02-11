@@ -56,12 +56,12 @@ namespace Karts.Code
 
         ~Camera() { }
 
-        public bool Init(int ID)
+        public bool Init(int ID, Vector3 pos, Vector3 rot)
         {
             m_iIDCamera = ID;
 
-            m_vPosition = new Vector3(0.0f, 100.0f, -100.0f);
-            m_vRotation = Vector3.Zero;
+            m_vPosition = pos;
+            m_vRotation = rot;
 
             m_vLookAt = new Vector3(0.0f, 0.0f, 100.0f);            
 
@@ -75,7 +75,7 @@ namespace Karts.Code
             return true;
         }
 
-        public virtual ECamType GetType() { return ECamType.ECAMERA_TYPE_INVALID; }
+        public virtual ECamType GetCameraType() { return ECamType.ECAMERA_TYPE_INVALID; }
 
         public void SetID(int id)
         {
@@ -93,6 +93,11 @@ namespace Karts.Code
         public Vector3 GetLookAt()
         {
             return m_vLookAt;
+        }
+
+        public void SetLookAt(Vector3 lookat)
+        {
+            m_vLookAt = lookat;
         }
 
         public Matrix GetProjectionMatrix()

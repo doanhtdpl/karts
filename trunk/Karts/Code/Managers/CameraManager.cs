@@ -47,7 +47,7 @@ namespace Karts.Code
                 m_CameraManager = new CameraManager(game);
 
             // By default we create a free camera
-            m_CameraManager.CreateCamera(Camera.ECamType.ECAMERA_TYPE_FREE, null, true);
+            m_CameraManager.CreateCamera(Camera.ECamType.ECAMERA_TYPE_FREE, true, null, Vector3.Zero, Vector3.Zero);
 
             return m_CameraManager;
         }
@@ -58,17 +58,21 @@ namespace Karts.Code
 
             if (activate)
             {
-                if (cam.GetType() != Camera.ECamType.ECAMERA_TYPE_FREE)
+                if (cam.GetCameraType() != Camera.ECamType.ECAMERA_TYPE_FREE)
                 {
                     m_iOldActiveCameraID = cam.GetID();
+                    Vector3 pos = cam.GetPosition();
+                    Vector3 rot = cam.GetRotation();
                     cam = GetCamera(Camera.ECamType.ECAMERA_TYPE_FREE);
 
                     if (cam == null)
                     {
-                        CreateCamera(Camera.ECamType.ECAMERA_TYPE_FREE, null, true);
+                        CreateCamera(Camera.ECamType.ECAMERA_TYPE_FREE, true, null, pos, rot);
                     }
                     else
                     {
+                        cam.SetPosition(pos);
+                        cam.SetRotation(rot);
                         m_iActiveCameraID = cam.GetID();
                     }
                 }
@@ -82,7 +86,7 @@ namespace Karts.Code
             }
         }
 
-        public int CreateCamera(Camera.ECamType type, Object3D target, bool bActive)
+        public int CreateCamera(Camera.ECamType type, bool bActive, Object3D target, Vector3 pos, Vector3 rot)
         {
             int iCameraID = ++m_iIDCameraCounter;
 
@@ -98,7 +102,7 @@ namespace Karts.Code
             else if (type == Camera.ECamType.ECAMERA_TYPE_FREE)
             {
                 CameraFree newCamera = new CameraFree();
-                newCamera.Init(iCameraID);
+                newCamera.Init(iCameraID, pos, rot);
                 m_CameraList.Add(newCamera);
             }
 
@@ -115,14 +119,14 @@ namespace Karts.Code
         {
             Camera cam = GetActiveCamera();
 
-            return cam == null ? false : cam.GetType() == Camera.ECamType.ECAMERA_TYPE_FREE;
+            return cam == null ? false : cam.GetCameraType() == Camera.ECamType.ECAMERA_TYPE_FREE;
         }
 
         public bool IsActiveCameraTarget()
         {
             Camera cam = GetActiveCamera();
 
-            return cam == null ? false : cam.GetType() == Camera.ECamType.ECAMERA_TYPE_TARGET;
+            return cam == null ? false : cam.GetCameraType() == Camera.ECamType.ECAMERA_TYPE_TARGET;
         }
 
         public Camera GetActiveCamera()
@@ -134,7 +138,7 @@ namespace Karts.Code
         {
             Camera cam = m_CameraList.Find(new FindCameraID(m_iActiveCameraID).CompareID);
 
-            return cam == null? Camera.ECamType.ECAMERA_TYPE_INVALID : cam.GetType();
+            return cam == null ? Camera.ECamType.ECAMERA_TYPE_INVALID : cam.GetCameraType();
         }
 
         public int GetActiveCameraID()
@@ -192,7 +196,7 @@ namespace Karts.Code
 
             public bool CompareTypes(Camera c)
             {
-                return c.GetType() == eType;
+                return c.GetCameraType() == eType;
             }
         }
     }
