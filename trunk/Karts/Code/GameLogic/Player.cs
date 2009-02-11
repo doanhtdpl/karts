@@ -73,7 +73,7 @@ namespace Karts.Code
                 {
                     if (bCamera)
                     {
-                        Object3D target = m_Vehicle.GetObject3D();
+                        Object3D target = m_Vehicle;
                         m_IDCamera = CameraManager.GetInstance().CreateCamera(Camera.ECamType.ECAMERA_TYPE_TARGET, true, target, target.GetPosition(), target.GetRotation());
                     }
                 }
@@ -115,17 +115,17 @@ namespace Karts.Code
 
             if (im.isKeyDown(Keys.Left))
             {
-                m_vRotation.Y += 0.2f;
+                m_vRotation.Y += 0.03f;
             }
 
             if (im.isKeyDown(Keys.Right))
             {
-                m_vRotation.Y -= 0.2f;
+                m_vRotation.Y -= 0.03f;
             }
 
             m_vPosition = m_vPosition + fMove * GetForward();
-            m_Vehicle.GetObject3D().SetPosition(m_vPosition);
-            m_Vehicle.SetRotation(m_vRotation);
+            m_Vehicle.SetPosition(m_vPosition);
+            m_Vehicle.SetRotationSoft(m_vRotation);
             
             m_Vehicle.Update(gameTime);
             //m_Driver.Update(gameTime);
@@ -137,6 +137,11 @@ namespace Karts.Code
 
             m_Vehicle.Draw(gameTime, cam.GetProjectionMatrix(), cam.GetViewMatrix());
             //m_Driver.Draw(gameTime, m_Camera.GetProjectionMatrix(), m_Camera.GetViewMatrix());
+        }
+
+        public Vehicle GetVehicle()
+        {
+            return m_Vehicle;
         }
     }
 }

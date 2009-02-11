@@ -92,7 +92,10 @@
     <Compile Include="Code\Graphics\Mesh.cs" />
     <Compile Include="Code\Graphics\Object3D.cs" />
     <Compile Include="Code\GameLogic\Circuit.cs" />
+    <Compile Include="Code\Items\Item.cs" />
+    <Compile Include="Code\Items\ItemArea.cs" />
     <Compile Include="Code\Managers\CircuitManager.cs" />
+    <Compile Include="Code\Managers\CollisionManager.cs" />
     <Compile Include="Code\Managers\InputManager.cs" />
     <Compile Include="Code\Managers\CameraManager.cs" />
     <Compile Include="Code\Managers\ResourcesManager.cs" />
