@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
+using System.Diagnostics;
+
 namespace Karts.Code
 {
     
@@ -19,6 +21,7 @@ namespace Karts.Code
         private List<Camera> m_CameraList = new List<Camera>();
         public static CameraManager m_CameraManager = null;
         int m_iActiveCameraID;
+        int m_iOldActiveCameraID;
         int m_iIDCameraCounter;
 
         //-------------------------------------------------
@@ -28,6 +31,7 @@ namespace Karts.Code
         {
             m_iActiveCameraID = INVALID_CAMERA_ID;
             m_iIDCameraCounter = INVALID_CAMERA_ID;
+            m_iOldActiveCameraID = INVALID_CAMERA_ID;
         }
 
         ~CameraManager(){ }
@@ -43,12 +47,42 @@ namespace Karts.Code
                 m_CameraManager = new CameraManager(game);
 
             // By default we create a free camera
-            //m_CameraManager.CreateCamera(Camera.ECamType.ECAMERA_TYPE_FREE, null);
+            m_CameraManager.CreateCamera(Camera.ECamType.ECAMERA_TYPE_FREE, null, true);
 
             return m_CameraManager;
         }
 
-        public int CreateCamera(Camera.ECamType type, Object3D target)
+        public void ActivateCameraFree(bool activate)
+        {
+            Camera cam = GetActiveCamera();
+
+            if (activate)
+            {
+                if (cam.GetType() != Camera.ECamType.ECAMERA_TYPE_FREE)
+                {
+                    m_iOldActiveCameraID = cam.GetID();
+                    cam = GetCamera(Camera.ECamType.ECAMERA_TYPE_FREE);
+
+                    if (cam == null)
+                    {
+                        CreateCamera(Camera.ECamType.ECAMERA_TYPE_FREE, null, true);
+                    }
+                    else
+                    {
+                        m_iActiveCameraID = cam.GetID();
+                    }
+                }
+            }
+            else
+            {
+                if (m_iOldActiveCameraID != INVALID_CAMERA_ID)
+                {
+                    m_iActiveCameraID = m_iOldActiveCameraID;
+                }
+            }
+        }
+
+        public int CreateCamera(Camera.ECamType type, Object3D target, bool bActive)
         {
             int iCameraID = ++m_iIDCameraCounter;
 
@@ -68,7 +102,7 @@ namespace Karts.Code
                 m_CameraList.Add(newCamera);
             }
 
-            if (m_iActiveCameraID < 0)
+            if (bActive)
             {
                 // we set as active camera by default the first created one
                 m_iActiveCameraID = iCameraID;
@@ -77,9 +111,37 @@ namespace Karts.Code
             return iCameraID;
         }
 
+        public bool IsActiveCameraFree()
+        {
+            Camera cam = GetActiveCamera();
+
+            return cam == null ? false : cam.GetType() == Camera.ECamType.ECAMERA_TYPE_FREE;
+        }
+
+        public bool IsActiveCameraTarget()
+        {
+            Camera cam = GetActiveCamera();
+
+            return cam == null ? false : cam.GetType() == Camera.ECamType.ECAMERA_TYPE_TARGET;
+        }
+
         public Camera GetActiveCamera()
         {
             return m_CameraList.Find(new FindCameraID(m_iActiveCameraID).CompareID);
+        }
+
+        public Camera.ECamType GetActiveCameraType()
+        {
+            Camera cam = m_CameraList.Find(new FindCameraID(m_iActiveCameraID).CompareID);
+
+            return cam == null? Camera.ECamType.ECAMERA_TYPE_INVALID : cam.GetType();
+        }
+
+        public int GetActiveCameraID()
+        {
+            Camera cam = m_CameraList.Find(new FindCameraID(m_iActiveCameraID).CompareID);
+
+            return cam == null ? INVALID_CAMERA_ID : cam.GetID();
         }
 
         public void SetActiveCamera(int id)
@@ -93,6 +155,11 @@ namespace Karts.Code
         public Camera GetCamera(int id)
         {
             return m_CameraList.Find(new FindCameraID(id).CompareID);
+        }
+
+        public Camera GetCamera(Camera.ECamType type)
+        {
+            return m_CameraList.Find(new FindCameraType(type).CompareTypes);
         }
 
         public override void Update(GameTime gameTime)
@@ -114,6 +181,18 @@ namespace Karts.Code
             public bool CompareID(Camera c)
             {
                 return c.GetID() == iID;
+            }
+        }
+
+        private struct FindCameraType
+        {
+            Camera.ECamType eType;
+
+            public FindCameraType(Camera.ECamType _type) { eType = _type; }
+
+            public bool CompareTypes(Camera c)
+            {
+                return c.GetType() == eType;
             }
         }
     }

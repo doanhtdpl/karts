@@ -49,7 +49,7 @@ namespace Karts.Code
             return true;
         }
 
-        public new ECamType GetType() { return ECamType.ECAMERA_TYPE_TARGET; }
+        public override ECamType GetType() { return ECamType.ECAMERA_TYPE_TARGET; }
 
         public void SetTarget(Object3D target)
         {

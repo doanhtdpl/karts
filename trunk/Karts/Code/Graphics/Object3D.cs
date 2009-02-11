@@ -13,7 +13,7 @@ namespace Karts.Code
         // Class members
         //--------------------------------------------
         protected Vector3 m_vPosition;
-        protected Vector3 m_vRotation; // Yaw, Pitch, Roll
+        protected Vector3 m_vRotation; // Pitch (rotation in X axis), Yaw (rotation in Y axis), Roll (rotation in Z axis)
 
         // debug
         private bool m_bDrawAxis;
@@ -60,7 +60,7 @@ namespace Karts.Code
 
         public Vector3 GetForward()
         {
-            Matrix m = Matrix.CreateFromYawPitchRoll(m_vRotation.X, m_vRotation.Y, m_vRotation.Z);
+            Matrix m = Matrix.CreateFromYawPitchRoll(m_vRotation.Y, m_vRotation.X, m_vRotation.Z);
             
             Vector3 vDir = m.Forward;
             vDir.Normalize();
@@ -69,7 +69,7 @@ namespace Karts.Code
 
         public Vector3 GetRight()
         {
-            Matrix m = Matrix.CreateFromYawPitchRoll(m_vRotation.X, m_vRotation.Y, m_vRotation.Z);
+            Matrix m = Matrix.CreateFromYawPitchRoll(m_vRotation.Y, m_vRotation.X, m_vRotation.Z);
             Vector3 vRight = m.Right;
             vRight.Normalize();
             return vRight;
@@ -77,7 +77,7 @@ namespace Karts.Code
 
         public Vector3 GetUp()
         {
-            Matrix m = Matrix.CreateFromYawPitchRoll(m_vRotation.X, m_vRotation.Y, m_vRotation.Z);
+            Matrix m = Matrix.CreateFromYawPitchRoll(m_vRotation.Y, m_vRotation.X, m_vRotation.Z);
             Vector3 vUp = m.Up;
             vUp.Normalize();
             return vUp;
@@ -90,8 +90,8 @@ namespace Karts.Code
 
         public void SetRotation(float fYaw, float fPitch, float fRoll)
         {
-            m_vRotation.X = fYaw;
-            m_vRotation.Y = fPitch;
+            m_vRotation.X = fPitch;
+            m_vRotation.Y = fYaw;
             m_vRotation.Z = fRoll;
         }
         
