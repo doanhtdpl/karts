@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace Karts.Code
 {
-    class PlayerManager : DrawableGameComponent
+    class PlayerManager
     {
         // Constants
         public const int INVALID_PLAYER_ID = 0;
@@ -21,27 +21,28 @@ namespace Karts.Code
         //---------------------------------------------------
         // Class methods
         //---------------------------------------------------
-       public PlayerManager(Game game) : base(game) 
-        {
-            m_uIDPlayerCounter = 0;
-        }
+       public PlayerManager()
+       {
+           m_uIDPlayerCounter = 0;
+       }
 
         ~PlayerManager()
         {
             m_PlayerList.Clear();
         }
 
-        public static PlayerManager Init(Game game)
+        public static PlayerManager GetInstance()
         {
             if (m_PlayerManager == null)
-                m_PlayerManager = new PlayerManager(game);
+                m_PlayerManager = new PlayerManager();
 
             return m_PlayerManager;
         }
 
-        public static PlayerManager GetInstance()
+        public bool Init()
         {
-            return m_PlayerManager;
+
+            return true;
         }
 
         public List<Player> GetPlayers()
@@ -84,13 +85,13 @@ namespace Karts.Code
         public void RemovePlayers() { m_PlayerList.Clear(); }
 
 
-        public override void Update(GameTime GameTime)
+        public void Update(GameTime GameTime)
         {
             foreach (Player p in m_PlayerList)
                 p.Update(GameTime);
 	    }
 
-        public override void Draw(GameTime GameTime)
+        public void Draw(GameTime GameTime)
         {
             foreach (Player p in m_PlayerList)
                 p.Draw(GameTime);

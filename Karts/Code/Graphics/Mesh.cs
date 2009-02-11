@@ -10,6 +10,7 @@ namespace Karts.Code
 {
     class Mesh : Object3D
     {
+        private BoundingSphere m_BoundingSphere;
         private Model m_Model;
         private float m_fScale;
 
@@ -33,7 +34,14 @@ namespace Karts.Code
                 return false;
             }
 
+            m_BoundingSphere = m_Model.Meshes[0].BoundingSphere;
+
             return true;
+        }
+
+        public Model GetModel()
+        {
+            return m_Model;
         }
 
         public void SetScale(float fScale)
@@ -41,9 +49,14 @@ namespace Karts.Code
             m_fScale = fScale;
         }
 
-        public new void Draw(Matrix camProjMatrix, Matrix camViewMatrix)
+        public BoundingSphere GetBoundingsphere()
         {
-            base.Draw(camProjMatrix, camViewMatrix);
+            return m_BoundingSphere;
+        }
+
+        public void Draw(Matrix camProjMatrix, Matrix camViewMatrix)
+        {
+            base.Draw();
 
             if (m_Model != null)
             {
@@ -68,6 +81,35 @@ namespace Karts.Code
                     mesh.Draw();
                 }
             }
+        }
+
+        //---------------------------------------
+        // Collision methods
+        //---------------------------------------
+        public bool CollidesWithMesh(Mesh m)
+        {
+            if (m_Model == null) 
+                return false;
+
+            for (int i = 0; i < m_Model.Meshes.Count; i++)
+            {
+                // Check whether the bounding boxes of the two cubes intersect.
+                BoundingSphere c1BoundingSphere = m_Model.Meshes[i].BoundingSphere;
+                c1BoundingSphere.Center += GetPosition();
+
+                for (int j = 0; j < m.GetModel().Meshes.Count; j++)
+                {
+                    BoundingSphere c2BoundingSphere = m.GetModel().Meshes[j].BoundingSphere;
+                    c2BoundingSphere.Center += m.GetPosition();
+
+                    if (c1BoundingSphere.Intersects(c2BoundingSphere))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

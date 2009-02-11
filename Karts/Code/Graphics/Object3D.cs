@@ -88,6 +88,16 @@ namespace Karts.Code
             return m_vRotation;
         }
 
+        public void AddRotation(float fYaw, float fPitch, float fRoll)
+        {
+            m_vRotation += new Vector3(fPitch, fYaw, fRoll);
+        }
+        
+        public void AddRotation(Vector3 rotation)
+        {
+            m_vRotation += rotation;
+        }
+
         public void SetRotation(float fYaw, float fPitch, float fRoll)
         {
             m_vRotation.X = fPitch;
@@ -100,7 +110,7 @@ namespace Karts.Code
             m_vRotation = rotation;
         }
 
-        public void Draw(Matrix camProjMatrix, Matrix camViewMatrix)
+        public void Draw()
         {
             if (m_bDrawAxis)
             {

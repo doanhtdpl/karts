@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace Karts.Code
 {
-    class CircuitManager : DrawableGameComponent
+    class CircuitManager
     {
         //---------------------------------------------------
         // Class members
@@ -19,22 +19,22 @@ namespace Karts.Code
         //---------------------------------------------------
         // Class methods
         //---------------------------------------------------
-        public CircuitManager(Game game) : base(game) { }
+        public CircuitManager() { }
         ~CircuitManager(){}
 
         public static CircuitManager GetInstance()
         {
-            return m_CircuitManager;
-        }
-
-        public static CircuitManager Init(Game game)
-        {
             if (m_CircuitManager == null)
             {
-                m_CircuitManager = new CircuitManager(game);
+                m_CircuitManager = new CircuitManager();
             }
 
             return m_CircuitManager;
+        }
+
+        public bool Init(string xml_circuits)
+        {
+            return true;
         }
 
         public bool CreateCircuit(Vector3 position, Vector3 rotation, string circuit_name)
@@ -74,13 +74,16 @@ namespace Karts.Code
         }
 
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float t = (float)gameTime.TotalGameTime.TotalSeconds;
+
             if (m_CurrentCircuit != null)
-                m_CurrentCircuit.Update(gameTime);
+                m_CurrentCircuit.Update(dt, t);
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             if (m_CurrentCircuit != null)
                 m_CurrentCircuit.Draw(gameTime);

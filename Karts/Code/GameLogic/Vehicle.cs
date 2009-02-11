@@ -12,18 +12,17 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Karts.Code
 {
-    class Vehicle
+    class Vehicle : Mesh
     {
         // ------------------------------------------------
         // Class members
         // ------------------------------------------------
-        private Mesh m_Mesh;
         private float m_fMaxWheelRotation;
 
         // ------------------------------------------------
         // Class methods
         // ------------------------------------------------
-        public Vehicle() 
+        public Vehicle() : base()
         {
             m_fMaxWheelRotation = 0.1f;
         }
@@ -34,43 +33,40 @@ namespace Karts.Code
         {
             bool bInitOk = false;
 
-            m_Mesh = new Mesh();
-            bInitOk = m_Mesh.Load(resource_name);
+            bInitOk = Load(resource_name);
 
             if (bInitOk)
             {
-                m_Mesh.SetPosition(position);
-                m_Mesh.SetRotation(rotation);
-                m_Mesh.SetScale(fScale);
+                SetPosition(position);
+                SetRotation(rotation);
+                SetScale(fScale);
             }
 
             return bInitOk;
         }
 
-        public Object3D GetObject3D()
-        {
-            return m_Mesh;
-        }
-
-        public void SetRotation(Vector3 rot)
+        public void SetRotationSoft(Vector3 rot)
         {
             // we apply the wheel rotation limits
-            rot.Y = MathHelper.Clamp(rot.Y, -m_fMaxWheelRotation, m_fMaxWheelRotation);
-            m_Mesh.SetRotation(rot);
+            Vector3 new_rot = Vector3.Lerp(GetRotation(), rot, 0.1f);
+
+            //rot.Y = MathHelper.Clamp(rot.Y, -m_fMaxWheelRotation, m_fMaxWheelRotation);
+            SetRotation(new_rot);
         }
 
         public void Update(GameTime GameTime)
         {
             // We correct the wheel rotation
+            /*
             Vector3 rot = m_Mesh.GetRotation();
             rot.Y -= 0.01f;
             rot.Y = MathHelper.Clamp(rot.Y, 0.0f, rot.Y);
-            m_Mesh.SetRotation(rot);
+            m_Mesh.SetRotation(rot);*/
         }
 
         public void Draw(GameTime gameTime, Matrix camProjMatrix, Matrix camViewMatrix)
         {
-            m_Mesh.Draw(camProjMatrix, camViewMatrix);
+            Draw(camProjMatrix, camViewMatrix);
         }
     }
 }

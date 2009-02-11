@@ -59,8 +59,9 @@ namespace Karts
             resources.Init(this.Content, this.graphics);
             Components.Add(Gui.Init(this));
             Components.Add(CameraManager.Init(this));
-            PlayerManager.Init(this);
-            CircuitManager.Init(this);
+            
+            PlayerManager.GetInstance().Init();
+            CircuitManager.GetInstance().Init("circuits.xml");
 
             //PlayerManager.GetInstance().DrawOrder = 1;
 

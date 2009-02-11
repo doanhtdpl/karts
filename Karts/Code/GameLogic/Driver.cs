@@ -8,12 +8,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Karts.Code
 {
-    class Driver
+    class Driver : Mesh
     {
         // ------------------------------------------------
         // Class members
         // ------------------------------------------------
-        private Mesh m_Mesh;
 
         // ------------------------------------------------
         // Class methods
@@ -25,22 +24,16 @@ namespace Karts.Code
         {
             bool bInitOk = false;
 
-            m_Mesh = new Mesh();
-            bInitOk = m_Mesh.Load(resource_name);
+            bInitOk = Load(resource_name);
 
             if (bInitOk)
             {
-                m_Mesh.SetPosition(position);
-                m_Mesh.SetRotation(rotation);
-                m_Mesh.SetScale(fScale);
+                SetPosition(position);
+                SetRotation(rotation);
+                SetScale(fScale);
             }
 
             return bInitOk;
-        }
-
-        public Mesh GetMesh()
-        {
-            return m_Mesh;
         }
 
         public void Update(GameTime GameTime)
@@ -49,7 +42,7 @@ namespace Karts.Code
 
         public void Draw(GameTime gameTime, Matrix camProjMatrix, Matrix camViewMatrix)
         {
-            m_Mesh.Draw(camProjMatrix, camViewMatrix);
+            Draw(camProjMatrix, camViewMatrix);
         }
     }
 }
