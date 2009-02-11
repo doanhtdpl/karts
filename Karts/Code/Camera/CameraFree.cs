@@ -15,11 +15,11 @@ namespace Karts.Code
         //------------------------------------------
         // Class methods
         //------------------------------------------
-        public override ECamType GetType() { return ECamType.ECAMERA_TYPE_FREE; }
+        public override ECamType GetCameraType() { return ECamType.ECAMERA_TYPE_FREE; }
 
-        public new bool Init(int ID)
+        public new bool Init(int ID, Vector3 pos, Vector3 rot)
         {
-            base.Init(ID);
+            base.Init(ID, pos, rot);
 
             // Init the view and projection matrix
             UpdateMatrices();
@@ -37,7 +37,6 @@ namespace Karts.Code
             bool bMoveLeft = InputManager.GetInstance().isKeyDown(Keys.A);
             bool bMoveRight = InputManager.GetInstance().isKeyDown(Keys.D);
 
-            Vector3 newRotation = Vector3.Zero;
             float fValueZ = 0.0f;
             float fValueX = 0.0f;
 
@@ -88,8 +87,8 @@ namespace Karts.Code
 
             // We first calculate the rotation and then translate
             Vector3 fwd = GetForward();
-            m_vPosition = m_vPosition + fValueZ * -fwd + fValueX * GetRight();
-            m_vLookAt = m_vPosition - fwd;
+            m_vPosition = m_vPosition + fValueZ * fwd + fValueX * GetRight();
+            m_vLookAt = m_vPosition + fwd;
 
             // We keep the up vector with the default value
             //m_vUp = GetUp();

@@ -38,7 +38,7 @@ namespace Karts.Code
 
         public bool Init(int ID, Object3D target)
         {
-            base.Init(ID);
+            base.Init(ID, target.GetPosition(), target.GetRotation());
 
             m_Target = target;
 
@@ -49,7 +49,7 @@ namespace Karts.Code
             return true;
         }
 
-        public override ECamType GetType() { return ECamType.ECAMERA_TYPE_TARGET; }
+        public override ECamType GetCameraType() { return ECamType.ECAMERA_TYPE_TARGET; }
 
         public void SetTarget(Object3D target)
         {

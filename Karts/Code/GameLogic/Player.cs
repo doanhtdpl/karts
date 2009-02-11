@@ -72,7 +72,10 @@ namespace Karts.Code
                 if (bInitOk)
                 {
                     if (bCamera)
-                        m_IDCamera = CameraManager.GetInstance().CreateCamera(Camera.ECamType.ECAMERA_TYPE_TARGET, m_Vehicle.GetObject3D(), true);
+                    {
+                        Object3D target = m_Vehicle.GetObject3D();
+                        m_IDCamera = CameraManager.GetInstance().CreateCamera(Camera.ECamType.ECAMERA_TYPE_TARGET, true, target, target.GetPosition(), target.GetRotation());
+                    }
                 }
             }
 
@@ -130,7 +133,7 @@ namespace Karts.Code
 
         public void Draw(GameTime gameTime)
         {
-            Camera cam = CameraManager.GetInstance().GetCamera(m_IDCamera);
+            Camera cam = CameraManager.GetInstance().GetActiveCamera();
 
             m_Vehicle.Draw(gameTime, cam.GetProjectionMatrix(), cam.GetViewMatrix());
             //m_Driver.Draw(gameTime, m_Camera.GetProjectionMatrix(), m_Camera.GetViewMatrix());
