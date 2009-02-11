@@ -18,11 +18,16 @@ namespace Karts.Code
         // Class members
         // ------------------------------------------------
         private Mesh m_Mesh;
+        private float m_fMaxWheelRotation;
 
         // ------------------------------------------------
         // Class methods
         // ------------------------------------------------
-        public Vehicle() { }
+        public Vehicle() 
+        {
+            m_fMaxWheelRotation = 0.1f;
+        }
+
         ~Vehicle() { }
 
         public bool Init(Vector3 position, Vector3 rotation, float fScale, string resource_name)
@@ -47,8 +52,20 @@ namespace Karts.Code
             return m_Mesh;
         }
 
+        public void SetRotation(Vector3 rot)
+        {
+            // we apply the wheel rotation limits
+            rot.Y = MathHelper.Clamp(rot.Y, -m_fMaxWheelRotation, m_fMaxWheelRotation);
+            m_Mesh.SetRotation(rot);
+        }
+
         public void Update(GameTime GameTime)
         {
+            // We correct the wheel rotation
+            Vector3 rot = m_Mesh.GetRotation();
+            rot.Y -= 0.01f;
+            rot.Y = MathHelper.Clamp(rot.Y, 0.0f, rot.Y);
+            m_Mesh.SetRotation(rot);
         }
 
         public void Draw(GameTime gameTime, Matrix camProjMatrix, Matrix camViewMatrix)

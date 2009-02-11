@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
+using System.Diagnostics;
 
 namespace Karts.Code
 {
@@ -14,7 +15,7 @@ namespace Karts.Code
         // Class members
         // ------------------------------------------------
         private Vehicle m_Vehicle;
-        private Driver m_Driver;
+        //private Driver m_Driver;
         private UInt32 m_uID;
         private string m_sName;
         private int m_IDCamera;
@@ -27,7 +28,7 @@ namespace Karts.Code
         {
             m_uID = PlayerManager.INVALID_PLAYER_ID;
             m_Vehicle = null;
-            m_Driver = null;
+            //m_Driver = null;
             m_sName = null;
             m_vPosition = Vector3.Zero;
             m_vRotation = Vector3.Zero;
@@ -38,7 +39,7 @@ namespace Karts.Code
         {
             m_uID = PlayerManager.INVALID_PLAYER_ID;
             m_Vehicle = null;
-            m_Driver = null;
+            //m_Driver = null;
             m_sName = null;
             m_vPosition = Vector3.Zero;
             m_vRotation = Vector3.Zero;
@@ -71,7 +72,7 @@ namespace Karts.Code
                 if (bInitOk)
                 {
                     if (bCamera)
-                        m_IDCamera = CameraManager.GetInstance().CreateCamera(Camera.ECamType.ECAMERA_TYPE_TARGET, m_Vehicle.GetObject3D());
+                        m_IDCamera = CameraManager.GetInstance().CreateCamera(Camera.ECamType.ECAMERA_TYPE_TARGET, m_Vehicle.GetObject3D(), true);
                 }
             }
 
@@ -85,26 +86,43 @@ namespace Karts.Code
 
         public void Update(GameTime gameTime)
         {
-            Vector3 newPos = new Vector3(0, 0, 0);
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            InputManager im = InputManager.GetInstance();
+
+            // Switch camera Free/Target
+            if (im.isKeyPressed(Keys.Z))
             {
-                newPos.Z = -100.0f;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
-                newPos.Z = 100.0f;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                newPos.X = -100.0f;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                newPos.X = 100.0f;
+                CameraManager.GetInstance().ActivateCameraFree(!CameraManager.GetInstance().IsActiveCameraFree());
             }
 
-            m_vPosition = m_vPosition + newPos;
+            if (CameraManager.GetInstance().IsActiveCameraFree()) 
+                return;
+
+            Vector3 newPos = new Vector3(0, 0, 0);
+            float fMove = 00f;
+
+            if (im.isKeyDown(Keys.Up))
+            {
+                fMove = 100.0f;
+            }
+
+            if (im.isKeyDown(Keys.Down))
+            {
+                fMove = -100.0f;
+            }
+
+            if (im.isKeyDown(Keys.Left))
+            {
+                m_vRotation.Y += 0.2f;
+            }
+
+            if (im.isKeyDown(Keys.Right))
+            {
+                m_vRotation.Y -= 0.2f;
+            }
+
+            m_vPosition = m_vPosition + fMove * GetForward();
             m_Vehicle.GetObject3D().SetPosition(m_vPosition);
+            m_Vehicle.SetRotation(m_vRotation);
             
             m_Vehicle.Update(gameTime);
             //m_Driver.Update(gameTime);
@@ -113,9 +131,6 @@ namespace Karts.Code
         public void Draw(GameTime gameTime)
         {
             Camera cam = CameraManager.GetInstance().GetCamera(m_IDCamera);
-            
-            if (cam == null)
-                cam = CameraManager.GetInstance().GetActiveCamera();
 
             m_Vehicle.Draw(gameTime, cam.GetProjectionMatrix(), cam.GetViewMatrix());
             //m_Driver.Draw(gameTime, m_Camera.GetProjectionMatrix(), m_Camera.GetViewMatrix());

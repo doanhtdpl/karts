@@ -75,7 +75,7 @@ namespace Karts.Code
             return true;
         }
 
-        public new ECamType GetType() { return ECamType.ECAMERA_TYPE_INVALID; }
+        public virtual ECamType GetType() { return ECamType.ECAMERA_TYPE_INVALID; }
 
         public void SetID(int id)
         {

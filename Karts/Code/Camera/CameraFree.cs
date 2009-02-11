@@ -15,7 +15,7 @@ namespace Karts.Code
         //------------------------------------------
         // Class methods
         //------------------------------------------
-        public new ECamType GetType() { return ECamType.ECAMERA_TYPE_FREE; }
+        public override ECamType GetType() { return ECamType.ECAMERA_TYPE_FREE; }
 
         public new bool Init(int ID)
         {
@@ -66,24 +66,24 @@ namespace Karts.Code
             bool bTurnUp = InputManager.GetInstance().isKeyDown(Keys.Up);
             bool bTurnDown = InputManager.GetInstance().isKeyDown(Keys.Down);
 
-            if (bTurnUp)
+            if (bTurnRight)
             {
-                m_vRotation.Y -= 0.5f * elapsed;
-            }
-
-            if (bTurnDown)
-            {
-                m_vRotation.Y += 0.5f * elapsed;
+                m_vRotation.Y -= 0.8f * elapsed;
             }
 
             if (bTurnLeft)
             {
-                m_vRotation.X += 0.5f * elapsed;
+                m_vRotation.Y += 0.8f * elapsed;
             }
 
-            if (bTurnRight)
+            if (bTurnDown)
             {
-                m_vRotation.X -= 0.5f * elapsed;
+                m_vRotation.X += 0.8f * elapsed;
+            }
+
+            if (bTurnUp)
+            {
+                m_vRotation.X -= 0.8f * elapsed;
             }
 
             // We first calculate the rotation and then translate
