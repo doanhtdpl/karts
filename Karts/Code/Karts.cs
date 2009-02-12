@@ -15,16 +15,17 @@ using Karts.Code.SceneManager;
 
 namespace Karts
 {
-
     public class Karts : Game
     {
         GraphicsDeviceManager graphics;
+        Viewport defaultViewport;
 
         public Karts()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 600;
+            graphics.SynchronizeWithVerticalRetrace = false;
 
             Content.RootDirectory = "Content";
         }
@@ -45,7 +46,8 @@ namespace Karts
             //Components.Add(PlayerManager.Init(this));
             //Components.Add(CircuitManager.Init(this));
 
-            
+            ControllerManager.GetInstance().parse();
+
             base.Initialize();
         }
 
@@ -57,13 +59,9 @@ namespace Karts
         {
             ResourcesManager resources = ResourcesManager.GetInstance();
             resources.Init(this.Content, this.graphics);
+
             Components.Add(Gui.Init(this));
             Components.Add(CameraManager.Init(this));
-            
-            PlayerManager.GetInstance().Init();
-            CircuitManager.GetInstance().Init("circuits.xml");
-
-            //PlayerManager.GetInstance().DrawOrder = 1;
 
             InputManager.GetInstance().UpdateOrder = 0;
             GameStateManager.GetInstance().UpdateOrder = 10;
@@ -73,18 +71,17 @@ namespace Karts
             CameraManager.GetInstance().UpdateOrder = 40;
             Gui.GetInstance().UpdateOrder = 50;
 
-            //GameStateManager.GetInstance().ChangeState(new MainMenu());
-            GameStateManager.GetInstance().ChangeState(new GameplayState());
+            GameStateManager.GetInstance().ChangeState(new MainMenu());
+            //GameStateManager.GetInstance().ChangeState(new GameplayState());
+
+            defaultViewport = GraphicsDevice.Viewport;
         }
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// all content.
         /// </summary>
-        protected override void UnloadContent()
-        {
-            // TODO: Unload any non ContentManager content here
-        }
+        protected override void UnloadContent() { }
 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -109,7 +106,9 @@ namespace Karts
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            Console.WriteLine("FPS: " + Math.Round(1000 / gameTime.ElapsedGameTime.TotalMilliseconds));
+            GraphicsDevice.Viewport = defaultViewport;
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             base.Draw(gameTime);
         }
@@ -122,6 +121,5 @@ namespace Karts
                 game.Run();
             }
         }
-
     }
 }

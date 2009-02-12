@@ -43,17 +43,17 @@ namespace Karts.Code
 
         public override void Update(GameTime GameTime)
         {
-            if (InputManager.GetInstance().isButtonPressed(0, Buttons.DPadDown) || InputManager.GetInstance().isKeyPressed(Keys.Down))
+            if(ControllerManager.GetInstance().isPressed(1, "menu_down"))
             {
                 selected = (selected + OPTIONS.Length + 1) % OPTIONS.Length;
                 UpdateSelected();
             }
-            else if (InputManager.GetInstance().isButtonPressed(0, Buttons.DPadUp) || InputManager.GetInstance().isKeyPressed(Keys.Up))
+            else if (ControllerManager.GetInstance().isPressed(1, "menu_up"))
             {
                 selected = (selected + OPTIONS.Length - 1) % OPTIONS.Length;
                 UpdateSelected();
             }
-            else if (InputManager.GetInstance().isButtonPressed(0, Buttons.A) || InputManager.GetInstance().isKeyPressed(Keys.Enter))
+            else if (ControllerManager.GetInstance().isPressed(1, "menu_ok"))
             {
                 if (selected == 1)
                 {

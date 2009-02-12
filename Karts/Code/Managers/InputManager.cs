@@ -26,30 +26,18 @@ namespace Karts.Code
         }
 
         //Gamepads
-        private Hashtable[] buttonPressed;
-        private Hashtable[] buttonReleased;
         private GamePadState[] gamePadStates;
+        private GamePadState[] previousGamePadStates;
 
         //Keyboard
-        private Hashtable keyPressed;
-        private Hashtable keyReleased;
         private KeyboardState keyboardState;
+        private KeyboardState previousKeyboardState;
 
         private InputManager(Game game) : base(game)
         {
             //Gamepad
-            buttonPressed = new Hashtable[4];
-            buttonReleased = new Hashtable[4];
-            for (int i = 0; i < 4; ++i)
-            {
-                buttonPressed[i] = new Hashtable();
-                buttonReleased[i] = new Hashtable();
-            }
             gamePadStates = new GamePadState[4];
-
-            //Keyboard
-            keyPressed = new Hashtable();
-            keyReleased = new Hashtable();
+            previousGamePadStates = new GamePadState[4];
         }
 
         public override void Update(GameTime gameTime)
@@ -59,53 +47,19 @@ namespace Karts.Code
             //GamePads
             for (int i = 0; i < 4; ++i)
             {
+                previousGamePadStates[i] = gamePadStates[i];
                 gamePadStates[i] = GamePad.GetState((PlayerIndex)i);
-                buttonPressed[i].Clear();
-
-                foreach (Buttons button in Enum.GetValues(typeof(Buttons)))
-                {
-                    if (gamePadStates[i].IsButtonUp(button) && !buttonReleased[i].ContainsKey(button))
-                    {
-                        buttonReleased[i].Add(button, true);
-                    }
-                }
-
-                foreach (Buttons button in Enum.GetValues(typeof(Buttons)))
-                {
-                    if (gamePadStates[i].IsButtonDown(button) && buttonReleased[i].ContainsKey(button))
-                    {
-                        buttonPressed[i].Add(button, true);
-                        buttonReleased[i].Remove(button);
-                    }
-                }
             }
 
             //Keyboard
+            previousKeyboardState = keyboardState;
             keyboardState = Keyboard.GetState();
-            keyPressed.Clear();
-
-            foreach (Keys key in Enum.GetValues(typeof(Keys)))
-            {
-                if (keyboardState.IsKeyUp(key) && !keyReleased.ContainsKey(key))
-                {
-                    keyReleased.Add(key, true);
-                }
-            }
-
-            foreach (Keys key in Enum.GetValues(typeof(Keys)))
-            {
-                if (keyboardState.IsKeyDown(key) && keyReleased.ContainsKey(key))
-                {
-                    keyPressed.Add(key, true);
-                    keyReleased.Remove(key);
-                }
-            }
         }
 
         //Keyboard
         public bool isKeyPressed(Keys key)
         {
-            return keyPressed.ContainsKey(key);
+            return keyboardState.IsKeyDown(key) && previousKeyboardState.IsKeyUp(key);
         }
 
         public bool isKeyDown(Keys key)
@@ -116,7 +70,7 @@ namespace Karts.Code
         //Gamepads
         public bool isButtonPressed(int index, Buttons btn)
         {
-            return buttonPressed[index].ContainsKey(btn);
+            return gamePadStates[index].IsButtonDown(btn) && previousGamePadStates[index].IsButtonUp(btn);
         }
 
         public bool isButtonDown(int index, Buttons btn)
@@ -124,25 +78,40 @@ namespace Karts.Code
             return gamePadStates[index].IsButtonDown(btn);
         }
 
-        public float getAxisX(int index, bool left)
+        public float getAxis(int index, bool left, bool x)
         {
-            if(left){
-                return gamePadStates[index].ThumbSticks.Left.X;
-            }else{
-                return gamePadStates[index].ThumbSticks.Right.X;
-            }
+            GamePadState gamePadState = getGamePadState(index);
+            return getAxis(gamePadState, left, x);
         }
 
-        public float getAxisY(int index, bool left)
+        public float getAxis(GamePadState gamePadState, bool left, bool x)
         {
-            if (left)
+            if (x)
             {
-                return gamePadStates[index].ThumbSticks.Left.Y;
+                if (left)
+                {
+                    return gamePadState.ThumbSticks.Left.X;
+                }
+                else
+                {
+                    return gamePadState.ThumbSticks.Right.X;
+                }
             }
             else
             {
-                return gamePadStates[index].ThumbSticks.Right.Y;
+                if (left)
+                {
+                    return gamePadState.ThumbSticks.Left.Y;
+                }
+                else
+                {
+                    return gamePadState.ThumbSticks.Right.Y;
+                }
             }
         }
+
+        public GamePadState getGamePadState(int index) { return gamePadStates[index]; }
+        public GamePadState getPreviousGamePadState(int index) { return previousGamePadStates[index]; }
+
     }
 }

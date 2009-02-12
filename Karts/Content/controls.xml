@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls>
+  <pc>
+    <player id="0">
+      <axis name="turn" controller="0" thumb="left" axis="x"/>
+      <button name="accelerate" controller="0" button="A"/>
+      <button name="brake" controller="0" button="X"/>
+      <button name="item" controller="0" button="RightTrigger"/>
+      <button name="join" controller="0" button="Start"/>
+    </player>
+    <player id="1">
+      <key name="turn_left" key="Left"/>
+      <key name="turn_right" key="Right"/>
+      <key name="accelerate" key="Up"/>
+      <key name="brake" key="Down"/>
+      <key name="item" key="Enter"/>
+      <key name="join" key="2"/>
+
+      <key name="menu_up" key="Up"/>
+      <key name="menu_down" key="Down"/>
+      <key name="menu_left" key="Left"/>
+      <key name="menu_right" key="Right"/>
+      <key name="menu_ok" key="Enter"/>
+      <key name="menu_cancel" key="Back"/>
+
+    </player>
+    <player id="2">
+      <key name="turn_left" key="A"/>
+      <key name="turn_right" key="D"/>
+      <key name="accelerate" key="W"/>
+      <key name="brake" key="S"/>
+      <key name="item" key="R"/>
+      <key name="join" key="3"/>
+    </player>
+    <player id="3">
+      <key name="turn_left" key="J"/>
+      <key name="turn_right" key="L"/>
+      <key name="accelerate" key="I"/>
+      <key name="brake" key="K"/>
+      <key name="item" key="P"/>
+      <key name="join" key="4"/>
+    </player>
+  </pc>
+  <x360>
+    <player>
+      <axis name="turn_left" thumb="left" axis="x" dir="negative"/>
+      <axis name="turn_right" thumb="left" axis="x" dir="positive"/>
+      <button name="accelerate" button="A"/>
+      <button name="brake" button="X"/>
+      <button name="item" button="RightTrigger"/>
+      <button name="join" button="Start"/>
+    </player>
+  </x360>
+</controls>
