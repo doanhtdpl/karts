@@ -9,14 +9,13 @@ namespace Karts.Code.SceneManager.Components
 {
     class TextComponent : Component
     {
-        private String text;
+        public String Text{ get; set;}
         private SpriteFont font;
-        private int depth = 0;
 
         public TextComponent(float x, float y, String text, String fontName)
             : base(x, y)
         {
-            this.text = text;
+            Text = text;
             font = ResourcesManager.GetInstance().GetContentManager().Load<SpriteFont>(fontName);
         }
 
@@ -24,7 +23,7 @@ namespace Karts.Code.SceneManager.Components
         {
             if (Visible)
             {
-                spriteBatch.DrawString(font, text, Position + parentPos, Color, Angle, Origin, Scale * parentScale, Effects, depth);
+                spriteBatch.DrawString(font, Text, Position + parentPos, Color, Angle, Origin, Scale * parentScale, Effects, Depth);
             }
         }
     }
