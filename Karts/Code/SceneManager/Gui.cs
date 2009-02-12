@@ -34,12 +34,12 @@ namespace Karts.Code.SceneManager
             : base(game)
         {
             effects = new List<GuiEffect>();
-            screens = new List<Screen>();
+            screens = new List<Component>();
             spriteBatch = new SpriteBatch(ResourcesManager.GetInstance().GetGraphicsDeviceManager().GraphicsDevice);
         }
 
         private List<GuiEffect> effects;
-        private List<Screen> screens;
+        private List<Component> screens;
         private SpriteBatch spriteBatch;
 
         public override void Update(GameTime gameTime)
@@ -55,7 +55,7 @@ namespace Karts.Code.SceneManager
             spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred,
                 SaveStateMode.SaveState);
 
-            foreach (Screen screen in screens)
+            foreach (Component screen in screens)
                 screen.Draw(Vector2.Zero, Vector2.One);
 
             spriteBatch.End();
@@ -63,12 +63,12 @@ namespace Karts.Code.SceneManager
             base.Draw(gameTime);
         }
 
-        public void AddComponent(Screen comp)
+        public void AddComponent(Component comp)
         {
             screens.Add(comp);
         }
 
-        public void RemoveComponent(Screen comp)
+        public void RemoveComponent(Component comp)
         {
             screens.Remove(comp);
         }

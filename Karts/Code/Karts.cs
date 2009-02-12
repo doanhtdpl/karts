@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 using Karts.Code;
 using Karts.Code.SceneManager;
+using Karts.Code.SceneManager.Components;
 
 namespace Karts
 {
@@ -19,6 +20,8 @@ namespace Karts
     {
         GraphicsDeviceManager graphics;
         Viewport defaultViewport;
+
+        TextComponent fps;
 
         public Karts()
         {
@@ -74,6 +77,9 @@ namespace Karts
             GameStateManager.GetInstance().ChangeState(new MainMenu());
             //GameStateManager.GetInstance().ChangeState(new GameplayState());
 
+            fps = new TextComponent(10, 10, "FPS:", "kartsFont");
+            Gui.GetInstance().AddComponent(fps);
+
             defaultViewport = GraphicsDevice.Viewport;
         }
 
@@ -106,7 +112,7 @@ namespace Karts
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            Console.WriteLine("FPS: " + Math.Round(1000 / gameTime.ElapsedGameTime.TotalMilliseconds));
+            fps.Text = ("FPS: " + Math.Round(1000 / gameTime.ElapsedGameTime.TotalMilliseconds));
             GraphicsDevice.Viewport = defaultViewport;
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
