@@ -86,6 +86,24 @@ namespace Karts.Code
             }
         }
 
+        public bool isPressed(String control)
+        {
+            foreach (Dictionary<String, Control> d in controls)
+                if (d.ContainsKey(control) &&  d[control].isPressed())
+                    return true;
+
+            return false;
+        }
+
+        public bool isDown(String control)
+        {
+            foreach (Dictionary<String, Control> d in controls)
+                if (d.ContainsKey(control) && d[control].isDown())
+                    return true;
+
+            return false;
+        }
+
         public bool isPressed(int playerIndex, String control) { return controls[playerIndex][control].isPressed(); }
         public bool isDown(int playerIndex, String control) { return controls[playerIndex][control].isDown(); ; }
         public float getInputValue(int playerIndex, String control) { return controls[playerIndex][control].getInputValue(); ; }
