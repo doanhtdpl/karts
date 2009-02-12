@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Karts.Code.States
+namespace Karts.Code
 {
-    class Lobby
+    class Lobby : GameState
     {
     }
 }

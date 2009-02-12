@@ -20,16 +20,17 @@ namespace Karts.Code
             menu = new Screen();
             Gui.GetInstance().AddComponent(menu);
 
-
+            menu.AddComponent(new TextComponent(200, 100, "CREATE LOCAL GAME", "kartsFont"));
         }
 
         public override void Update(GameTime GameTime)
         {
-            KeyboardState state = Keyboard.GetState();
-
-            if (state.IsKeyDown(Keys.Enter)){
+            if (ControllerManager.GetInstance().isPressed("menu_ok")){
                 GameStateManager.GetInstance().ChangeState(new GameplayState());
-            }else if (state.IsKeyDown(Keys.Back)){
+                //GameStateManager.GetInstance().ChangeState(new Lobby());
+            }
+            else if (ControllerManager.GetInstance().isPressed("menu_cancel"))
+            {
                 GameStateManager.GetInstance().ChangeState(new MainMenu());
             }
             base.Update(GameTime);

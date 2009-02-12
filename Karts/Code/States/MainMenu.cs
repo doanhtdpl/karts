@@ -43,29 +43,29 @@ namespace Karts.Code
 
         public override void Update(GameTime GameTime)
         {
-            if(ControllerManager.GetInstance().isPressed(1, "menu_down"))
+            if(ControllerManager.GetInstance().isPressed("menu_down"))
             {
                 selected = (selected + OPTIONS.Length + 1) % OPTIONS.Length;
                 UpdateSelected();
             }
-            else if (ControllerManager.GetInstance().isPressed(1, "menu_up"))
+            else if (ControllerManager.GetInstance().isPressed("menu_up"))
             {
                 selected = (selected + OPTIONS.Length - 1) % OPTIONS.Length;
                 UpdateSelected();
             }
             else if (ControllerManager.GetInstance().isPressed(1, "menu_ok"))
             {
-                if (selected == 1)
+                if (selected == 0)
+                {
+                    GameStateManager.GetInstance().ChangeState(new CreateLocalGame());
+                }
+                else if (selected == 1)
                 {
                     GameStateManager.GetInstance().ChangeState(new CreateMultiplayerGame());
                 }
                 else if (selected == 2)
                 {
                     GameStateManager.GetInstance().ChangeState(new FindMultiplayerGame());
-                }
-                else if (selected == 0)
-                {
-                    GameStateManager.GetInstance().ChangeState(new GameplayState());
                 }
             }
 
