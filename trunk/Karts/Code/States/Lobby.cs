@@ -47,6 +47,8 @@ namespace Karts.Code
 
                 CheckNetworkJoins();
             }
+
+            UpdateList();
             base.Update(GameTime);
         }
 
@@ -82,6 +84,10 @@ namespace Karts.Code
                     TextComponent comp = new TextComponent(100, 150 + players.Count * 50, "Player" + i);
                     players.Add(comp);
                     menu.AddComponent(comp);
+
+                    if(NetworkManager.GetInstance().HasSession()){
+                        //NetworkManager.GetInstance().CommunicatePlayerJoined();
+                    }
                 }
             }
         }

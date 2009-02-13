@@ -35,14 +35,17 @@ namespace Karts.Code
             {
                 GameStateManager.GetInstance().ChangeState(new MainMenu());
             }
+            else
+            {
 
-            PlayerManager.GetInstance().Update(gameTime);
-            CircuitManager.GetInstance().Update(gameTime);
+                PlayerManager.GetInstance().Update(gameTime);
+                CircuitManager.GetInstance().Update(gameTime);
 
-            Player p = PlayerManager.GetInstance().GetPlayers()[0];
+                Player p = PlayerManager.GetInstance().GetPlayers()[0];
 
-            bool bCollides = a.IntersectsWith(p.GetVehicle());
-            Debug.Print("The player is in the area? " + bCollides);
+                bool bCollides = a.IntersectsWith(p.GetVehicle());
+                Debug.Print("The player is in the area? " + bCollides);
+            }
 
             base.Update(gameTime);
         }

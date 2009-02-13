@@ -15,6 +15,8 @@ namespace Karts.Code
 
         private NetworkSession session = null;
         private AvailableNetworkSessionCollection availableSessions = null;
+        private PacketWriter pw;
+        private PacketReader pr;
 
         public static NetworkManager m_NetworkManager = null;
 
@@ -110,6 +112,13 @@ namespace Karts.Code
 
         public void Update()
         {
+
+            //LocalNetworkGamer g = session.LocalGamers[0];
+            //SignedInGamer sig;
+            //sig.Privileges.AllowOnlineSessions;
+            
+            //GamerProfile gp = g.GetProfile();
+
             if(session != null){
                 session.Update();
             }
