@@ -58,6 +58,14 @@ namespace Karts.Code
             return m_PlayerList.Count;
         }
 
+        public int GetNumLocalPlayers()
+        {
+            int count = 0;
+            foreach (Player p in m_PlayerList)
+                if (p.Local) count++;
+            return count;
+        }
+
         public Player GetPlayerByID(UInt32 uID)
         {
             return m_PlayerList.Find(new FindPlayerID(uID).CompareID);
@@ -93,13 +101,13 @@ namespace Karts.Code
         public void CreatePlayer(string Name, bool local, bool live)
         {
             Player newPlayer = CreatePlayer();
-            newPlayer.Init(Name, local, live, -1);
+            newPlayer.Init(Name, local, live, -1, -1);
         }
 
         public void CreatePlayer(string Name, bool local, bool live, int playerIndex)
         {
             Player newPlayer = CreatePlayer();
-            newPlayer.Init(Name, local, live, playerIndex);
+            newPlayer.Init(Name, local, live, playerIndex, m_PlayerList.Count-1);
         }
 
         public bool CreatePlayer(Vector3 position, Vector3 rotation, float fScale, string vehicle_name, string driver_name, bool bCamera)
