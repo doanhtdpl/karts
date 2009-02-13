@@ -16,9 +16,13 @@ namespace Karts.Code
         // ------------------------------------------------
         // Class members
         // ------------------------------------------------
-        private UInt32 m_uID;                                           // Unique identifier
-        private Mesh m_Mesh;                                            // 3D Mesh
-        private List<ItemArea> m_ItemAreaList = new List<ItemArea>();   // Item Area
+        private UInt32 m_uID;                                               // Unique identifier
+        private string m_sName;                                             // Name of the circuit
+        private Mesh m_Mesh;                                                // 3D Mesh
+        private bool m_bReversed;                                           // Do we play it in reverse mode?
+
+        private List<ItemArea> m_ItemAreaList = new List<ItemArea>();       // Item Area
+        private List<CheckPoint> m_CheckPointList = new List<CheckPoint>(); // Check points
 
         // Type of level
         // Spawn points (for powerups)
@@ -38,7 +42,7 @@ namespace Karts.Code
 
             Random r = new Random();
 
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 10; i++)
             {
                 int xValue = r.Next(-1000, 1000);
                 int zValue = r.Next(-1000, 1000);

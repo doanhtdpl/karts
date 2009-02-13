@@ -52,8 +52,7 @@ namespace Karts.Code.SceneManager
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred,
-                SaveStateMode.SaveState);
+            spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred, SaveStateMode.SaveState);
 
             foreach (Component screen in screens)
                 screen.Draw(Vector2.Zero, Vector2.One);

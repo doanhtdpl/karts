@@ -6,11 +6,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
+using System.Diagnostics;
+
 namespace Karts.Code
 {
     class Mesh : Object3D
     {
-        private BoundingSphere m_BoundingSphere;
         private Model m_Model;
         private float m_fScale;
 
@@ -19,6 +20,10 @@ namespace Karts.Code
         {
             m_fScale = 1.0f;
             m_Model = null;
+        }
+
+        ~Mesh()
+        {
         }
 
         public bool Load(string resource_name)
@@ -34,8 +39,6 @@ namespace Karts.Code
                 return false;
             }
 
-            m_BoundingSphere = m_Model.Meshes[0].BoundingSphere;
-
             return true;
         }
 
@@ -44,14 +47,24 @@ namespace Karts.Code
             return m_Model;
         }
 
+        public float GetScale()
+        {
+            return m_fScale;
+        }
+
         public void SetScale(float fScale)
         {
             m_fScale = fScale;
         }
 
-        public BoundingSphere GetBoundingsphere()
+        public BoundingSphere GetBoundingSphere()
         {
-            return m_BoundingSphere;
+            BoundingSphere bs = m_Model.Meshes[0].BoundingSphere;
+            bs.Radius *= m_fScale;
+            bs.Center = Vector3.Transform(bs.Center, GetRotationMatrix());
+            bs.Center += m_vPosition;
+
+            return bs;
         }
 
         public void Draw(Matrix camProjMatrix, Matrix camViewMatrix)
@@ -60,9 +73,6 @@ namespace Karts.Code
 
             if (m_Model != null)
             {
-                Matrix[] transforms = new Matrix[m_Model.Bones.Count];
-                m_Model.CopyAbsoluteBoneTransformsTo(transforms);
-
                 foreach (ModelMesh mesh in m_Model.Meshes)
                 {
                     foreach (BasicEffect effect in mesh.Effects)
@@ -70,8 +80,7 @@ namespace Karts.Code
                         effect.EnableDefaultLighting();
                         effect.PreferPerPixelLighting = true;
 
-                        effect.World = transforms[mesh.ParentBone.Index] *
-                                       Matrix.CreateFromYawPitchRoll(m_vRotation.Y, m_vRotation.X, m_vRotation.Z) * // Rotation matrix
+                        effect.World = Matrix.CreateFromYawPitchRoll(m_vRotation.Y, m_vRotation.X, m_vRotation.Z) * // Rotation matrix
                                        Matrix.CreateScale(m_fScale) * Matrix.CreateTranslation(m_vPosition); // Translation and scale matrix
 
                         // Use the matrices provided by the chase camera
@@ -83,6 +92,13 @@ namespace Karts.Code
             }
         }
 
+        public void DrawBoundingSphere()
+        {
+            BoundingSphere bs = GetBoundingSphere();
+            DrawDebugManager.GetInstance().DrawSphere(bs.Center, bs.Radius, Color.Yellow);
+        }
+
+
         //---------------------------------------
         // Collision methods
         //---------------------------------------
@@ -91,24 +107,13 @@ namespace Karts.Code
             if (m_Model == null) 
                 return false;
 
-            for (int i = 0; i < m_Model.Meshes.Count; i++)
-            {
-                // Check whether the bounding boxes of the two cubes intersect.
-                BoundingSphere c1BoundingSphere = m_Model.Meshes[i].BoundingSphere;
-                c1BoundingSphere.Center += GetPosition();
+            // Check whether the bounding boxes of the two cubes intersect.
+            BoundingSphere bs1 = GetBoundingSphere();
+            BoundingSphere bs2 = m.GetBoundingSphere();
 
-                for (int j = 0; j < m.GetModel().Meshes.Count; j++)
-                {
-                    BoundingSphere c2BoundingSphere = m.GetModel().Meshes[j].BoundingSphere;
-                    c2BoundingSphere.Center += m.GetPosition();
-
-                    if (c1BoundingSphere.Intersects(c2BoundingSphere))
-                    {
-                        return true;
-                    }
-                }
-            }
-
+            if (bs1.Intersects(bs2))
+                return true;
+            
             return false;
         }
     }

@@ -52,12 +52,12 @@ namespace Karts.Code
 
             if (bMoveLeft)
             {
-                fValueX = fValueX + 5000.0f * elapsed;
+                fValueX = fValueX - 5000.0f * elapsed;
             }
 
             if (bMoveRight)
             {
-                fValueX = fValueX - 5000.0f * elapsed;
+                fValueX = fValueX + 5000.0f * elapsed;
             }
 
             bool bTurnLeft = InputManager.GetInstance().isKeyDown(Keys.Left);
@@ -77,12 +77,12 @@ namespace Karts.Code
 
             if (bTurnDown)
             {
-                m_vRotation.X += 0.8f * elapsed;
+                m_vRotation.X -= 0.8f * elapsed;
             }
 
             if (bTurnUp)
             {
-                m_vRotation.X -= 0.8f * elapsed;
+                m_vRotation.X += 0.8f * elapsed;
             }
 
             // We first calculate the rotation and then translate

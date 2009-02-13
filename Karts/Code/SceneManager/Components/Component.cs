@@ -30,7 +30,7 @@ namespace Karts.Code.SceneManager.Components
             Visible = true;
             Origin = new Vector2();
             Scale = Vector2.One;
-            Color = Color.Black;
+            Color = Color.White;
             Effects = SpriteEffects.None;
             Depth = 0;
         }
