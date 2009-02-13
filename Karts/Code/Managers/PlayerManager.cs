@@ -10,13 +10,15 @@ namespace Karts.Code
     {
         // Constants
         public const int INVALID_PLAYER_ID = 0;
-
+        public const int MAX_LOCAL_PLAYERS = 4;
+        
         //---------------------------------------------------
         // Class members
         //---------------------------------------------------
         private List<Player> m_PlayerList = new List<Player>();
         public static PlayerManager m_PlayerManager = null;
         UInt32 m_uIDPlayerCounter;
+        public int ActivePlayerIndex { get; set; }
 
         //---------------------------------------------------
         // Class methods
@@ -24,6 +26,7 @@ namespace Karts.Code
        public PlayerManager()
        {
            m_uIDPlayerCounter = 0;
+           ActivePlayerIndex = -1;
        }
 
         ~PlayerManager()
@@ -59,9 +62,18 @@ namespace Karts.Code
         {
             return m_PlayerList.Find(new FindPlayerID(uID).CompareID);
         }
-
-        public bool CreatePlayer(Vector3 position, Vector3 rotation, float fScale, string Name, string vehicle_name, string driver_name, bool bCamera)
+        
+        public Player GetLocalPlayerByIndex(int index)
         {
+            return m_PlayerList.Find(new FindPlayerLocalIndex(index).CompareID);
+        }
+
+        public bool IsJoinedLocalPlayer(int index)
+        {
+            return GetLocalPlayerByIndex(index) != null;
+        }
+
+        public Player CreatePlayer(){
             // Generate ID
             UInt32 uID = ++m_uIDPlayerCounter;
 
@@ -70,16 +82,30 @@ namespace Karts.Code
             if (newPlayer != null)
             {
                 // the id already in use!! Something is wrong!
-                return false;
+                return null;
             }
 
-            newPlayer = new Player();
-            if (newPlayer.Init(position, rotation, fScale, Name, uID, vehicle_name, driver_name, bCamera))
-            {
-                m_PlayerList.Add(newPlayer);
-            }
+            newPlayer = new Player(uID);
+            m_PlayerList.Add(newPlayer);
+            return newPlayer;
+        }
 
-            return true;
+        public void CreatePlayer(string Name, bool local, bool live)
+        {
+            Player newPlayer = CreatePlayer();
+            newPlayer.Init(Name, local, live, -1);
+        }
+
+        public void CreatePlayer(string Name, bool local, bool live, int playerIndex)
+        {
+            Player newPlayer = CreatePlayer();
+            newPlayer.Init(Name, local, live, playerIndex);
+        }
+
+        public bool CreatePlayer(Vector3 position, Vector3 rotation, float fScale, string vehicle_name, string driver_name, bool bCamera)
+        {
+            Player newPlayer = CreatePlayer();
+            return newPlayer.Init(position, rotation, fScale, vehicle_name, driver_name, bCamera);
         }
 
         public void RemovePlayers() { m_PlayerList.Clear(); }
@@ -108,6 +134,17 @@ namespace Karts.Code
             public bool CompareID(Player p)
             {
                 return p.GetID() == uID;
+            }
+        }
+
+        struct FindPlayerLocalIndex
+        {
+            int localIndex;
+
+            public FindPlayerLocalIndex(int _localIndex) { localIndex = _localIndex; }
+            public bool CompareID(Player p)
+            {
+                return p.Local && p.LocalPlayerIndex  == localIndex;
             }
         }
     }

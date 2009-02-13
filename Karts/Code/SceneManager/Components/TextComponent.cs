@@ -9,6 +9,15 @@ namespace Karts.Code.SceneManager.Components
 {
     class TextComponent : Component
     {
+        public static String defaultFontName
+        {
+            set
+            {
+                defaultFont = ResourcesManager.GetInstance().GetContentManager().Load<SpriteFont>(value);
+            }
+        }
+        public static SpriteFont defaultFont;
+
         public String Text{ get; set;}
         private SpriteFont font;
 
@@ -17,6 +26,13 @@ namespace Karts.Code.SceneManager.Components
         {
             Text = text;
             font = ResourcesManager.GetInstance().GetContentManager().Load<SpriteFont>(fontName);
+        }
+
+        public TextComponent(float x, float y, String text)
+            : base(x, y)
+        {
+            Text = text;
+            font = defaultFont;
         }
 
         public override void Draw(Vector2 parentPos, Vector2 parentScale)

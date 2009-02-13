@@ -3,18 +3,28 @@
   <pc>
     <player id="0">
       <axis name="turn" controller="0" thumb="left" axis="x"/>
+      <button name="turn_left" controller="0" button="LeftThumbstickLeft"/>
+      <button name="turn_right" controller="0" button="LeftThumbstickRight"/>
       <button name="accelerate" controller="0" button="A"/>
       <button name="brake" controller="0" button="X"/>
       <button name="item" controller="0" button="RightTrigger"/>
       <button name="join" controller="0" button="Start"/>
+
+      <button name="menu_up" controller="0" button="LeftThumbstickUp"/>
+      <button name="menu_down" controller="0" button="LeftThumbstickDown"/>
+      <button name="menu_left" controller="0" button="LeftThumbstickLeft"/>
+      <button name="menu_right" controller="0" button="LeftThumbstickRight"/>
+      <button name="menu_ok" controller="0" button="A"/>
+      <button name="menu_cancel" controller="0" button="B"/>
     </player>
+    
     <player id="1">
       <key name="turn_left" key="Left"/>
       <key name="turn_right" key="Right"/>
       <key name="accelerate" key="Up"/>
       <key name="brake" key="Down"/>
       <key name="item" key="Enter"/>
-      <key name="join" key="2"/>
+      <key name="join" key="Enter"/>
 
       <key name="menu_up" key="Up"/>
       <key name="menu_down" key="Down"/>
@@ -22,23 +32,38 @@
       <key name="menu_right" key="Right"/>
       <key name="menu_ok" key="Enter"/>
       <key name="menu_cancel" key="Back"/>
-
     </player>
+    
     <player id="2">
       <key name="turn_left" key="A"/>
       <key name="turn_right" key="D"/>
       <key name="accelerate" key="W"/>
       <key name="brake" key="S"/>
       <key name="item" key="R"/>
-      <key name="join" key="3"/>
+      <key name="join" key="R"/>
+
+      <key name="menu_up" key="W"/>
+      <key name="menu_down" key="S"/>
+      <key name="menu_left" key="A"/>
+      <key name="menu_right" key="D"/>
+      <key name="menu_ok" key="R"/>
+      <key name="menu_cancel" key="E"/>
     </player>
+    
     <player id="3">
       <key name="turn_left" key="J"/>
       <key name="turn_right" key="L"/>
       <key name="accelerate" key="I"/>
       <key name="brake" key="K"/>
       <key name="item" key="P"/>
-      <key name="join" key="4"/>
+      <key name="join" key="P"/>
+
+      <key name="menu_up" key="I"/>
+      <key name="menu_down" key="K"/>
+      <key name="menu_left" key="J"/>
+      <key name="menu_right" key="L"/>
+      <key name="menu_ok" key="P"/>
+      <key name="menu_cancel" key="O"/>
     </player>
   </pc>
   <x360>

@@ -53,19 +53,28 @@ namespace Karts.Code
                 selected = (selected + OPTIONS.Length - 1) % OPTIONS.Length;
                 UpdateSelected();
             }
-            else if (ControllerManager.GetInstance().isPressed(1, "menu_ok"))
+            else 
             {
-                if (selected == 0)
+                for (int i = 0; i < PlayerManager.MAX_LOCAL_PLAYERS; ++i)
                 {
-                    GameStateManager.GetInstance().ChangeState(new CreateLocalGame());
-                }
-                else if (selected == 1)
-                {
-                    GameStateManager.GetInstance().ChangeState(new CreateMultiplayerGame());
-                }
-                else if (selected == 2)
-                {
-                    GameStateManager.GetInstance().ChangeState(new FindMultiplayerGame());
+                    if (ControllerManager.GetInstance().isPressed(i, "menu_ok"))
+                    {
+                        PlayerManager.GetInstance().ActivePlayerIndex = i;
+
+                        if (selected == 0)
+                        {
+                            GameStateManager.GetInstance().ChangeState(new CreateLocalGame());
+                        }
+                        else if (selected == 1)
+                        {
+                            GameStateManager.GetInstance().ChangeState(new CreateMultiplayerGame());
+                        }
+                        else if (selected == 2)
+                        {
+                            GameStateManager.GetInstance().ChangeState(new FindMultiplayerGame());
+                        }
+                        break;
+                    }
                 }
             }
 
