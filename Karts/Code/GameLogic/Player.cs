@@ -23,6 +23,7 @@ namespace Karts.Code
         private bool m_bLive;
         public bool Local { get; set; }
         public int LocalPlayerIndex { get; set; }
+        public int LocalPlayerIndexCount { get; set; }
         public Viewport Viewport { get; set; }
 
         // ------------------------------------------------
@@ -55,12 +56,13 @@ namespace Karts.Code
         public UInt32 GetID() { return m_uID; }
         public string GetName() { return m_sName; }
 
-        public void Init(string Name, bool local, bool live, int playerIndex)
+        public void Init(string Name, bool local, bool live, int playerIndex, int playerIndexCount)
         {
             m_sName = Name;
             Local = local;
             m_bLive = live;
             LocalPlayerIndex = playerIndex;
+            LocalPlayerIndexCount = playerIndexCount;
         }
 
         public bool Init(Vector3 position, Vector3 rotation, float fScale, string vehicle_name, string driver_name, bool bCamera)
@@ -96,15 +98,39 @@ namespace Karts.Code
                 // Print a message error
             }
 
-            //Create the viewport
-            Viewport v = new Viewport();
-            v.X = LocalPlayerIndex % 2 == 0 ? 0 : 400;
-            v.Y = LocalPlayerIndex < 2 ? 0 : 400;
-            v.Width = 400;
-            v.Height = 300;
-            Viewport = v;
+            CreateViewport();
 
             return bInitOk;
+        }
+
+        private void CreateViewport()
+        {
+            int numPlayers = PlayerManager.GetInstance().GetNumLocalPlayers();
+
+            int width = numPlayers > 2 ? 400 : 800;
+            int height = numPlayers > 1 ? 300 : 600;
+
+            Viewport v = new Viewport();
+            if (numPlayers == 1)
+            {
+                v.X = 0;
+                v.Y = 0;
+            }
+            else if (numPlayers == 2)
+            {
+                v.X = 0;
+                v.Y = LocalPlayerIndexCount == 0 ? 0 : 300;
+            }
+            else
+            {
+                v.X = LocalPlayerIndexCount % 2 == 0 ? 0 : 400;
+                v.Y = LocalPlayerIndexCount < 2 ? 0 : 300;
+            }
+            v.Width = width;
+            v.Height = height;
+            Viewport = v;
+
+            CameraManager.GetInstance().GetCamera(m_IDCamera).SetAspectRatio((float) ((float)width/(float)height) );
         }
 
         public void Update(GameTime gameTime)

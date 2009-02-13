@@ -100,6 +100,11 @@ namespace Karts.Code
             m_vLookAt = lookat;
         }
 
+        public void SetAspectRatio(float ratio)
+        {
+            m_fAspectRatio = ratio;
+        }
+
         public Matrix GetProjectionMatrix()
         {
             return m_ProjMatrix;
