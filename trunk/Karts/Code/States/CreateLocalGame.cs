@@ -21,15 +21,21 @@ namespace Karts.Code
             Gui.GetInstance().AddComponent(menu);
 
             menu.AddComponent(new TextComponent(200, 100, "CREATE LOCAL GAME", "kartsFont"));
+            menu.AddComponent(new TextComponent(150, 300, "PRESS BUTTON TO CONFIRM", "kartsFont"));
         }
 
         public override void Update(GameTime GameTime)
         {
             if (ControllerManager.GetInstance().isPressed("menu_ok")){
-                GameStateManager.GetInstance().ChangeState(new GameplayState());
-                //GameStateManager.GetInstance().ChangeState(new Lobby());
+                //GameStateManager.GetInstance().ChangeState(new GameplayState());
+
+                //Create main player
+                PlayerManager.GetInstance().RemovePlayers();
+                PlayerManager.GetInstance().CreatePlayer("Player" + PlayerManager.GetInstance().ActivePlayerIndex, true, false, PlayerManager.GetInstance().ActivePlayerIndex);
+
+                GameStateManager.GetInstance().ChangeState(new Lobby());
             }
-            else if (ControllerManager.GetInstance().isPressed("menu_cancel"))
+            else if (ControllerManager.GetInstance().isPressed("menu_back"))
             {
                 GameStateManager.GetInstance().ChangeState(new MainMenu());
             }

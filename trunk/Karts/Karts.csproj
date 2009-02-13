@@ -120,6 +120,7 @@
     <Compile Include="Code\Managers\GameStateManager.cs" />
     <Compile Include="Code\Managers\NetworkManager.cs" />
     <Compile Include="Code\Managers\PlayerManager.cs" />
+    <Compile Include="Code\States\Lobby.cs" />
     <Compile Include="Code\States\MainMenu.cs" />
     <Compile Include="Code\GameLogic\Player.cs" />
     <Compile Include="Code\GameLogic\Driver.cs" />

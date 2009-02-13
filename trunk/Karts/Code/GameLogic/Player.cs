@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using System.Diagnostics;
@@ -18,13 +19,16 @@ namespace Karts.Code
         //private Driver m_Driver;
         private UInt32 m_uID;
         private string m_sName;
-        private int m_IDCamera;
-
+        public int m_IDCamera { get; set; }
+        private bool m_bLive;
+        public bool Local { get; set; }
+        public int LocalPlayerIndex { get; set; }
+        public Viewport Viewport { get; set; }
 
         // ------------------------------------------------
         // Class methods
         // ------------------------------------------------
-        public Player ()
+        public Player ( UInt32 uID )
         {
             m_uID = PlayerManager.INVALID_PLAYER_ID;
             m_Vehicle = null;
@@ -33,6 +37,8 @@ namespace Karts.Code
             m_vPosition = Vector3.Zero;
             m_vRotation = Vector3.Zero;
             m_IDCamera = CameraManager.INVALID_CAMERA_ID;
+
+            m_uID = uID;
         }
 
         ~Player ()
@@ -49,12 +55,18 @@ namespace Karts.Code
         public UInt32 GetID() { return m_uID; }
         public string GetName() { return m_sName; }
 
-        public bool Init(Vector3 position, Vector3 rotation, float fScale, string Name, UInt32 uID, string vehicle_name, string driver_name, bool bCamera)
+        public void Init(string Name, bool local, bool live, int playerIndex)
+        {
+            m_sName = Name;
+            Local = local;
+            m_bLive = live;
+            LocalPlayerIndex = playerIndex;
+        }
+
+        public bool Init(Vector3 position, Vector3 rotation, float fScale, string vehicle_name, string driver_name, bool bCamera)
         {
             bool bInitOk = false;
 
-            m_uID = uID;
-            m_sName = Name;
             m_vPosition = position;
             m_vRotation = rotation;
 
@@ -84,12 +96,21 @@ namespace Karts.Code
                 // Print a message error
             }
 
+            //Create the viewport
+            Viewport v = new Viewport();
+            v.X = LocalPlayerIndex % 2 == 0 ? 0 : 400;
+            v.Y = LocalPlayerIndex < 2 ? 0 : 400;
+            v.Width = 400;
+            v.Height = 300;
+            Viewport = v;
+
             return bInitOk;
         }
 
         public void Update(GameTime gameTime)
         {
             InputManager im = InputManager.GetInstance();
+            ControllerManager cm = ControllerManager.GetInstance();
 
             // Switch camera Free/Target
             if (im.isKeyPressed(Keys.Z))
@@ -103,22 +124,22 @@ namespace Karts.Code
             Vector3 newPos = new Vector3(0, 0, 0);
             float fMove = 00f;
 
-            if (im.isKeyDown(Keys.Up))
+            if (cm.isDown(LocalPlayerIndex, "accelerate"))
             {
                 fMove = 100.0f;
             }
 
-            if (im.isKeyDown(Keys.Down))
+            if (cm.isDown(LocalPlayerIndex, "brake"))
             {
                 fMove = -100.0f;
             }
 
-            if (im.isKeyDown(Keys.Left))
+            if (cm.isDown(LocalPlayerIndex, "turn_left"))
             {
                 m_vRotation.Y += 0.03f;
             }
 
-            if (im.isKeyDown(Keys.Right))
+            if (cm.isDown(LocalPlayerIndex, "turn_right"))
             {
                 m_vRotation.Y -= 0.03f;
             }

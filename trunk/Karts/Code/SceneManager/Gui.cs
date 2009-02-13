@@ -20,6 +20,8 @@ namespace Karts.Code.SceneManager
             if (sceneManager == null)
                 sceneManager = new Gui(game);
 
+            TextComponent.defaultFontName = "kartsFont";
+
             return sceneManager;
         }
 

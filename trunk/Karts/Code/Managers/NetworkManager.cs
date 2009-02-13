@@ -52,6 +52,16 @@ namespace Karts.Code
             return session;
         }
 
+        public bool HasSession()
+        {
+            return session != null;
+        }
+
+        public bool IsClient()
+        {
+            return session != null && !session.IsHost;
+        }
+
         public NetworkSession GetSession()
         {
             return session;
@@ -64,7 +74,11 @@ namespace Karts.Code
 
         public void LeaveSession()
         {
-            session.Dispose();
+            if (HasSession())
+            {
+                session.Dispose();
+                session = null;
+            }
         }
 
         public AvailableNetworkSessionCollection FindSessions()
