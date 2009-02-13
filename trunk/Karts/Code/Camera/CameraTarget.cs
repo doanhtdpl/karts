@@ -20,9 +20,9 @@ namespace Karts.Code
         private Vector3 m_vVelocity;
 
         // Physics
-        private float m_fStiffness = 1800.0f;
+        private float m_fStiffness = 3000.0f;
         private float m_fDamping = 600.0f;
-        private float m_fMass = 50.0f;
+        private float m_fMass = 10.0f;
 
 
         //------------------------------------------
@@ -43,8 +43,8 @@ namespace Karts.Code
             m_Target = target;
 
             // Set the camera offsets
-            m_vDesiredPositionOffset = new Vector3(0.0f, 2000.0f, 3500.0f);
-            m_vLookAtOffset = new Vector3(0.0f, 150.0f, 0.0f);
+            m_vDesiredPositionOffset = new Vector3(0.0f, 1500.0f, 3500.0f);
+            m_vLookAtOffset = new Vector3(0.0f, 350.0f, 0.0f);
 
             return true;
         }

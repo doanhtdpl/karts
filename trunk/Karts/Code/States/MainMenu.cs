@@ -76,7 +76,7 @@ namespace Karts.Code
         {
             for (int i = 0; i < options.Length; ++i)
             {
-                options[i].Color = i == selected ? Color.Red : Color.Black;
+                options[i].Color = i == selected ? Color.Red : Color.White;
             }
         }
 

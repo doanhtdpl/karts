@@ -67,6 +67,8 @@ namespace Karts.Code
         public void Draw(GameTime gameTime, Matrix camProjMatrix, Matrix camViewMatrix)
         {
             Draw(camProjMatrix, camViewMatrix);
+
+            DrawBoundingSphere();
         }
     }
 }

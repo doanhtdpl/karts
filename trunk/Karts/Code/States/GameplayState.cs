@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
+using System.Diagnostics;
+
 namespace Karts.Code
 {
     class GameplayState : GameState
@@ -14,11 +16,15 @@ namespace Karts.Code
         Viewport v2;
         Viewport v3;
         Viewport v4;
+        Area a;
 
         public override void Enter()
         {
             PlayerManager.GetInstance().CreatePlayer(new Vector3(0.0f, 200.0f, 10000.0f), new Vector3(0.0f, 0.0f, 0.0f), 0.5f, "Barbur", "Ship", "Ship", true);
             CircuitManager.GetInstance().CreateCircuit(new Vector3(0.0f, 0.0f, 1000.0f), new Vector3(0.0f, 0.0f, 0.0f), "Ground");
+
+            a = new Area();
+            a.Init(Vector3.Zero, new Vector3(0.0f, 0.0f, 0.0f), 10000, 10000, 10000);
 
             v1 = new Viewport();
             v2 = new Viewport();
@@ -58,6 +64,11 @@ namespace Karts.Code
             PlayerManager.GetInstance().Update(gameTime);
             CircuitManager.GetInstance().Update(gameTime);
 
+            Player p = PlayerManager.GetInstance().GetPlayers()[0];
+
+            bool bCollides = a.IntersectsWith(p.GetVehicle());
+            Debug.Print("The player is in the area? " + bCollides);
+
             base.Update(gameTime);
         }
 
@@ -78,6 +89,8 @@ namespace Karts.Code
             ResourcesManager.GetInstance().GetGraphicsDeviceManager().GraphicsDevice.Viewport = v4;
             PlayerManager.GetInstance().Draw(gameTime);
             CircuitManager.GetInstance().Draw(gameTime);
+
+            a.Draw();
         }
 
         public override void Exit()

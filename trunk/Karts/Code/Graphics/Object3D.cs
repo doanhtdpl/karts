@@ -26,7 +26,7 @@ namespace Karts.Code
         {
             m_vPosition = Vector3.Zero;
             m_vRotation = Vector3.Zero;
-            m_bDrawAxis = true;
+            m_bDrawAxis = false;
         }
 
         ~Object3D() { }
@@ -86,6 +86,11 @@ namespace Karts.Code
         public Vector3 GetRotation()
         {
             return m_vRotation;
+        }
+
+        public Matrix GetRotationMatrix()
+        {
+            return Matrix.CreateFromYawPitchRoll(m_vRotation.Y, m_vRotation.X, m_vRotation.Z);
         }
 
         public void AddRotation(float fYaw, float fPitch, float fRoll)

@@ -14,6 +14,8 @@ using Karts.Code;
 using Karts.Code.SceneManager;
 using Karts.Code.SceneManager.Components;
 
+using System.Diagnostics;
+
 namespace Karts
 {
     public class Karts : Game
@@ -114,7 +116,7 @@ namespace Karts
         {
             fps.Text = ("FPS: " + Math.Round(1000 / gameTime.ElapsedGameTime.TotalMilliseconds));
             GraphicsDevice.Viewport = defaultViewport;
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             base.Draw(gameTime);
         }
