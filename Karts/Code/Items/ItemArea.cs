@@ -99,17 +99,18 @@ namespace Karts.Code
 
         public void Update(float dt, float t)
         {
-            Player p = PlayerManager.GetInstance().GetPlayers()[0];
-
-            // TODO: Check the collisions??
-            for (int i = 0; i < m_ItemAreaList.Count; ++i)
+            foreach (Player p in PlayerManager.GetInstance().GetPlayers())
             {
-                ItemSlot slot = m_ItemAreaList[i];
-                if (!slot.bEmpty && slot.item.CollidesWithMesh(p.GetVehicle()))
+                // TODO: Check the collisions??
+                for (int i = 0; i < m_ItemAreaList.Count; ++i)
                 {
-                    slot.fTakenTime = t;
-                    slot.item = null;
-                    slot.bEmpty = true;
+                    ItemSlot slot = m_ItemAreaList[i];
+                    if (!slot.bEmpty && slot.item.CollidesWithMesh(p.GetVehicle()))
+                    {
+                        slot.fTakenTime = t;
+                        slot.item = null;
+                        slot.bEmpty = true;
+                    }
                 }
             }
 
