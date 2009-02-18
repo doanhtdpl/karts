@@ -23,7 +23,7 @@ namespace Karts.Code
 
         public override void Enter()
         {
-            //Guide.ShowSignIn(1, false);
+            Guide.ShowSignIn(1, false);
 
             for (int i = 0; i < options.Length; ++i)
             {
