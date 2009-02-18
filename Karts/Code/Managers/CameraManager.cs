@@ -58,6 +58,14 @@ namespace Karts.Code
 
             if (activate)
             {
+                cam.SetType(Camera.ECamType.ECAMERA_TYPE_FREE);
+            }
+            else
+                cam.SetType(Camera.ECamType.ECAMERA_TYPE_TARGET);
+
+            /*
+            if (activate)
+            {
                 if (cam.GetCameraType() != Camera.ECamType.ECAMERA_TYPE_FREE)
                 {
                     m_iOldActiveCameraID = cam.GetID();
@@ -84,6 +92,7 @@ namespace Karts.Code
                     m_iActiveCameraID = m_iOldActiveCameraID;
                 }
             }
+             * */
         }
 
         public int CreateCamera(Camera.ECamType type, bool bActive, Object3D target, Vector3 pos, Vector3 rot)

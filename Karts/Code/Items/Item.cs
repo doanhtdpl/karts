@@ -52,6 +52,7 @@ namespace Karts.Code
         public void Draw(Matrix ProjMatrix, Matrix ViewMatrix)
         {
             base.Draw(ProjMatrix, ViewMatrix);
+            //DrawBoundingSphere();
         }
     }
 }

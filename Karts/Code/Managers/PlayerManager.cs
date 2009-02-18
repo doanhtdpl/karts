@@ -9,7 +9,6 @@ namespace Karts.Code
     class PlayerManager
     {
         // Constants
-        public const int INVALID_PLAYER_ID = 0;
         public const int MAX_LOCAL_PLAYERS = 4;
         
         //---------------------------------------------------
@@ -70,6 +69,11 @@ namespace Karts.Code
         {
             return m_PlayerList.Find(new FindPlayerID(uID).CompareID);
         }
+
+        public Player GetPlayerByVehicleMesh(Mesh m)
+        {
+            return m_PlayerList.Find(new FindPlayerVehicleMesh(m).CompareMesh);
+        }
         
         public Player GetLocalPlayerByIndex(int index)
         {
@@ -81,7 +85,8 @@ namespace Karts.Code
             return GetLocalPlayerByIndex(index) != null;
         }
 
-        public Player CreatePlayer(){
+        public Player CreatePlayer()
+        {
             // Generate ID
             UInt32 uID = ++m_uIDPlayerCounter;
 
@@ -93,7 +98,7 @@ namespace Karts.Code
                 return null;
             }
 
-            newPlayer = new Player(uID);
+            newPlayer = new Player();
             m_PlayerList.Add(newPlayer);
             return newPlayer;
         }
@@ -142,6 +147,17 @@ namespace Karts.Code
             public bool CompareID(Player p)
             {
                 return p.GetID() == uID;
+            }
+        }
+
+        struct FindPlayerVehicleMesh
+        {
+            Mesh m;
+
+            public FindPlayerVehicleMesh(Mesh _m) { m = _m; }
+            public bool CompareMesh(Player p)
+            {
+                return (Mesh)(p.GetVehicle()) == m;
             }
         }
 
