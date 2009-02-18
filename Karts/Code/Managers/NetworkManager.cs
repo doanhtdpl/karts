@@ -13,10 +13,19 @@ namespace Karts.Code
         public static int MAX_LOCAL_PLAYERS = 4;
         public static int MAX_TOTAL_PLAYERS = 16;
 
+        public const byte N_JOIN_PLAYER = 0;
+        public const byte N_ACCEPT_JOIN = 1;
+        public const byte N_PLAYER_JOINED = 2;
+        public const byte N_PUBLIC_CHAT_MESSAGE = 3;
+        public const byte N_PRIVATE_CHAT_MESSAGE = 4;
+        public const byte N_PLAYER_LEFT = 5;
+        public const byte N_PLAYER_INFO = 6;
+
         private NetworkSession session = null;
         private AvailableNetworkSessionCollection availableSessions = null;
         private PacketWriter pw;
         private PacketReader pr;
+        private LocalNetworkGamer sender;
 
         public static NetworkManager m_NetworkManager = null;
 
@@ -51,6 +60,11 @@ namespace Karts.Code
             session.GameEnded += new EventHandler<GameEndedEventArgs>(session_GameEnded);
             session.SessionEnded += new EventHandler<NetworkSessionEndedEventArgs>(session_SessionEnded);
 
+            pr = new PacketReader();
+            pw = new PacketWriter();
+
+            sender = session.LocalGamers[0];
+
             return session;
         }
 
@@ -72,6 +86,8 @@ namespace Karts.Code
         public void JoinSession(AvailableNetworkSession hostSession)
         {
             session = NetworkSession.Join(hostSession);
+
+            sender = session.LocalGamers[0];
         }
 
         public void LeaveSession()
@@ -112,19 +128,69 @@ namespace Karts.Code
 
         public void Update()
         {
-
-            //LocalNetworkGamer g = session.LocalGamers[0];
-            //SignedInGamer sig;
-            //sig.Privileges.AllowOnlineSessions;
-            
-            //GamerProfile gp = g.GetProfile();
-
             if(session != null){
                 session.Update();
             }
+
+            if (sender.IsDataAvailable)
+            {
+                NetworkGamer messageSender;
+                sender.ReceiveData(pr, out messageSender);
+
+                byte id = pr.ReadByte();
+                switch (id)
+                {
+                    case N_JOIN_PLAYER:
+                        String name = pr.ReadString();
+
+                        Player newPlayer = PlayerManager.GetInstance().CreatePlayer(name, false, false);
+
+                        pw.Write(N_ACCEPT_JOIN);
+                        pw.Write(newPlayer.GetID());
+                        pw.Write(name);
+                        sender.SendData(pw, SendDataOptions.None, messageSender);
+                        break;
+                    case N_ACCEPT_JOIN:
+                        UInt32 playerID = pr.ReadUInt32();
+                        String playerName = pr.ReadString();
+                        PlayerManager.GetInstance().CreatePlayer(playerName, true, false, playerID);
+
+                        CommunicatePlayerJoined(playerName, playerID);
+                        break;
+                    case N_PLAYER_JOINED:
+                        playerID = pr.ReadUInt32();
+                        playerName = pr.ReadString();
+                        PlayerManager.GetInstance().CreatePlayer(playerName, false, false, playerID);
+                        break;
+                    case N_PLAYER_LEFT:
+                        break;
+                    case N_PLAYER_INFO:
+                        break;
+                    case N_PRIVATE_CHAT_MESSAGE:
+                        break;
+                    case N_PUBLIC_CHAT_MESSAGE:
+                        break;
+                }
+            }
         }
 
-        void session_GamerJoined(object sender, GamerJoinedEventArgs p) { 
+        public void JoinPlayer(String playerName)
+        {
+            pw.Write(N_JOIN_PLAYER);
+            pw.Write(playerName);
+            sender.SendData(pw, SendDataOptions.None, session.Host);
+        }
+
+        public void CommunicatePlayerJoined(String playerName, UInt32 uID)
+        {
+            pw.Write(N_PLAYER_JOINED);
+            pw.Write(uID);
+            pw.Write(playerName);
+            sender.SendData(pw, SendDataOptions.None, session.Host);
+        }
+
+        void session_GamerJoined(object sender, GamerJoinedEventArgs p)
+        { 
         }
 
         void session_GamerLeft(object sender, GamerLeftEventArgs p) { 
