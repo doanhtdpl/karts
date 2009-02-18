@@ -107,10 +107,12 @@ namespace Karts.Code
 
         public AvailableNetworkSessionCollection GetAvailableSessions()
         {
-            if (availableSessions == null)
+            /*if (availableSessions == null)
             {
                 availableSessions = FindSessions();
             }
+             */
+            availableSessions = FindSessions();
             return availableSessions;
         }
 
