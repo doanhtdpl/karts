@@ -90,6 +90,11 @@ namespace Karts.Code
             // Generate ID
             UInt32 uID = ++m_uIDPlayerCounter;
 
+            return CreatePlayer(uID);
+        }
+
+        public Player CreatePlayer(UInt32 uID)
+        {
             Player newPlayer = GetPlayerByID(uID);
 
             if (newPlayer != null)
@@ -103,16 +108,25 @@ namespace Karts.Code
             return newPlayer;
         }
 
-        public void CreatePlayer(string Name, bool local, bool live)
+        public Player CreatePlayer(string Name, bool local, bool live)
         {
             Player newPlayer = CreatePlayer();
             newPlayer.Init(Name, local, live, -1, -1);
+            return newPlayer;
         }
 
-        public void CreatePlayer(string Name, bool local, bool live, int playerIndex)
+        public Player CreatePlayer(string Name, bool local, bool live, UInt32 uID)
+        {
+            Player newPlayer = CreatePlayer(uID);
+            newPlayer.Init(Name, local, live, -1, -1);
+            return newPlayer;
+        }
+
+        public Player CreatePlayer(string Name, bool local, bool live, int playerIndex)
         {
             Player newPlayer = CreatePlayer();
             newPlayer.Init(Name, local, live, playerIndex, m_PlayerList.Count-1);
+            return newPlayer;
         }
 
         public bool CreatePlayer(Vector3 position, Vector3 rotation, float fScale, string vehicle_name, string driver_name, bool bCamera)

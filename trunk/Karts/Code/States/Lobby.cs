@@ -15,17 +15,18 @@ namespace Karts.Code
     {
         private Screen menu;
         private List<TextComponent> players = new List<TextComponent>();
+        private NetworkSession session;
 
         public override void Enter()
         {
             menu = new Screen();
             Gui.GetInstance().AddComponent(menu);
 
-            foreach (Player player in PlayerManager.GetInstance().GetPlayers())
+            session = NetworkManager.GetInstance().GetSession();
+            if (session != null)
             {
-                TextComponent comp = new TextComponent(100, 150 + players.Count * 50, player.GetName());
-                players.Add(comp);
-                menu.AddComponent(comp);
+                //session.GamerJoined += new EventHandler<GamerJoinedEventArgs>(session_GamerJoined);
+                //session.GamerLeft += new EventHandler<GamerLeftEventArgs>(session_GamerLeft);
             }
 
             base.Enter();
@@ -44,8 +45,6 @@ namespace Karts.Code
                 }
             }else{
                 CheckLocalJoins();
-
-                CheckNetworkJoins();
             }
 
             UpdateList();
@@ -79,36 +78,47 @@ namespace Karts.Code
             {
                 if (ControllerManager.GetInstance().isPressed(i, "join") && !PlayerManager.GetInstance().IsJoinedLocalPlayer(i))
                 {
-                    Console.WriteLine("Add Player");
-                    PlayerManager.GetInstance().CreatePlayer("Player" + i, true, false, i);
-                    TextComponent comp = new TextComponent(100, 150 + players.Count * 50, "Player" + i);
-                    players.Add(comp);
-                    menu.AddComponent(comp);
+                    Player newPlayer = PlayerManager.GetInstance().CreatePlayer("Player" + i, true, false, i);
 
                     if(NetworkManager.GetInstance().HasSession()){
-                        //NetworkManager.GetInstance().CommunicatePlayerJoined();
+                        NetworkManager.GetInstance().CommunicatePlayerJoined(newPlayer.GetName(), newPlayer.GetID());
                     }
                 }
             }
         }
 
-        private void CheckNetworkJoins()
-        {
-        }
-
         private void UpdateList()
         {
-        }
+            menu.RemoveAll();
+            int index = 0;
+            foreach (Player player in PlayerManager.GetInstance().GetPlayers())
+            {
+                TextComponent comp = new TextComponent(100, 150 + index * 50, player.GetName());
+                players.Add(comp);
+                menu.AddComponent(comp);
+                index++;
+            }
 
-        public override void Draw(GameTime GameTime)
-        {
-            base.Draw(GameTime);
         }
 
         public override void Exit()
         {
             Gui.GetInstance().RemoveComponent(menu);
             base.Exit();
+        }
+
+        void session_GamerJoined(object sender, GamerJoinedEventArgs p)
+        {
+            menu.AddComponent(new TextComponent(100, 100 * (session.AllGamers.Count + 1), p.Gamer.Gamertag, "KartsFont"));
+        }
+
+        void session_GamerLeft(object sender, GamerLeftEventArgs p)
+        {
+            menu.RemoveAll();
+            for (int i = 0; i < session.AllGamers.Count; ++i)
+            {
+                menu.AddComponent(new TextComponent(100, 100 * (i + 1), session.AllGamers[i].Gamertag, "KartsFont"));
+            }
         }
     }
 }

@@ -42,11 +42,6 @@ namespace Karts.Code
             base.Update(GameTime);
         }
 
-        public override void Draw(GameTime GameTime)
-        {
-            base.Draw(GameTime);
-        }
-
         public override void Exit()
         {
             Gui.GetInstance().RemoveComponent(menu);

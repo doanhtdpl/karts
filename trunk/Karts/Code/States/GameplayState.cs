@@ -39,6 +39,7 @@ namespace Karts.Code
 
         public override void Draw(GameTime gameTime)
         {
+            Viewport v = ResourcesManager.GetInstance().GetGraphicsDeviceManager().GraphicsDevice.Viewport;
             foreach (Player p in PlayerManager.GetInstance().GetPlayers())
             {
                 ResourcesManager.GetInstance().GetGraphicsDeviceManager().GraphicsDevice.Viewport = p.Viewport;
@@ -46,6 +47,7 @@ namespace Karts.Code
                 PlayerManager.GetInstance().Draw(gameTime);
                 CircuitManager.GetInstance().Draw(gameTime);
             }
+            ResourcesManager.GetInstance().GetGraphicsDeviceManager().GraphicsDevice.Viewport = v;
         }
 
         public void UpdateControls()

@@ -105,6 +105,8 @@
     <Compile Include="Code\Managers\InputManager.cs" />
     <Compile Include="Code\Managers\CameraManager.cs" />
     <Compile Include="Code\Managers\ResourcesManager.cs" />
+    <Compile Include="Code\Network\Client.cs" />
+    <Compile Include="Code\Network\Server.cs" />
     <Compile Include="Code\SceneManager\Components\Component.cs" />
     <Compile Include="Code\SceneManager\Components\Container.cs" />
     <Compile Include="Code\SceneManager\Components\TextComponent.cs" />
