@@ -16,6 +16,8 @@
       <button name="menu_right" controller="0" button="LeftThumbstickRight"/>
       <button name="menu_ok" controller="0" button="A"/>
       <button name="menu_cancel" controller="0" button="B"/>
+
+      <button name="refresh" controller="0" button="Y"/>
     </player>
     
     <player id="1">
@@ -34,6 +36,8 @@
       <key name="menu_right" key="Right"/>
       <key name="menu_ok" key="Enter"/>
       <key name="menu_cancel" key="Back"/>
+
+      <key name="refresh" key="F5"/>
     </player>
     
     <player id="2">
@@ -50,6 +54,8 @@
       <key name="menu_right" key="D"/>
       <key name="menu_ok" key="R"/>
       <key name="menu_cancel" key="E"/>
+
+      <key name="refresh" key="F5"/>
     </player>
     
     <player id="3">
@@ -66,6 +72,8 @@
       <key name="menu_right" key="L"/>
       <key name="menu_ok" key="P"/>
       <key name="menu_cancel" key="O"/>
+    
+      <key name="refresh" key="F5"/>
     </player>
   </pc>
   <x360>
