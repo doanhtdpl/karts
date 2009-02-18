@@ -29,20 +29,30 @@ namespace Karts.Code
 
         public override void Update(GameTime GameTime)
         {
-            KeyboardState state = Keyboard.GetState();
-            if(state.IsKeyDown(Keys.F5)){
-                UpdateSessions();
-            }else if(state.IsKeyDown(Keys.Down)){
-                selected = (selected + availableSessions.Count + 1) % availableSessions.Count;
-            }else if(state.IsKeyDown(Keys.Up)){
-                selected = (selected + availableSessions.Count - 1) % availableSessions.Count;
-            }
-            else if (state.IsKeyDown(Keys.Enter))
+            ControllerManager cm = ControllerManager.GetInstance();
+            if (availableSessions.Count > 0)
             {
-                NetworkManager.GetInstance().JoinSession(availableSessions[selected]);
-                GameStateManager.GetInstance().ChangeState(new WaitForOtherPlayers());
-            }
-            else if (state.IsKeyDown(Keys.Back))
+                if (cm.isPressed("refresh"))
+                {
+                    UpdateSessions();
+                }
+                else if (cm.isPressed("menu_down"))
+                {
+                    selected = (selected + availableSessions.Count + 1) % availableSessions.Count;
+                }
+                else if (cm.isPressed("menu_up"))
+                {
+                    selected = (selected + availableSessions.Count - 1) % availableSessions.Count;
+                }
+                else if (cm.isPressed("menu_ok"))
+                {
+                    NetworkManager.GetInstance().JoinSession(availableSessions[selected]);
+                    GameStateManager.GetInstance().ChangeState(new Lobby());
+                }else if (cm.isPressed("menu_cancel"))
+                {
+                    GameStateManager.GetInstance().ChangeState(new MainMenu());
+                }
+            }else if (cm.isPressed("menu_cancel"))
             {
                 GameStateManager.GetInstance().ChangeState(new MainMenu());
             }
