@@ -62,7 +62,7 @@ namespace Karts.Code
         private void Confirm(){
             if(NetworkManager.GetInstance().HasSession()){
                 if(NetworkManager.GetInstance().GetSession().IsHost){
-                    NetworkManager.GetInstance().GetSession().StartGame();
+                    //NetworkManager.GetInstance().GetSession().StartGame();
                     GameStateManager.GetInstance().ChangeState(new GameplayState());
                 }else{
                     //Nothing
