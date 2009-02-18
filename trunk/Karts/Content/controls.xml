@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <controls>
   <pc>
     <player id="0">
@@ -19,6 +19,8 @@
     </player>
     
     <player id="1">
+	    <key name="toggle_free_camera" key="F1"/>
+      
       <key name="turn_left" key="Left"/>
       <key name="turn_right" key="Right"/>
       <key name="accelerate" key="Up"/>

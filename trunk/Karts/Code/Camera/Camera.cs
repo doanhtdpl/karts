@@ -35,6 +35,7 @@ namespace Karts.Code
         protected float m_fFarPlaneDistance;
         protected Matrix m_ViewMatrix;
         protected Matrix m_ProjMatrix;
+        protected ECamType m_eType;
 
 
         //---------------------------------------
@@ -52,16 +53,20 @@ namespace Karts.Code
             m_fFieldOfView = MathHelper.ToRadians(45.0f);
             m_fNearPlaneDistance = 1.0f;
             m_fFarPlaneDistance = 10000.0f;
+
+            m_eType = ECamType.ECAMERA_TYPE_INVALID;
         }
 
         ~Camera() { }
 
-        public bool Init(int ID, Vector3 pos, Vector3 rot)
+        public bool Init(int ID, ECamType type, Vector3 pos, Vector3 rot)
         {
             m_iIDCamera = ID;
 
             m_vPosition = pos;
             m_vRotation = rot;
+
+            m_eType = type;
 
             m_vLookAt = new Vector3(0.0f, 0.0f, 100.0f);            
 
@@ -75,7 +80,12 @@ namespace Karts.Code
             return true;
         }
 
-        public virtual ECamType GetCameraType() { return ECamType.ECAMERA_TYPE_INVALID; }
+        public ECamType GetCameraType() { return m_eType; }
+
+        public void SetType(ECamType type)
+        {
+            m_eType = type;
+        }
 
         public void SetID(int id)
         {

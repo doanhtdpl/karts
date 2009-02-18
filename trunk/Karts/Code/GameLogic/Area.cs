@@ -5,9 +5,15 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace Karts.Code
 {
+    interface IObserver
+    {
+        void OnEnter(Mesh m);
+        void OnExit(Mesh m);
+    }
     //---------------------------------------
     //---------------------------------------
     // Class Area:
@@ -20,111 +26,114 @@ namespace Karts.Code
         //---------------------------------------
         // Class members
         //---------------------------------------
-        private BoundingBox m_bb;
-        private List<UInt32> m_EnteredEntities = new List<UInt32>();
+        private OBB m_obb;
+        private int m_iLife;      // < 0 -> Infinite life
+        private List<Mesh> m_MeshesInside = new List<Mesh>();
+        private List<Mesh> m_MeshesToDelete = new List<Mesh>();
+        private List<IObserver> m_Observers = new List<IObserver>();
         private Vector3 m_vSize;
-
-        static VertexPositionColor[] verts = new VertexPositionColor[8];
-        static int[] indices = new int[]
-        {
-            0, 1,
-            1, 2,
-            2, 3,
-            3, 0,
-            0, 4,
-            1, 5,
-            2, 6,
-            3, 7,
-            4, 5,
-            5, 6,
-            6, 7,
-            7, 4,
-        };
-
-        static BasicEffect effect;
-        static VertexDeclaration vertDecl;
 
         //---------------------------------------
         // Class methods
         //---------------------------------------
-        public bool Init(Vector3 pos, Vector3 rot, float fWidth, float fHeight, float fDepth)
+        public bool Init(Vector3 pos, Vector3 rot, float fWidth, float fHeight, float fDepth, int iLife)
         {
             m_vPosition = pos; // Base position
+            pos.Y += fHeight;
             m_vRotation = rot;
-
+            m_iLife = iLife;
             m_vSize = new Vector3(fWidth, fHeight, fDepth);
 
-            m_bb = new BoundingBox(m_vPosition - GetRight()*fWidth*0.5f - GetForward()*fDepth*0.5f, 
-                                   m_vPosition + GetRight()*fWidth*0.5f + GetForward()*fDepth*0.5f + GetUp()*fHeight);
+            m_obb = new OBB(pos, new Vector3(fWidth, fHeight, fDepth), Matrix.CreateFromYawPitchRoll(rot.Y, rot.X, rot.Z));
 
             return true;
         }
 
-        public bool IntersectsWith(Mesh mesh)
+        public bool IsAlife()
         {
-            BoundingSphere bs = mesh.GetBoundingSphere();
-
-            if (m_bb.Intersects(bs))
-                return true;
-
-            return false;
+            return m_iLife > 0 || m_iLife < 0;
         }
 
-        public bool IntersectsWith(BoundingBox bb)
-        { 
-            return m_bb.Intersects(bb);
+        public void RegisterObserver(IObserver obs)
+        {
+            if (!m_Observers.Contains(obs))
+            {
+                m_Observers.Add(obs);
+            }
         }
 
-        public float? IntersectsWith(Ray r)
-        { 
-            return m_bb.Intersects(r);
+        public void UnregisterObserver(IObserver obs)
+        {
+            if (m_Observers.Contains(obs))
+            {
+                m_Observers.Remove(obs);
+            }
+        }
+
+        public void OnEnter(Mesh m)
+        {
+            --m_iLife;
+
+            if (!m_MeshesInside.Contains(m))
+            {
+                Debug.Print("==============> Entering trigger");
+                m_MeshesInside.Add(m);
+
+                foreach (IObserver o in m_Observers)
+                {
+                    o.OnEnter(m);
+                }
+            }
+        }
+
+        public void OnExit(Mesh m)
+        {
+            Debug.Print("==============> Exiting trigger");
+            foreach (IObserver o in m_Observers)
+            {
+                o.OnExit(m);
+            }
+        }
+
+        public bool IsInside(Mesh m)
+        {
+            return m_MeshesInside.Contains(m);
+        }
+
+        public void Update()
+        {
+            int iCount = m_MeshesInside.Count;
+            for (int i = 0; i < iCount; ++i)
+            {
+                Mesh m = m_MeshesInside[i];
+                if (m_obb.Contains(m.GetBoundingSphere()) == ContainmentType.Disjoint)
+                {
+                    // The mesh has exited the area
+                    OnExit(m);
+                    m_MeshesToDelete.Add(m);
+                }
+            }
+
+            // Delete exited meshes
+            iCount = m_MeshesToDelete.Count;
+            for (int i = 0; i < iCount; i++)
+            {
+                m_MeshesInside.Remove(m_MeshesToDelete[i]);
+                m_MeshesToDelete[i] = null;
+            }
+
+            m_MeshesToDelete.Clear();
+        }
+
+        public OBB GetOBB()
+        {
+            return m_obb;
         }
 
         // Just for Debug
-        public void Draw()
+        public void Draw(Color c)
         {
-            GraphicsDeviceManager gdm = ResourcesManager.GetInstance().GetGraphicsDeviceManager();
-            GraphicsDevice graphicsDevice = gdm.GraphicsDevice;
-
-            if (effect == null)
-            {
-                effect = new BasicEffect(graphicsDevice, null);
-                effect.VertexColorEnabled = true;
-                effect.LightingEnabled = false;
-                vertDecl = new VertexDeclaration(graphicsDevice, VertexPositionColor.VertexElements);
-            }
-
-            Vector3[] corners = m_bb.GetCorners();
-            for (int i = 0; i < 8; i++)
-            {
-                verts[i].Position = corners[i];
-                verts[i].Color = Color.Red;
-            }
-
-            graphicsDevice.VertexDeclaration = vertDecl;
-
-            Camera cam = CameraManager.GetInstance().GetActiveCamera();
-
-            effect.View = cam.GetViewMatrix();
-            effect.Projection = cam.GetProjectionMatrix();
-
-            effect.Begin();
-            foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-            {
-                pass.Begin();
-
-                graphicsDevice.DrawUserIndexedPrimitives(
-                    PrimitiveType.LineList,
-                    verts,
-                    0,
-                    8,
-                    indices,
-                    0,
-                    indices.Length / 2);
-
-                pass.End();
-            }
-            effect.End();
+            m_obb.Draw(c);
         }
     }
 }

@@ -45,6 +45,7 @@ namespace Karts.Code
 
         public void DrawSphere(Vector3 c, float rad, Color color)
         {
+#if DEBUG
             Matrix sphereMatrix = Matrix.CreateScale(rad) * Matrix.CreateTranslation(c);
             int iCountVerts = 0;
 
@@ -96,10 +97,12 @@ namespace Karts.Code
                 pass.End();
             }
             effect.End();
+#endif
         }
 
         public void DrawLine(Vector3 or, Vector3 end, Color c)
         {
+#if DEBUG
             BasicEffect effect;
             GraphicsDeviceManager gdm = ResourcesManager.GetInstance().GetGraphicsDeviceManager();
 
@@ -123,10 +126,12 @@ namespace Karts.Code
                 pass.End();
             }
             effect.End();
+#endif
         }
 
         public void DrawPoint(Vector3 or, float fSize, Color c)
         {
+#if DEBUG
             BasicEffect effect;
             GraphicsDeviceManager gdm = ResourcesManager.GetInstance().GetGraphicsDeviceManager();
 
@@ -150,6 +155,7 @@ namespace Karts.Code
                 pass.End();
             }
             effect.End();
+#endif
         }
     }
 }

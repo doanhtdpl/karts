@@ -119,6 +119,7 @@ namespace Karts.Code
         {
             if (m_bDrawAxis)
             {
+#if DEBUG
                 Vector3 fwd = GetForward();
                 Vector3 up = GetUp();
                 Vector3 right = GetRight();
@@ -126,6 +127,7 @@ namespace Karts.Code
                 DrawDebugManager.GetInstance().DrawLine(m_vPosition, m_vPosition + fwd * 5000, Color.Blue);
                 DrawDebugManager.GetInstance().DrawLine(m_vPosition, m_vPosition + up* 5000, Color.Green);
                 DrawDebugManager.GetInstance().DrawLine(m_vPosition, m_vPosition + right * 5000, Color.Red);
+#endif
             }
         }
 

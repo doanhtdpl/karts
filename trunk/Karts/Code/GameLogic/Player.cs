@@ -15,52 +15,68 @@ namespace Karts.Code
         // ------------------------------------------------
         // Class members
         // ------------------------------------------------
+        private UInt32 m_uID;
         private Vehicle m_Vehicle;
         //private Driver m_Driver;
-        private UInt32 m_uID;
         private string m_sName;
         public int m_IDCamera { get; set; }
-        private bool m_bLive;
+        private bool m_bLife;
         public bool Local { get; set; }
         public int LocalPlayerIndex { get; set; }
         public int LocalPlayerIndexCount { get; set; }
         public Viewport Viewport { get; set; }
+        private Vector3 m_vVelocity;
+
+        public int m_iLaps = 0;
+        public int m_LastCheckpointIdx;
 
         // ------------------------------------------------
         // Class methods
         // ------------------------------------------------
-        public Player ( UInt32 uID )
+        public Player ()
         {
-            m_uID = PlayerManager.INVALID_PLAYER_ID;
             m_Vehicle = null;
             //m_Driver = null;
             m_sName = null;
             m_vPosition = Vector3.Zero;
             m_vRotation = Vector3.Zero;
+            m_vVelocity = Vector3.Zero;
             m_IDCamera = CameraManager.INVALID_CAMERA_ID;
-
-            m_uID = uID;
+            m_LastCheckpointIdx = 0;
+            m_iLaps = 0;
         }
 
         ~Player ()
         {
-            m_uID = PlayerManager.INVALID_PLAYER_ID;
             m_Vehicle = null;
             //m_Driver = null;
             m_sName = null;
             m_vPosition = Vector3.Zero;
             m_vRotation = Vector3.Zero;
             m_IDCamera = CameraManager.INVALID_CAMERA_ID;
+            m_iLaps = 0;
         }
 
-        public UInt32 GetID() { return m_uID; }
         public string GetName() { return m_sName; }
+        public UInt32 GetID() { return m_uID;  }
+        public int GetLaps() { return m_iLaps; }
+        public void AddLap(int amount) { m_iLaps += amount; } 
 
-        public void Init(string Name, bool local, bool live, int playerIndex, int playerIndexCount)
+        public void SetLastCheckpointIndex(int idx)
+        {
+            m_LastCheckpointIdx = idx;
+        }
+
+        public int GetLastCheckpointIndex()
+        {
+            return m_LastCheckpointIdx;
+        }
+
+        public void Init(string Name, bool local, bool life, int playerIndex, int playerIndexCount)
         {
             m_sName = Name;
             Local = local;
-            m_bLive = live;
+            m_bLife = life;
             LocalPlayerIndex = playerIndex;
             LocalPlayerIndexCount = playerIndexCount;
         }
@@ -126,6 +142,7 @@ namespace Karts.Code
                 v.X = LocalPlayerIndexCount % 2 == 0 ? 0 : 400;
                 v.Y = LocalPlayerIndexCount < 2 ? 0 : 300;
             }
+
             v.Width = width;
             v.Height = height;
             Viewport = v;
@@ -135,47 +152,47 @@ namespace Karts.Code
 
         public void Update(GameTime gameTime)
         {
-            InputManager im = InputManager.GetInstance();
-            ControllerManager cm = ControllerManager.GetInstance();
-
-            // Switch camera Free/Target
-            if (im.isKeyPressed(Keys.Z))
-            {
-                CameraManager.GetInstance().ActivateCameraFree(!CameraManager.GetInstance().IsActiveCameraFree());
-            }
-
-            if (CameraManager.GetInstance().IsActiveCameraFree()) 
+           if (CameraManager.GetInstance().IsActiveCameraFree()) 
                 return;
 
             Vector3 newPos = new Vector3(0, 0, 0);
             float fMove = 00f;
+            ControllerManager cm = ControllerManager.GetInstance();
 
-            if (cm.isDown(LocalPlayerIndex, "accelerate"))
-            {
+           if (cm.isDown(LocalPlayerIndex, "accelerate"))
+           {
                 fMove = 100.0f;
             }
 
-            if (cm.isDown(LocalPlayerIndex, "brake"))
-            {
+           if (cm.isDown(LocalPlayerIndex, "brake"))
+           {
                 fMove = -100.0f;
             }
 
-            if (cm.isDown(LocalPlayerIndex, "turn_left"))
-            {
+           if (cm.isDown(LocalPlayerIndex, "turn_left"))
+           {
                 m_vRotation.Y += 0.03f;
             }
 
-            if (cm.isDown(LocalPlayerIndex, "turn_right"))
-            {
+           if (cm.isDown(LocalPlayerIndex, "turn_right"))
+           {
                 m_vRotation.Y -= 0.03f;
             }
 
-            m_vPosition = m_vPosition + fMove * GetForward();
+           m_vVelocity = fMove * GetForward();
+
+           m_vPosition = m_vPosition + m_vVelocity;
+
             m_Vehicle.SetPosition(m_vPosition);
             m_Vehicle.SetRotationSoft(m_vRotation);
             
             m_Vehicle.Update(gameTime);
             //m_Driver.Update(gameTime);
+        }
+
+        public Vector3 GetVelocity()
+        {
+            return m_vVelocity;
         }
 
         public void Draw(GameTime gameTime)

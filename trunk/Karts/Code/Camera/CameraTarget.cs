@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Karts.Code
 {
@@ -38,7 +39,7 @@ namespace Karts.Code
 
         public bool Init(int ID, Object3D target)
         {
-            base.Init(ID, target.GetPosition(), target.GetRotation());
+            base.Init(ID, ECamType.ECAMERA_TYPE_TARGET, target.GetPosition(), target.GetRotation());
 
             m_Target = target;
 
@@ -48,8 +49,6 @@ namespace Karts.Code
 
             return true;
         }
-
-        public override ECamType GetCameraType() { return ECamType.ECAMERA_TYPE_TARGET; }
 
         public void SetTarget(Object3D target)
         {
@@ -87,23 +86,92 @@ namespace Karts.Code
 
         public override void Update(GameTime gameTime)
         {
-            // Target Camera
-            UpdateWorldPositions();
-
-            // Calculate spring force
-            Vector3 stretch = m_vPosition - m_vDesiredPosition;
-            Vector3 force = -m_fStiffness * stretch - m_fDamping * m_vVelocity;
-
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            // Apply acceleration
-            Vector3 acceleration = force / m_fMass;
-            m_vVelocity += acceleration * elapsed;
+            if (m_eType == ECamType.ECAMERA_TYPE_TARGET)
+            {
+                // Target Camera
+                UpdateWorldPositions();
 
-            // Apply velocity
-            m_vPosition += m_vVelocity * elapsed;
+                // Calculate spring force
+                Vector3 stretch = m_vPosition - m_vDesiredPosition;
+                Vector3 force = -m_fStiffness * stretch - m_fDamping * m_vVelocity;
 
-            UpdateMatrices();
+                // Apply acceleration
+                Vector3 acceleration = force / m_fMass;
+                m_vVelocity += acceleration * elapsed;
+
+                // Apply velocity
+                m_vPosition += m_vVelocity * elapsed;
+
+                UpdateMatrices();
+            }
+            else if (m_eType == ECamType.ECAMERA_TYPE_FREE)
+            {
+                // Free camera (it is moved by the input controls)
+                bool bMoveUp = InputManager.GetInstance().isKeyDown(Keys.W);
+                bool bMoveDown = InputManager.GetInstance().isKeyDown(Keys.S);
+                bool bMoveLeft = InputManager.GetInstance().isKeyDown(Keys.A);
+                bool bMoveRight = InputManager.GetInstance().isKeyDown(Keys.D);
+
+                float fValueZ = 0.0f;
+                float fValueX = 0.0f;
+
+                if (bMoveUp)
+                {
+                    fValueZ = fValueZ + 5000.0f * elapsed;
+                }
+
+                if (bMoveDown)
+                {
+                    fValueZ = fValueZ - 5000.0f * elapsed;
+                }
+
+                if (bMoveLeft)
+                {
+                    fValueX = fValueX - 5000.0f * elapsed;
+                }
+
+                if (bMoveRight)
+                {
+                    fValueX = fValueX + 5000.0f * elapsed;
+                }
+
+                bool bTurnLeft = InputManager.GetInstance().isKeyDown(Keys.Left);
+                bool bTurnRight = InputManager.GetInstance().isKeyDown(Keys.Right);
+                bool bTurnUp = InputManager.GetInstance().isKeyDown(Keys.Up);
+                bool bTurnDown = InputManager.GetInstance().isKeyDown(Keys.Down);
+
+                if (bTurnRight)
+                {
+                    m_vRotation.Y -= 0.8f * elapsed;
+                }
+
+                if (bTurnLeft)
+                {
+                    m_vRotation.Y += 0.8f * elapsed;
+                }
+
+                if (bTurnDown)
+                {
+                    m_vRotation.X -= 0.8f * elapsed;
+                }
+
+                if (bTurnUp)
+                {
+                    m_vRotation.X += 0.8f * elapsed;
+                }
+
+                // We first calculate the rotation and then translate
+                Vector3 fwd = GetForward();
+                m_vPosition = m_vPosition + fValueZ * fwd + fValueX * GetRight();
+                m_vLookAt = m_vPosition + fwd;
+
+                // We keep the up vector with the default value
+                //m_vUp = GetUp();
+
+                m_ViewMatrix = Matrix.CreateLookAt(m_vPosition, m_vLookAt, m_vUp);
+            }
         }
     }
 }

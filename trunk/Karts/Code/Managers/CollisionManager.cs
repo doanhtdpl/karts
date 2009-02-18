@@ -11,6 +11,9 @@ namespace Karts.Code
     class CollisionManager
     {
         public static CollisionManager m_CollisionManager = null;
+        private List<Area> m_Areas = new List<Area>();
+        private float m_fUpdateTime = 0.0f;
+        private static float MAX_UPDATE_TIME = 0.1f;
 
         public static CollisionManager GetInstance()
         {
@@ -22,25 +25,64 @@ namespace Karts.Code
 
         bool CheckCollision(ref Mesh m1, ref Mesh m2)
         {
-            for (int i = 0; i < m1.GetModel().Meshes.Count; i++)
+            BoundingSphere c1BoundingSphere = m1.GetBoundingSphere();
+            BoundingSphere c2BoundingSphere = m2.GetBoundingSphere();
+    
+            if (c1BoundingSphere.Intersects(c2BoundingSphere))
             {
-                // Check whether the bounding boxes of the two cubes intersect.
-                BoundingSphere c1BoundingSphere = m1.GetModel().Meshes[i].BoundingSphere;
-                c1BoundingSphere.Center += m1.GetPosition();
+                return true;
+            }
 
-                for (int j = 0; j < m2.GetModel().Meshes.Count; j++)
+            return false;
+        }
+
+        public Area CreateArea(Vector3 pos, Vector3 rot, float fWidth, float fHeight, float fDepth, int iLife)
+        {
+            Area newArea = new Area();
+            if (newArea.Init(pos, rot, fWidth, fHeight, fDepth, iLife))
+            {
+                m_Areas.Add(newArea);
+
+                return newArea;
+            }
+
+            return null;
+        }
+
+        public void Update(float dt, float t)
+        {
+            if (m_fUpdateTime + MAX_UPDATE_TIME > t) 
+                return;
+
+            m_fUpdateTime = t;
+
+            // We manage the collision between players and areas
+            List<Player> Players = PlayerManager.GetInstance().GetPlayers();
+            int jCount = Players.Count;
+            for (int j = 0; j < jCount; ++j)
+            {
+                Player p = Players[j];
+                int iCount = m_Areas.Count;
+                for (int i = 0; i < iCount; ++i)
                 {
-                    BoundingSphere c2BoundingSphere = m2.GetModel().Meshes[j].BoundingSphere;
-                    c2BoundingSphere.Center += m2.GetPosition();
+                    Area a = m_Areas[i];
+                    //float fSqDist = (p.GetPosition() - a.GetPosition()).LengthSquared();
+                    OBB obb = a.GetOBB();
 
-                    if (c1BoundingSphere.Intersects(c2BoundingSphere))
+                    if (/*fSqDist < 30000000f && */obb.Contains(p.GetVehicle().GetBoundingSphere()) != ContainmentType.Disjoint)
                     {
-                        return true;
+                        // If we are near the area and the mesh is not out of it we call on enter
+                        a.OnEnter(p.GetVehicle());
+                        
+                        // Note: The OnExit action is calculated inside each area.
                     }
                 }
             }
 
-            return false;
+            foreach (Area a in m_Areas)
+            {
+                a.Update();
+            }
         }
     }    
 }

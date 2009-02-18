@@ -15,11 +15,9 @@ namespace Karts.Code
         //------------------------------------------
         // Class methods
         //------------------------------------------
-        public override ECamType GetCameraType() { return ECamType.ECAMERA_TYPE_FREE; }
-
         public new bool Init(int ID, Vector3 pos, Vector3 rot)
         {
-            base.Init(ID, pos, rot);
+            base.Init(ID, ECamType.ECAMERA_TYPE_FREE, pos, rot);
 
             // Init the view and projection matrix
             UpdateMatrices();

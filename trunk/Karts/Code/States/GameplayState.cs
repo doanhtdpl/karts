@@ -12,42 +12,29 @@ namespace Karts.Code
 {
     class GameplayState : GameState
     {
-        Area a;
-
         public override void Enter()
         {
             //Create Players
-            foreach(Player player in PlayerManager.GetInstance().GetPlayers()){
-                player.Init(new Vector3(100.0f + 100f * player.LocalPlayerIndex, 200.0f, 10000.0f), new Vector3(0.0f, 0.0f, 0.0f), 0.5f, "Ship", "Ship", player.Local);
+            foreach(Player player in PlayerManager.GetInstance().GetPlayers())
+            {
+                player.Init(new Vector3(100.0f + 100f * player.LocalPlayerIndex, 200.0f, -1000.0f), new Vector3(0.0f, MathHelper.Pi, 0.0f), 0.5f, "Ship", "Ship", player.Local);
             }
 
-            CircuitManager.GetInstance().CreateCircuit(new Vector3(0.0f, 0.0f, 1000.0f), new Vector3(0.0f, 0.0f, 0.0f), "Ground");
-
-            a = new Area();
-            a.Init(Vector3.Zero, new Vector3(0.0f, 0.0f, 0.0f), 10000, 10000, 10000);
+            CircuitManager.GetInstance().CreateCircuit(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), "Ground");
 
             base.Enter();
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (InputManager.GetInstance().isButtonPressed(0, Buttons.B) || InputManager.GetInstance().isKeyPressed(Keys.Back))
-            {
-                GameStateManager.GetInstance().ChangeState(new MainMenu());
-            }
-            else
-            {
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float t = (float)gameTime.TotalGameTime.TotalSeconds;
 
-                PlayerManager.GetInstance().Update(gameTime);
-                CircuitManager.GetInstance().Update(gameTime);
-
-                Player p = PlayerManager.GetInstance().GetPlayers()[0];
-
-                bool bCollides = a.IntersectsWith(p.GetVehicle());
-                Debug.Print("The player is in the area? " + bCollides);
-            }
-
-            base.Update(gameTime);
+            UpdateControls();
+            
+            PlayerManager.GetInstance().Update(gameTime);
+            CircuitManager.GetInstance().Update(gameTime);
+            CollisionManager.GetInstance().Update(dt, t);
         }
 
         public override void Draw(GameTime gameTime)
@@ -59,8 +46,25 @@ namespace Karts.Code
                 PlayerManager.GetInstance().Draw(gameTime);
                 CircuitManager.GetInstance().Draw(gameTime);
             }
+        }
 
-            a.Draw();
+        public void UpdateControls()
+        {
+            ControllerManager cm = ControllerManager.GetInstance();
+
+            if (cm.isPressed("menu_cancel"))
+            {
+                GameStateManager.GetInstance().ChangeState(new MainMenu());
+            }
+
+            // Switch camera Free/Target
+            if (cm.isPressed("toggle_free_camera"))
+            {
+                Camera cam = CameraManager.GetInstance().GetActiveCamera();
+                Camera.ECamType type = cam.GetCameraType() == Camera.ECamType.ECAMERA_TYPE_FREE ? Camera.ECamType.ECAMERA_TYPE_TARGET : Camera.ECamType.ECAMERA_TYPE_FREE;
+                cam.SetType(type);
+                //CameraManager.GetInstance().ActivateCameraFree(!CameraManager.GetInstance().IsActiveCameraFree());
+            }
         }
 
         public override void Exit()
