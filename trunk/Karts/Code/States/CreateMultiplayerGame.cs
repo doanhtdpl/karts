@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Karts.Code.SceneManager;
 using Karts.Code.SceneManager.Components;
+using Microsoft.Xna.Framework.GamerServices;
 
 namespace Karts.Code
 {
@@ -18,6 +19,9 @@ namespace Karts.Code
 
         public override void Enter()
         {
+            if (Gamer.SignedInGamers.Count == 0)
+                Guide.ShowSignIn(1, false);
+
             menu = new Screen();
             Gui.GetInstance().AddComponent(menu);
 
