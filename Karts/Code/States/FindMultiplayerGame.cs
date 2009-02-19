@@ -39,13 +39,13 @@ namespace Karts.Code
             }
 
             ControllerManager cm = ControllerManager.GetInstance();
-            if (availableSessions != null && availableSessions.Count > 0)
+            if (cm.isPressed("refresh"))
             {
-                if (cm.isPressed("refresh"))
-                {
-                    UpdateSessions();
-                }
-                else if (cm.isPressed("menu_down"))
+                UpdateSessions();
+            }
+            else if (availableSessions != null && availableSessions.Count > 0)
+            {
+                if (cm.isPressed("menu_down"))
                 {
                     selected = (selected + availableSessions.Count + 1) % availableSessions.Count;
                 }
