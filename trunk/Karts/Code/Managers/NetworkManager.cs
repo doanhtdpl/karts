@@ -51,8 +51,8 @@ namespace Karts.Code
         {
             session = NetworkSession.Create(NetworkSessionType.SystemLink, MAX_LOCAL_PLAYERS, MAX_TOTAL_PLAYERS);
 
-            session.AllowHostMigration = true;
-            session.AllowJoinInProgress = true;
+            //session.AllowHostMigration = true;
+            //session.AllowJoinInProgress = true;
 
             session.GamerJoined += new EventHandler<GamerJoinedEventArgs>(session_GamerJoined);
             session.GamerLeft += new EventHandler<GamerLeftEventArgs>(session_GamerLeft);
