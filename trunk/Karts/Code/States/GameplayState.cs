@@ -42,10 +42,13 @@ namespace Karts.Code
             Viewport v = ResourcesManager.GetInstance().GetGraphicsDeviceManager().GraphicsDevice.Viewport;
             foreach (Player p in PlayerManager.GetInstance().GetPlayers())
             {
-                ResourcesManager.GetInstance().GetGraphicsDeviceManager().GraphicsDevice.Viewport = p.Viewport;
-                CameraManager.GetInstance().SetActiveCamera(p.m_IDCamera);
-                PlayerManager.GetInstance().Draw(gameTime);
-                CircuitManager.GetInstance().Draw(gameTime);
+                if (p.Local)
+                {
+                    ResourcesManager.GetInstance().GetGraphicsDeviceManager().GraphicsDevice.Viewport = p.Viewport;
+                    CameraManager.GetInstance().SetActiveCamera(p.m_IDCamera);
+                    PlayerManager.GetInstance().Draw(gameTime);
+                    CircuitManager.GetInstance().Draw(gameTime);
+                }
             }
             ResourcesManager.GetInstance().GetGraphicsDeviceManager().GraphicsDevice.Viewport = v;
         }
