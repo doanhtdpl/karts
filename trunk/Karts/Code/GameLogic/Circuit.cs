@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
-using Karts.Code.SceneManager;
-using Karts.Code.SceneManager.Components;
+//using Karts.Code.SceneManager;
+//using Karts.Code.SceneManager.Components;
 
 using System.Diagnostics;
 
@@ -25,8 +25,6 @@ namespace Karts.Code
 
         private List<ItemArea> m_ItemAreaList = new List<ItemArea>();       // Item Area
         private List<CheckPoint> m_CheckPointList = new List<CheckPoint>(); // Check points
-
-        TextComponent[] Ranking;
 
         
         // Type of level
@@ -59,31 +57,29 @@ namespace Karts.Code
             }
 
             Vector3 cp_position = Vector3.Zero;
+            float rot = 0.0f;
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 8; i++)
             {
+                cp_position = new Vector3(30000, 0, 0);
+                rot += MathHelper.TwoPi / 8;
+
                 CheckPoint cp = new CheckPoint();
-                cp_position.Z = i * 10000;
-                cp.Init(this, null, cp_position, Vector3.Zero, Vector3.UnitZ, false, i);
+                cp_position = Vector3.Transform(cp_position, Matrix.CreateFromYawPitchRoll(rot, 0, 0));
+                cp.Init(this, null, cp_position, new Vector3(0.0f, rot, 0.0f), false, i);
 
                 m_CheckPointList.Add(cp);
             }
 
-            List<Player> Players = PlayerManager.GetInstance().GetPlayers();
-            Ranking = new TextComponent[Players.Count];
-
-            int Y = 30;
-            int iCount = 0;
-            foreach (Player p in Players)
-            {
-                Ranking[iCount] = new TextComponent(10, 10 + Y, "", "kartsFont");
-                Gui.GetInstance().AddComponent(Ranking[iCount++]);
-                Y += 30;
-                p.SetLastCheckpointIndex(0);
-                m_CheckPointList[0].AddPlayer(p);
-            }
-
             return m_Mesh.Load(model_name);
+        }
+
+        public CheckPoint GetCheckpoint(int idx)
+        {
+            if (idx >= 0 && idx < m_CheckPointList.Count)
+                return m_CheckPointList[idx];
+
+            return null;
         }
 
         public UInt32 GetID()
@@ -108,46 +104,35 @@ namespace Karts.Code
 
         public void OnPlayerForwardCheckpoint(Player p, CheckPoint cp)
         {
+            Player.CircuitState PlayerState = p.GetCircuitState();
+
             int iTotalCP = m_CheckPointList.Count;
-            int iLastPlayerCP = p.GetLastCheckpointIndex();
+            int iLastPlayerCP = PlayerState.iCheckPoint;
             int iCurrCP = cp.GetIndex();
-            
-            int iNumLaps = p.GetLaps();
-            
-            int iNextCP = (iCurrCP + 1) % iTotalCP;
-            int iPrevCP = (iCurrCP - 1) % iTotalCP;
+
+            int iNumLaps = PlayerState.iLaps;
+
+            if (iLastPlayerCP == 0 && iCurrCP == 0)
+            {
+                PlayerState.iLaps += 1;
+            }
+
+            iLastPlayerCP = iLastPlayerCP < 0 ? 0 : iLastPlayerCP;
+
+            int iNextCP = (iLastPlayerCP + 1) % iTotalCP;
+            int iPrevCP = (iLastPlayerCP - 1) % iTotalCP;
             iPrevCP = iPrevCP < 0 ? (iTotalCP - 1) : iPrevCP;
 
-            bool bGoingForward = (iCurrCP == iLastPlayerCP) || (iCurrCP - iLastPlayerCP) > 0 || (iCurrCP == 0 && iLastPlayerCP == (iTotalCP - 1));
-
-            if (bGoingForward)
-            {
-                if (iLastPlayerCP == (iTotalCP - 1) && iCurrCP == 0)
-                {
-                    p.AddLap(1);
-                }
-
-                // The player is going on the right direction
-                cp.RemovePlayer(p);
-                m_CheckPointList[iNextCP].AddPlayer(p);
-                p.SetLastCheckpointIndex(iNextCP);
-            }
-            else
-            {/*
-                if (iCurrCP != iLastPlayerCP)
-                {
-                    // The player is going on the wrong direction (backwards)
-                    m_CheckPointList[iNextCP].RemovePlayer(p);
-                    m_CheckPointList[iCurrCP].AddPlayer(p);
-                    p.SetLastCheckpointIndex(iCurrCP);
-                }*/
-            }
+            // The player is going on the right direction
+            PlayerState.iCheckPoint = iNextCP;
         }
 
         public void OnPlayerBackwardCheckpoint(Player p, CheckPoint cp)
         {
+            Player.CircuitState PlayerState = p.GetCircuitState();
+
             int iTotalCP = m_CheckPointList.Count;
-            int iLastPlayerCP = p.GetLastCheckpointIndex();
+            int iLastPlayerCP = PlayerState.iCheckPoint;
             int iCurrCP = cp.GetIndex();
 
             if (iCurrCP != iLastPlayerCP)
@@ -155,39 +140,17 @@ namespace Karts.Code
                 int iNextCP = (iCurrCP + 1) % iTotalCP;
 
                 // The player is going on the wrong direction (backwards)
-                m_CheckPointList[iNextCP].RemovePlayer(p);
-                m_CheckPointList[iCurrCP].AddPlayer(p);
-                p.SetLastCheckpointIndex(iCurrCP);
+                PlayerState.iCheckPoint = iCurrCP;
             }
         }
         
         public void UpdateCheckpoints(float dt, float t)
         {
-            List<Player> Players = PlayerManager.GetInstance().GetPlayers();
-            int iCount = Players.Count;
-
             int iNumCP = m_CheckPointList.Count;
             for(int j = 0; j < iNumCP; ++j)
             {
                 CheckPoint cp = m_CheckPointList[j];
                 cp.Update(dt, t);
-            }
-
-            int iRankingCount = 0;
-            for (int j = (iNumCP-1); j >= 0; --j)
-            {
-                CheckPoint cp = m_CheckPointList[j];
-
-                List<Player> Rankings = cp.GetRankings();
-                int iNumRanks = Rankings.Count;
-
-                for (int i = 0; i < iNumRanks; ++i)
-                {
-                    Player p = Rankings[i];
-
-                    if (p != null)
-                        Ranking[iRankingCount++].Text = iRankingCount + " position: " + p.GetName();
-                }
             }
         }
 

@@ -41,7 +41,7 @@ namespace Karts.Code
             m_Area.UnregisterObserver(this);
         }
 
-        public bool Init(Circuit c, string model_name, Vector3 pos, Vector3 rot, Vector3 normal, bool reversed, int iIndex)
+        public bool Init(Circuit c, string model_name, Vector3 pos, Vector3 rot, bool reversed, int iIndex)
         {
             bool bInitOk = true;
 
@@ -52,13 +52,14 @@ namespace Karts.Code
 
             if (bInitOk)
             {
-                m_vDirection = reversed ? -1 * normal : normal;
                 m_vPosition = pos;
                 m_vRotation = rot;
                 m_iIndex = iIndex;
                 m_Circuit = c;
 
-                m_Area = CollisionManager.GetInstance().CreateArea(pos, rot, 10000, 1000, 100, -1);
+                m_vDirection = reversed ? -1 * GetForward() : GetForward();
+
+                m_Area = CollisionManager.GetInstance().CreateArea(pos, rot, 10000, 1000, 100, -1, m_iIndex == 0? Color.Green : Color.Red);
 
                 bInitOk = m_Area != null;
 
@@ -129,42 +130,16 @@ namespace Karts.Code
             }
         }
 
-        public void Update(float dt, float t)
-        {
-            m_PlayersRanking.Sort(new ClaseComparable(GetPosition()).Compare);
-        }
+        public void Update(float dt, float t) { }
 
         public void Draw()
         {
             base.Draw();
 
-            m_Area.Draw(Color.Red);
+            Vector3 p = m_vPosition + new Vector3(0, 1000, 0);
+            DrawDebugManager.GetInstance().DrawLine(p , p + GetForward() * 1000, Color.Yellow);
+
+            m_Area.Draw();
         }
-
-        //----------------------------------------------------------
-        // Class predicates
-        //----------------------------------------------------------
-        public class ClaseComparable : IComparable<ClaseComparable> 
-        {  
-            private Vector3 pos;
-
-            public ClaseComparable(Vector3 _pos) 
-            {  
-                pos = _pos;  
-            }  
-
-            public int CompareTo(ClaseComparable otro) 
-            {  
-                return 1;  
-            }
-
-            public int Compare(Player p1, Player p2)
-            {
-                float fDist1 = (p1.GetPosition() - pos).LengthSquared();
-                float fDist2 = (p2.GetPosition() - pos).LengthSquared();
-
-                return fDist1.CompareTo(fDist2);
-            }  
-        }  
     }
 }

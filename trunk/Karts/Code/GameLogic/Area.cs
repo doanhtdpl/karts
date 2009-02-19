@@ -32,17 +32,20 @@ namespace Karts.Code
         private List<Mesh> m_MeshesToDelete = new List<Mesh>();
         private List<IObserver> m_Observers = new List<IObserver>();
         private Vector3 m_vSize;
+        private Color m_Color = Color.Red;
 
         //---------------------------------------
         // Class methods
         //---------------------------------------
-        public bool Init(Vector3 pos, Vector3 rot, float fWidth, float fHeight, float fDepth, int iLife)
+        public bool Init(Vector3 pos, Vector3 rot, float fWidth, float fHeight, float fDepth, int iLife, Color c)
         {
             m_vPosition = pos; // Base position
             pos.Y += fHeight;
             m_vRotation = rot;
             m_iLife = iLife;
             m_vSize = new Vector3(fWidth, fHeight, fDepth);
+            m_Color = c;
+
 
             m_obb = new OBB(pos, new Vector3(fWidth, fHeight, fDepth), Matrix.CreateFromYawPitchRoll(rot.Y, rot.X, rot.Z));
 
@@ -131,9 +134,9 @@ namespace Karts.Code
         }
 
         // Just for Debug
-        public void Draw(Color c)
+        public void Draw()
         {
-            m_obb.Draw(c);
+            m_obb.Draw(m_Color);
         }
     }
 }

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Karts.Code.SceneManager;
+using Karts.Code.SceneManager.Components;
+
+using System.Diagnostics;
 
 namespace Karts.Code
 {
@@ -18,6 +22,8 @@ namespace Karts.Code
         public static PlayerManager m_PlayerManager = null;
         UInt32 m_uIDPlayerCounter;
         public int ActivePlayerIndex { get; set; }
+
+        private List<TextComponent> m_Ranking = new List<TextComponent>();
 
         //---------------------------------------------------
         // Class methods
@@ -105,6 +111,11 @@ namespace Karts.Code
 
             newPlayer = new Player();
             m_PlayerList.Add(newPlayer);
+
+            TextComponent rank = new TextComponent(10, 10 + 30*(m_Ranking.Count+1), "", "kartsFont");
+            m_Ranking.Add(rank);
+            Gui.GetInstance().AddComponent(rank);
+
             return newPlayer;
         }
 
@@ -140,8 +151,17 @@ namespace Karts.Code
 
         public void Update(GameTime GameTime)
         {
+            // We Order the players depending on its position
+            if (m_PlayerList.Count > 1)
+                m_PlayerList.Sort(new CompareRanking().Compare);
+
+            int iCount= 0;
             foreach (Player p in m_PlayerList)
+            {
                 p.Update(GameTime);
+                m_Ranking[iCount++].Text = iCount + " position: " + p.GetName();
+
+            }
 	    }
 
         public void Draw(GameTime GameTime)
@@ -185,5 +205,50 @@ namespace Karts.Code
                 return p.Local && p.LocalPlayerIndex  == localIndex;
             }
         }
+
+        public struct CompareRanking : IComparable
+        {
+            public int CompareTo(object otro)
+            {
+                return 1;
+            }
+
+            public int Compare(Player p1, Player p2)
+            {
+                if (p1 == null || p2 == null || p1 == p2)
+                    return 0;
+
+                Player.CircuitState state1 = p1.GetCircuitState();
+                Player.CircuitState state2 = p2.GetCircuitState();
+
+                //Debug.Print("Laps " + state1.iLaps + ", " + state2.iLaps);
+                if (state1.iLaps > state2.iLaps)
+                {
+                    //Debug.Print("Laps: Player " + p1.GetName() + " before than " + p2.GetName());
+                    return -1;
+                }
+                else if (state1.iLaps == state2.iLaps)
+                {
+                    //Debug.Print("CP: " + state1.iCheckPoint + ", " + state2.iCheckPoint);
+                    if (state1.iCheckPoint > state2.iCheckPoint)
+                    {
+                        //Debug.Print("CP: Player " + p1.GetName() + " before than " + p2.GetName());
+                        return -1;
+                    }
+                    else if (state1.iCheckPoint == state2.iCheckPoint)
+                    {
+                        //Debug.Print("Dist: " + state1.fSqCheckpointDist + ", " + state2.fSqCheckpointDist);
+                        if (state1.fSqCheckpointDist <= state2.fSqCheckpointDist)
+                        {
+                            //Debug.Print("Dist: Player " + p1.GetName() + " before than " + p2.GetName());
+                            return -1;
+                        }
+                    }
+                }
+
+                //Debug.Print("Player " + p2.GetName() + " before than " + p1.GetName());
+                return 1;
+            }
+        }  
     }
 }
