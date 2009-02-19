@@ -44,6 +44,7 @@ namespace Karts
         protected override void Initialize()
         {
             Components.Add(new GamerServicesComponent(this));
+
             //Initialize components
             Components.Add(InputManager.Init(this));
             Components.Add(GameStateManager.Init(this));

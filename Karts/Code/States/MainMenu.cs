@@ -23,9 +23,6 @@ namespace Karts.Code
 
         public override void Enter()
         {
-            
-            Guide.ShowSignIn(1, false);
-
             for (int i = 0; i < options.Length; ++i)
             {
                 options[i] = new TextComponent(100, 100 * (i + 1), OPTIONS[i], "KartsFont");

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.GamerServices;
 using Karts.Code.SceneManager;
 using Karts.Code.SceneManager.Components;
 
@@ -24,13 +25,21 @@ namespace Karts.Code
             menu = new Screen();
             Gui.GetInstance().AddComponent(menu);
 
-            UpdateSessions();
+            if (Gamer.SignedInGamers.Count == 0)
+            {
+                Guide.ShowSignIn(1, false);
+            }
         }
 
         public override void Update(GameTime GameTime)
         {
+            if (Gamer.SignedInGamers.Count > 0 && availableSessions != null)
+            {
+                UpdateSessions();
+            }
+
             ControllerManager cm = ControllerManager.GetInstance();
-            if (availableSessions.Count > 0)
+            if (availableSessions != null && availableSessions.Count > 0)
             {
                 if (cm.isPressed("refresh"))
                 {
