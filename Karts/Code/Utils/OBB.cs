@@ -637,8 +637,9 @@ namespace Karts.Code
 
             for (int i = 0; i < 8; i++)
             {
-                verts[i].Position = corners[i] + Center;
+                verts[i].Position = corners[i];
                 verts[i].Position = Vector3.Transform(verts[i].Position, m_matRotation);
+                verts[i].Position += Center;
                 verts[i].Color = c;
             }
 

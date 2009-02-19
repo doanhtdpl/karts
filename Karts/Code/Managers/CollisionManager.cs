@@ -36,10 +36,10 @@ namespace Karts.Code
             return false;
         }
 
-        public Area CreateArea(Vector3 pos, Vector3 rot, float fWidth, float fHeight, float fDepth, int iLife)
+        public Area CreateArea(Vector3 pos, Vector3 rot, float fWidth, float fHeight, float fDepth, int iLife, Color c)
         {
             Area newArea = new Area();
-            if (newArea.Init(pos, rot, fWidth, fHeight, fDepth, iLife))
+            if (newArea.Init(pos, rot, fWidth, fHeight, fDepth, iLife, c))
             {
                 m_Areas.Add(newArea);
 
