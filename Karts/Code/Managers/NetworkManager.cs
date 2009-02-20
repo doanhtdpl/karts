@@ -51,8 +51,8 @@ namespace Karts.Code
         {
             session = NetworkSession.Create(NetworkSessionType.SystemLink, MAX_LOCAL_PLAYERS, MAX_TOTAL_PLAYERS);
 
-            //session.AllowHostMigration = true;
-            //session.AllowJoinInProgress = true;
+            session.AllowHostMigration = true;
+            session.AllowJoinInProgress = true;
 
             session.GamerJoined += new EventHandler<GamerJoinedEventArgs>(session_GamerJoined);
             session.GamerLeft += new EventHandler<GamerLeftEventArgs>(session_GamerLeft);
@@ -66,6 +66,12 @@ namespace Karts.Code
             sender = session.LocalGamers[0];
 
             return session;
+        }
+
+        public AvailableNetworkSessionCollection FindSessions()
+        {
+            availableSessions = NetworkSession.Find(NetworkSessionType.SystemLink, MAX_LOCAL_PLAYERS, null);
+            return availableSessions;
         }
 
         public bool HasSession()
@@ -99,12 +105,6 @@ namespace Karts.Code
             }
         }
 
-        public AvailableNetworkSessionCollection FindSessions()
-        {
-            availableSessions = NetworkSession.Find(NetworkSessionType.SystemLink, MAX_LOCAL_PLAYERS, null);
-            return availableSessions;
-        }
-
         public AvailableNetworkSessionCollection GetAvailableSessions()
         {
             /*if (availableSessions == null)
@@ -128,13 +128,15 @@ namespace Karts.Code
             }
         }
 
-        public void Update()
+        public override void  Update(GameTime gameTime)
         {
+ 	        base.Update(gameTime);
+
             if(session != null){
                 session.Update();
             }
 
-            if (sender.IsDataAvailable)
+            if (sender != null && sender.IsDataAvailable)
             {
                 NetworkGamer messageSender;
                 sender.ReceiveData(pr, out messageSender);
@@ -192,19 +194,24 @@ namespace Karts.Code
         }
 
         void session_GamerJoined(object sender, GamerJoinedEventArgs p)
-        { 
+        {
+            Console.Write("Gamer Joined: " + p.Gamer.Gamertag);
         }
 
-        void session_GamerLeft(object sender, GamerLeftEventArgs p) { 
+        void session_GamerLeft(object sender, GamerLeftEventArgs p) {
+            Console.Write("Gamer Left: " + p.Gamer.Gamertag);
         }
 
-        void session_GameStarted(object sender, GameStartedEventArgs p) { 
+        void session_GameStarted(object sender, GameStartedEventArgs p) {
+            Console.Write("Game Started");
         }
 
-        void session_GameEnded(object sender, GameEndedEventArgs p) { 
+        void session_GameEnded(object sender, GameEndedEventArgs p) {
+            Console.Write("Game Ended");
         }
 
-        void session_SessionEnded(object sender, NetworkSessionEndedEventArgs p) { 
+        void session_SessionEnded(object sender, NetworkSessionEndedEventArgs p) {
+            Console.Write("Session Ended");
         }
     }
 }
