@@ -93,6 +93,9 @@ namespace Karts.Code
         {
             session = NetworkSession.Join(hostSession);
 
+            pr = new PacketReader();
+            pw = new PacketWriter();
+
             sender = session.LocalGamers[0];
         }
 
