@@ -33,7 +33,7 @@ namespace Karts.Code
 
         public override void Update(GameTime GameTime)
         {
-            if (Gamer.SignedInGamers.Count > 0 && availableSessions != null)
+            if (Gamer.SignedInGamers.Count > 0 && availableSessions == null)
             {
                 //UpdateSessions();
             }
