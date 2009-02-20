@@ -69,6 +69,7 @@ namespace Karts
             Components.Add(Gui.Init(this));
             Components.Add(CameraManager.Init(this));
 
+            /*
             InputManager.GetInstance().UpdateOrder = 0;
             GameStateManager.GetInstance().UpdateOrder = 10;
             NetworkManager.GetInstance().UpdateOrder = 20;
@@ -76,6 +77,7 @@ namespace Karts
             //CircuitManager.GetInstance().UpdateOrder = 35;
             CameraManager.GetInstance().UpdateOrder = 40;
             Gui.GetInstance().UpdateOrder = 50;
+            */
 
             GameStateManager.GetInstance().ChangeState(new MainMenu());
             //GameStateManager.GetInstance().ChangeState(new GameplayState());
