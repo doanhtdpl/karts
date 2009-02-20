@@ -36,13 +36,12 @@ namespace Karts.Code
         {
             if (ControllerManager.GetInstance().isPressed(PlayerManager.GetInstance().ActivePlayerIndex, "menu_cancel")){
                 GoBack();
-            }else if(ControllerManager.GetInstance().isPressed(PlayerManager.GetInstance().ActivePlayerIndex, "menu_ok")){
-                Confirm();
-            }else if (NetworkManager.GetInstance().IsClient()){
-                if (NetworkManager.GetInstance().GetSession().SessionState == NetworkSessionState.Playing)
-                {
-                    GameStateManager.GetInstance().ChangeState(new GameplayState());
-                }
+            }else if(!NetworkManager.GetInstance().HasSession() || 
+                (NetworkManager.GetInstance().HasSession() && NetworkManager.GetInstance().GetSession().IsHost && ControllerManager.GetInstance().isPressed(PlayerManager.GetInstance().ActivePlayerIndex, "menu_ok"))){
+                    Confirm();
+            }else if (NetworkManager.GetInstance().IsClient() && NetworkManager.GetInstance().GetSession().SessionState == NetworkSessionState.Playing)
+            {
+                GameStateManager.GetInstance().ChangeState(new GameplayState());
             }else{
                 CheckLocalJoins();
             }
@@ -78,6 +77,8 @@ namespace Karts.Code
             {
                 if (ControllerManager.GetInstance().isPressed(i, "join") && !PlayerManager.GetInstance().IsJoinedLocalPlayer(i))
                 {
+                    Console.WriteLine("local join: " + i);
+
                     Player newPlayer = PlayerManager.GetInstance().CreatePlayer("Player" + i, true, false, i);
 
                     if(NetworkManager.GetInstance().HasSession()){

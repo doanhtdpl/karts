@@ -35,7 +35,7 @@ namespace Karts.Code
         {
             if (Gamer.SignedInGamers.Count > 0 && availableSessions != null)
             {
-                UpdateSessions();
+                //UpdateSessions();
             }
 
             ControllerManager cm = ControllerManager.GetInstance();
