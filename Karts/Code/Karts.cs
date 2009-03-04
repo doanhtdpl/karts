@@ -13,7 +13,6 @@ using Microsoft.Xna.Framework.Storage;
 using Karts.Code;
 using Karts.Code.SceneManager;
 using Karts.Code.SceneManager.Components;
-
 using System.Diagnostics;
 
 namespace Karts
